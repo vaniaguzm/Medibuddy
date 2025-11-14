@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:15-alpine
+    
+    container_name: medibuddy_postgres_db
+    
+    environment:
+      POSTGRES_DB: medibuddy
+      POSTGRES_PASSWORD: mysecretpassword 
+      POSTGRES_USER: medibuddy_user
+
+    ports:
+      - "5432:5432"
+      
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    restart: always
+volumes:
+  postgres_data:
