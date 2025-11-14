@@ -1,5 +1,6 @@
 package medibuddy;
 
+
 public class MediBuddy {
     public static void main(String[] args) {
         
