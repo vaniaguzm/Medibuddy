@@ -3,7 +3,7 @@ package medibuddy;
 
 public class MediBuddy {
     public static void main(String[] args) {
-        
+    
         // Medicamentos
         Medicamento m1 = new Medicamento(10, "Paracetamol", "500mg", "08:00 AM");
         Medicamento m2 = new Medicamento(20, "Omeprazol", "20mg", "7:30 PM");

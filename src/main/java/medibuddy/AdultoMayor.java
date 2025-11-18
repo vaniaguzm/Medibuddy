@@ -1,12 +1,15 @@
 package medibuddy;
 
 import java.util.ArrayList;
-
 public class AdultoMayor extends Usuario {
     public String contactoEmergencia;
     public ArrayList<Medicamento> medicamentos;
 
+
     public AdultoMayor(int idUsuario, String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia) {
+
+        // En este caso tenemos que mandar a llamar la entidad de AdultoMayor
+
         super(idUsuario, nomUsuario, tipoUsuario, telefono);
         this.contactoEmergencia = contactoEmergencia;
         this.medicamentos = new ArrayList<>();
@@ -30,4 +33,5 @@ public class AdultoMayor extends Usuario {
         public String getNomUsuario() {
         return nomUsuario;
     }
+    
 }

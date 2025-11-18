@@ -1,7 +1,7 @@
 package medibuddy.service;
 
-import medibuddy.entity.AdultoMayor;
-import medibuddy.entity.Medicamento;
+import medibuddy.entity.AdultoMayorEntity;
+import medibuddy.entity.MedicamentoEntity;
 import medibuddy.repository.MedicamentoRepository;
 import medibuddy.repository.UsuarioRepository;
 
@@ -17,30 +17,30 @@ public class MedicamentoService {
         this.usuarioRepository = new UsuarioRepository();
     }
 
-    public void saveMedicamento(Medicamento medicamento, Long adultoMayorId) {
+    public void saveMedicamento(MedicamentoEntity medicamento, Long adultoMayorId) {
         var usuario = usuarioRepository.findById(adultoMayorId);
-        if (usuario instanceof AdultoMayor) {
-            medicamento.setAdultoMayor((AdultoMayor) usuario);
+        if (usuario instanceof AdultoMayorEntity) {
+            medicamento.setAdultoMayor((AdultoMayorEntity) usuario);
             medicamentoRepository.save(medicamento);
         } else {
             System.err.println("No se encontró AdultoMayor con id: " + adultoMayorId);
         }
     }
 
-    public Medicamento getMedicamento(Long id) {
+    public MedicamentoEntity getMedicamento(Long id) {
         return medicamentoRepository.findById(id);
     }
 
-    public List<Medicamento> getAllMedicamentos() {
+    public List<MedicamentoEntity> getAllMedicamentos() {
         return medicamentoRepository.findAll();
     }
 
-    public void updateMedicamento(Medicamento medicamento) {
+    public void updateMedicamento(MedicamentoEntity medicamento) {
         medicamentoRepository.update(medicamento);
     }
 
     public void deleteMedicamento(Long id) {
-        Medicamento med = getMedicamento(id);
+        MedicamentoEntity med = getMedicamento(id);
         if (med != null) {
             medicamentoRepository.delete(med);
         }

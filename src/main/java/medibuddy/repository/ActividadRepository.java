@@ -1,14 +1,15 @@
 package medibuddy.repository;
 
 import medibuddy.config.HibernateUtil;
-import medibuddy.entity.Actividad;
+import medibuddy.entity.ActividadEntity;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
 public class ActividadRepository {
 
-    public void save(Actividad actividad) {
+    public void save(ActividadEntity actividad) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -20,11 +21,11 @@ public class ActividadRepository {
         }
     }
 
-    public Actividad findById(Long id) {
+    public ActividadEntity findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // Usamos fetchGraph para cargar las colecciones N-a-N
             // Esto evita LazyInitializationException si se accede fuera de la sesión
-             Actividad act = session.find(Actividad.class, id);
+             ActividadEntity act = session.find(ActividadEntity.class, id);
              if (act != null) {
                  act.getParticipantes().size(); // Inicializa la colección
                  act.getFundaciones().size();
@@ -37,16 +38,16 @@ public class ActividadRepository {
         }
     }
 
-    public List<Actividad> findAll() {
+    public List<ActividadEntity> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Actividad", Actividad.class).list();
+            return session.createQuery("FROM Actividad", ActividadEntity.class).list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public void update(Actividad actividad) {
+    public void update(ActividadEntity actividad) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -58,7 +59,7 @@ public class ActividadRepository {
         }
     }
 
-    public void delete(Actividad actividad) {
+    public void delete(ActividadEntity actividad) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();

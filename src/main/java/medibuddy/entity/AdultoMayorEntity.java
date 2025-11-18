@@ -6,22 +6,22 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("ADULTO_MAYOR")
-public class AdultoMayor extends Usuario {
+public class AdultoMayorEntity extends UsuarioEntity {
 
     @Column(name = "contacto_emergencia")
     private String contactoEmergencia;
 
     // Relación 1-a-N con Familiar (inversa)
     @OneToMany(mappedBy = "adultoMayorAsociado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Familiar> familiares = new HashSet<>();
+    private Set<FamiliarEntity> familiares = new HashSet<>();
 
     // Relación 1-a-N con Medicamento
     @OneToMany(mappedBy = "adultoMayor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Medicamento> medicamentos = new HashSet<>();
+    private Set<MedicamentoEntity> medicamentos = new HashSet<>();
 
     // Relación N-a-N con Actividad
     @ManyToMany(mappedBy = "participantes")
-    private Set<Actividad> actividades = new HashSet<>();
+    private Set<ActividadEntity> actividades = new HashSet<>();
 
     // Getters y Setters
     public String getContactoEmergencia() {
@@ -32,27 +32,27 @@ public class AdultoMayor extends Usuario {
         this.contactoEmergencia = contactoEmergencia;
     }
 
-    public Set<Familiar> getFamiliares() {
+    public Set<FamiliarEntity> getFamiliares() {
         return familiares;
     }
 
-    public void setFamiliares(Set<Familiar> familiares) {
+    public void setFamiliares(Set<FamiliarEntity> familiares) {
         this.familiares = familiares;
     }
 
-    public Set<Medicamento> getMedicamentos() {
+    public Set<MedicamentoEntity> getMedicamentos() {
         return medicamentos;
     }
 
-    public void setMedicamentos(Set<Medicamento> medicamentos) {
+    public void setMedicamentos(Set<MedicamentoEntity> medicamentos) {
         this.medicamentos = medicamentos;
     }
 
-    public Set<Actividad> getActividades() {
+    public Set<ActividadEntity> getActividades() {
         return actividades;
     }
 
-    public void setActividades(Set<Actividad> actividades) {
+    public void setActividades(Set<ActividadEntity> actividades) {
         this.actividades = actividades;
     }
 }

@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "fundacion")
-public class Fundacion {
+public class FundacionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class Fundacion {
     private String telefono;
 
     @ManyToMany(mappedBy = "fundaciones")
-    private Set<Actividad> actividades = new HashSet<>();
+    private Set<ActividadEntity> actividades = new HashSet<>();
 
     // Getters y Setters
     public Long getId() {
@@ -43,11 +43,11 @@ public class Fundacion {
         this.telefono = telefono;
     }
 
-    public Set<Actividad> getActividades() {
+    public Set<ActividadEntity> getActividades() {
         return actividades;
     }
 
-    public void setActividades(Set<Actividad> actividades) {
+    public void setActividades(Set<ActividadEntity> actividades) {
         this.actividades = actividades;
     }
 }

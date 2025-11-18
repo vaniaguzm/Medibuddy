@@ -1,6 +1,6 @@
 package medibuddy.service;
 
-import medibuddy.entity.Fundacion;
+import medibuddy.entity.FundacionEntity;
 import medibuddy.repository.FundacionRepository;
 import java.util.List;
 
@@ -12,24 +12,24 @@ public class FundacionService {
         this.fundacionRepository = new FundacionRepository();
     }
 
-    public void saveFundacion(Fundacion fundacion) {
+    public void saveFundacion(FundacionEntity fundacion) {
         fundacionRepository.save(fundacion);
     }
 
-    public Fundacion getFundacion(Long id) {
+    public FundacionEntity getFundacion(Long id) {
         return fundacionRepository.findById(id);
     }
 
-    public List<Fundacion> getAllFundaciones() {
+    public List<FundacionEntity> getAllFundaciones() {
         return fundacionRepository.findAll();
     }
 
-    public void updateFundacion(Fundacion fundacion) {
+    public void updateFundacion(FundacionEntity fundacion) {
         fundacionRepository.update(fundacion);
     }
 
     public void deleteFundacion(Long id) {
-        Fundacion fun = getFundacion(id);
+        FundacionEntity fun = getFundacion(id);
         if (fun != null) {
             fundacionRepository.delete(fun);
         }

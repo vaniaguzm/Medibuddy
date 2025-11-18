@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue("FAMILIAR")
-public class Familiar extends Usuario {
+public class FamiliarEntity extends UsuarioEntity {
 
     private String parentesco;
 
     // Relación N-a-1 con AdultoMayor
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adulto_mayor_asociado_id")
-    private AdultoMayor adultoMayorAsociado;
+    private AdultoMayorEntity adultoMayorAsociado;
 
     // Getters y Setters
     public String getParentesco() {
@@ -22,11 +22,11 @@ public class Familiar extends Usuario {
         this.parentesco = parentesco;
     }
 
-    public AdultoMayor getAdultoMayorAsociado() {
+    public AdultoMayorEntity getAdultoMayorAsociado() {
         return adultoMayorAsociado;
     }
 
-    public void setAdultoMayorAsociado(AdultoMayor adultoMayorAsociado) {
+    public void setAdultoMayorAsociado(AdultoMayorEntity adultoMayorAsociado) {
         this.adultoMayorAsociado = adultoMayorAsociado;
     }
 }
