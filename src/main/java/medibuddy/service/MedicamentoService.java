@@ -45,4 +45,30 @@ public class MedicamentoService {
             medicamentoRepository.delete(med);
         }
     }
+
+    public void confirmarTomaMedicamento(Long medicamentoId) {
+        Medicamento med = medicamentoRepository.findById(medicamentoId);
+        
+        if (med != null) {
+            if (!med.getTomado()) {
+                med.setTomado(true); // Cambiamos el estado en memoria
+                medicamentoRepository.update(med); // Guardamos el cambio en BD
+                System.out.println("Toma confirmada para: " + med.getInfo());
+            } else {
+                System.out.println("Este medicamento ya había sido marcado como tomado.");
+            }
+        } else {
+            System.err.println("Medicamento no encontrado.");
+        }
+    }
+
+    public void enviarRecordatorio(Long medicamentoId) {
+        Medicamento med = medicamentoRepository.findById(medicamentoId);
+        if (med != null && med.getAdultoMayor() != null) {
+            // Aquí iría la lógica real de envío (SMS, Email, Push Notification)
+            // Por ahora simulamos lo que hacías en consola:
+            System.out.println("ENVIANDO RECORDATORIO A: " + med.getAdultoMayor().getNombre());
+            System.out.println("Hora: " + med.getHoraRecordatorio() + " - Tomar: " + med.getInfo() + " (" + med.getDosis() + ")");
+        }
+    }
 }

@@ -67,13 +67,42 @@ public class UsuarioService {
         if (aduUsuario instanceof AdultoMayor && actividad != null) {
             AdultoMayor adultoMayor = (AdultoMayor) aduUsuario;
 
-            // Es importante manejar la relación desde la entidad dueña (Actividad)
+            if (actividad.getParticipantes().contains(adultoMayor)) {
+                System.out.println("El usuario ya está inscrito en esta actividad.");
+                return;
+            }
+
+
+            if (actividad.getCupoMaximo() != null && 
+                actividad.getParticipantes().size() >= actividad.getCupoMaximo()) {
+                System.err.println("Error: No se pudo inscribir. Cupo lleno para " + actividad.getNombre());
+                return;
+            }
+
+            // 3. Inscribir
             actividad.getParticipantes().add(adultoMayor);
             actividadRepository.update(actividad);
             
-            System.out.println("AdultoMayor " + adultoMayor.getNombre() + " inscrito en " + actividad.getDescripcion());
+            System.out.println("Éxito: " + adultoMayor.getNombre() + " inscrito en " + actividad.getNombre());
         } else {
-            System.err.println("Error: IDs no corresponden a AdultoMayor y Actividad");
+            System.err.println("Error: IDs inválidos.");
+        }
+    }
+
+    public void removeParticipanteActividad(Long adultoMayorId, Long actividadId) {
+        Usuario aduUsuario = getUsuario(adultoMayorId);
+        Actividad actividad = actividadRepository.findById(actividadId);
+
+        if (aduUsuario instanceof AdultoMayor && actividad != null) {
+            AdultoMayor adultoMayor = (AdultoMayor) aduUsuario;
+
+            if (actividad.getParticipantes().contains(adultoMayor)) {
+                actividad.getParticipantes().remove(adultoMayor);
+                actividadRepository.update(actividad); // Actualizamos la tabla de unión
+                System.out.println("Inscripción cancelada para: " + adultoMayor.getNombre());
+            } else {
+                System.out.println("El usuario no estaba inscrito en esa actividad.");
+            }
         }
     }
 }
