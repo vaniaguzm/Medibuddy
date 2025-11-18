@@ -1,14 +1,14 @@
 package medibuddy.repository;
 
 import medibuddy.config.HibernateUtil;
-import medibuddy.entity.FundacionEntity;
+import medibuddy.entity.Fundacion;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
 public class FundacionRepository {
 
-    public void save(FundacionEntity fundacion) {
+    public void save(Fundacion fundacion) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -20,25 +20,25 @@ public class FundacionRepository {
         }
     }
 
-    public FundacionEntity findById(Long id) {
+    public Fundacion findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.find(FundacionEntity.class, id);
+            return session.find(Fundacion.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<FundacionEntity> findAll() {
+    public List<Fundacion> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Fundacion", FundacionEntity.class).list();
+            return session.createQuery("FROM Fundacion", Fundacion.class).list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public void update(FundacionEntity fundacion) {
+    public void update(Fundacion fundacion) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -50,7 +50,7 @@ public class FundacionRepository {
         }
     }
 
-    public void delete(FundacionEntity fundacion) {
+    public void delete(Fundacion fundacion) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();

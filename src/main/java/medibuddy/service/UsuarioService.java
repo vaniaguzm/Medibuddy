@@ -1,9 +1,9 @@
 package medibuddy.service;
 
-import medibuddy.entity.ActividadEntity;
-import medibuddy.entity.AdultoMayorEntity;
-import medibuddy.entity.FamiliarEntity;
-import medibuddy.entity.UsuarioEntity;
+import medibuddy.entity.Actividad;
+import medibuddy.entity.AdultoMayor;
+import medibuddy.entity.Familiar;
+import medibuddy.entity.Usuario;
 import medibuddy.repository.ActividadRepository;
 import medibuddy.repository.UsuarioRepository;
 
@@ -19,24 +19,24 @@ public class UsuarioService {
         this.actividadRepository = new ActividadRepository();
     }
 
-    public void saveUsuario(UsuarioEntity usuario) {
+    public void saveUsuario(Usuario usuario) {
         usuarioRepository.save(usuario);
     }
 
-    public UsuarioEntity getUsuario(Long id) {
+    public Usuario getUsuario(Long id) {
         return usuarioRepository.findById(id);
     }
 
-    public List<UsuarioEntity> getAllUsuarios() {
+    public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
 
-    public void updateUsuario(UsuarioEntity usuario) {
+    public void updateUsuario(Usuario usuario) {
         usuarioRepository.update(usuario);
     }
 
     public void deleteUsuario(Long id) {
-        UsuarioEntity usuario = getUsuario(id);
+        Usuario usuario = getUsuario(id);
         if (usuario != null) {
             usuarioRepository.delete(usuario);
         }
@@ -45,12 +45,12 @@ public class UsuarioService {
     // --- Lógica de Negocio Específica ---
 
     public void linkFamiliarToAdulto(Long familiarId, Long adultoMayorId) {
-        UsuarioEntity famUsuario = getUsuario(familiarId);
-        UsuarioEntity aduUsuario = getUsuario(adultoMayorId);
+        Usuario famUsuario = getUsuario(familiarId);
+        Usuario aduUsuario = getUsuario(adultoMayorId);
 
-        if (famUsuario instanceof FamiliarEntity && aduUsuario instanceof AdultoMayorEntity) {
-            FamiliarEntity familiar = (FamiliarEntity) famUsuario;
-            AdultoMayorEntity adultoMayor = (AdultoMayorEntity) aduUsuario;
+        if (famUsuario instanceof Familiar && aduUsuario instanceof AdultoMayor) {
+            Familiar familiar = (Familiar) famUsuario;
+            AdultoMayor adultoMayor = (AdultoMayor) aduUsuario;
             
             familiar.setAdultoMayorAsociado(adultoMayor);
             usuarioRepository.update(familiar);
@@ -61,11 +61,11 @@ public class UsuarioService {
     }
 
     public void addParticipanteActividad(Long adultoMayorId, Long actividadId) {
-        UsuarioEntity aduUsuario = getUsuario(adultoMayorId);
-        ActividadEntity actividad = actividadRepository.findById(actividadId);
+        Usuario aduUsuario = getUsuario(adultoMayorId);
+        Actividad actividad = actividadRepository.findById(actividadId);
 
-        if (aduUsuario instanceof AdultoMayorEntity && actividad != null) {
-            AdultoMayorEntity adultoMayor = (AdultoMayorEntity) aduUsuario;
+        if (aduUsuario instanceof AdultoMayor && actividad != null) {
+            AdultoMayor adultoMayor = (AdultoMayor) aduUsuario;
 
             // Es importante manejar la relación desde la entidad dueña (Actividad)
             actividad.getParticipantes().add(adultoMayor);

@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "actividad")
-public class ActividadEntity {
+public class Actividad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class ActividadEntity {
         joinColumns = @JoinColumn(name = "actividad_id"),
         inverseJoinColumns = @JoinColumn(name = "adulto_mayor_id")
     )
-    private Set<AdultoMayorEntity> participantes = new HashSet<>();
+    private Set<AdultoMayor> participantes = new HashSet<>();
 
     // Relación N-a-N con Fundacion
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -39,7 +39,7 @@ public class ActividadEntity {
         joinColumns = @JoinColumn(name = "actividad_id"),
         inverseJoinColumns = @JoinColumn(name = "fundacion_id")
     )
-    private Set<FundacionEntity> fundaciones = new HashSet<>();
+    private Set<Fundacion> fundaciones = new HashSet<>();
 
     // Relación N-a-N con CentroAcopio
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -48,7 +48,7 @@ public class ActividadEntity {
         joinColumns = @JoinColumn(name = "actividad_id"),
         inverseJoinColumns = @JoinColumn(name = "centro_acopio_id")
     )
-    private Set<CentroAcopioEntity> centrosAcopio = new HashSet<>();
+    private Set<CentroAcopio> centrosAcopio = new HashSet<>();
 
     // Getters y Setters
     public Long getId() {
@@ -91,27 +91,27 @@ public class ActividadEntity {
         this.tipoMaterial = tipoMaterial;
     }
 
-    public Set<AdultoMayorEntity> getParticipantes() {
+    public Set<AdultoMayor> getParticipantes() {
         return participantes;
     }
 
-    public void setParticipantes(Set<AdultoMayorEntity> participantes) {
+    public void setParticipantes(Set<AdultoMayor> participantes) {
         this.participantes = participantes;
     }
 
-    public Set<FundacionEntity> getFundaciones() {
+    public Set<Fundacion> getFundaciones() {
         return fundaciones;
     }
 
-    public void setFundaciones(Set<FundacionEntity> fundaciones) {
+    public void setFundaciones(Set<Fundacion> fundaciones) {
         this.fundaciones = fundaciones;
     }
 
-    public Set<CentroAcopioEntity> getCentrosAcopio() {
+    public Set<CentroAcopio> getCentrosAcopio() {
         return centrosAcopio;
     }
 
-    public void setCentrosAcopio(Set<CentroAcopioEntity> centrosAcopio) {
+    public void setCentrosAcopio(Set<CentroAcopio> centrosAcopio) {
         this.centrosAcopio = centrosAcopio;
     }
 }

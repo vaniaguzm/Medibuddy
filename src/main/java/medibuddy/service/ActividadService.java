@@ -1,6 +1,6 @@
 package medibuddy.service;
 
-import medibuddy.entity.ActividadEntity;
+import medibuddy.entity.Actividad;
 import medibuddy.repository.ActividadRepository;
 import java.util.List;
 
@@ -12,24 +12,24 @@ public class ActividadService {
         this.actividadRepository = new ActividadRepository();
     }
 
-    public void saveActividad(ActividadEntity actividad) {
+    public void saveActividad(Actividad actividad) {
         actividadRepository.save(actividad);
     }
 
-    public ActividadEntity getActividad(Long id) {
+    public Actividad getActividad(Long id) {
         return actividadRepository.findById(id);
     }
 
-    public List<ActividadEntity> getAllActividades() {
+    public List<Actividad> getAllActividades() {
         return actividadRepository.findAll();
     }
 
-    public void updateActividad(ActividadEntity actividad) {
+    public void updateActividad(Actividad actividad) {
         actividadRepository.update(actividad);
     }
 
     public void deleteActividad(Long id) {
-        ActividadEntity act = getActividad(id);
+        Actividad act = getActividad(id);
         if (act != null) {
             actividadRepository.delete(act);
         }

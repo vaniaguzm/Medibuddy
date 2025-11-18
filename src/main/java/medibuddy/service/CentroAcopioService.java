@@ -1,6 +1,6 @@
 package medibuddy.service;
 
-import medibuddy.entity.CentroAcopioEntity;
+import medibuddy.entity.CentroAcopio;
 import medibuddy.repository.CentroAcopioRepository;
 import java.util.List;
 
@@ -12,24 +12,24 @@ public class CentroAcopioService {
         this.centroAcopioRepository = new CentroAcopioRepository();
     }
 
-    public void saveCentroAcopio(CentroAcopioEntity centroAcopio) {
+    public void saveCentroAcopio(CentroAcopio centroAcopio) {
         centroAcopioRepository.save(centroAcopio);
     }
 
-    public CentroAcopioEntity getCentroAcopio(Long id) {
+    public CentroAcopio getCentroAcopio(Long id) {
         return centroAcopioRepository.findById(id);
     }
 
-    public List<CentroAcopioEntity> getAllCentrosAcopio() {
+    public List<CentroAcopio> getAllCentrosAcopio() {
         return centroAcopioRepository.findAll();
     }
 
-    public void updateCentroAcopio(CentroAcopioEntity centroAcopio) {
+    public void updateCentroAcopio(CentroAcopio centroAcopio) {
         centroAcopioRepository.update(centroAcopio);
     }
 
     public void deleteCentroAcopio(Long id) {
-        CentroAcopioEntity centro = getCentroAcopio(id);
+        CentroAcopio centro = getCentroAcopio(id);
         if (centro != null) {
             centroAcopioRepository.delete(centro);
         }

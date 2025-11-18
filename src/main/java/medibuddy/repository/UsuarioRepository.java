@@ -1,14 +1,14 @@
 package medibuddy.repository;
 
 import medibuddy.config.HibernateUtil;
-import medibuddy.entity.UsuarioEntity;
+import medibuddy.entity.Usuario;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
 public class UsuarioRepository {
 
-    public void save(UsuarioEntity usuario) {
+    public void save(Usuario usuario) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -20,25 +20,25 @@ public class UsuarioRepository {
         }
     }
 
-    public UsuarioEntity findById(Long id) {
+    public Usuario findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.find(UsuarioEntity.class, id);
+            return session.find(Usuario.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<UsuarioEntity> findAll() {
+    public List<Usuario> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Usuario", UsuarioEntity.class).list();
+            return session.createQuery("FROM Usuario", Usuario.class).list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public void update(UsuarioEntity usuario) {
+    public void update(Usuario usuario) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -50,7 +50,7 @@ public class UsuarioRepository {
         }
     }
 
-    public void delete(UsuarioEntity usuario) {
+    public void delete(Usuario usuario) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();

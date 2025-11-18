@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "medicamento")
-public class MedicamentoEntity {
+public class Medicamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class MedicamentoEntity {
     // Relación N-a-1 con AdultoMayor
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adulto_mayor_id", nullable = false)
-    private AdultoMayorEntity adultoMayor;
+    private AdultoMayor adultoMayor;
 
     // Getters y Setters
     public Long getId() {
@@ -54,11 +54,11 @@ public class MedicamentoEntity {
         this.horaRecordatorio = horaRecordatorio;
     }
 
-    public AdultoMayorEntity getAdultoMayor() {
+    public AdultoMayor getAdultoMayor() {
         return adultoMayor;
     }
 
-    public void setAdultoMayor(AdultoMayorEntity adultoMayor) {
+    public void setAdultoMayor(AdultoMayor adultoMayor) {
         this.adultoMayor = adultoMayor;
     }
 }

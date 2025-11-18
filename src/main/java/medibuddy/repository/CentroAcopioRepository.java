@@ -1,14 +1,14 @@
 package medibuddy.repository;
 
 import medibuddy.config.HibernateUtil;
-import medibuddy.entity.CentroAcopioEntity;
+import medibuddy.entity.CentroAcopio;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
 public class CentroAcopioRepository {
 
-    public void save(CentroAcopioEntity centroAcopio) {
+    public void save(CentroAcopio centroAcopio) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -20,25 +20,25 @@ public class CentroAcopioRepository {
         }
     }
 
-    public CentroAcopioEntity findById(Long id) {
+    public CentroAcopio findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.find(CentroAcopioEntity.class, id);
+            return session.find(CentroAcopio.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<CentroAcopioEntity> findAll() {
+    public List<CentroAcopio> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM CentroAcopio", CentroAcopioEntity.class).list();
+            return session.createQuery("FROM CentroAcopio", CentroAcopio.class).list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public void update(CentroAcopioEntity centroAcopio) {
+    public void update(CentroAcopio centroAcopio) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -50,7 +50,7 @@ public class CentroAcopioRepository {
         }
     }
 
-    public void delete(CentroAcopioEntity centroAcopio) {
+    public void delete(CentroAcopio centroAcopio) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
