@@ -1,7 +1,10 @@
 package medibuddy.entity;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,6 +23,11 @@ public class CentroAcopio {
 
     @ManyToMany(mappedBy = "centrosAcopio")
     private Set<Actividad> actividades = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "centro_entregas", joinColumns = @JoinColumn(name = "centro_id"))
+    @Column(name = "detalle_entrega")
+    private List<String> historialEntregas = new ArrayList<>();
 
     // Getters y Setters
     public Long getId() {
@@ -61,4 +69,7 @@ public class CentroAcopio {
     public void setActividades(Set<Actividad> actividades) {
         this.actividades = actividades;
     }
+
+    public List<String> getHistorialEntregas() { return historialEntregas; }
+    public void setHistorialEntregas(List<String> historialEntregas) { this.historialEntregas = historialEntregas; }
 }

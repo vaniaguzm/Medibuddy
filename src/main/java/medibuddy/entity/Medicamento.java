@@ -13,6 +13,8 @@ public class Medicamento {
     private String info;
     private String dosis;
     
+    private Boolean tomado = false;
+
     @Column(name = "hora_recordatorio")
     private String horaRecordatorio;
 
@@ -61,4 +63,7 @@ public class Medicamento {
     public void setAdultoMayor(AdultoMayor adultoMayor) {
         this.adultoMayor = adultoMayor;
     }
+
+    public Boolean getTomado() { return tomado; }
+    public void setTomado(Boolean tomado) { this.tomado = tomado; }
 }

@@ -13,6 +13,11 @@ public class Actividad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String nombre;
+
+    private Integer cupoMaximo;
+
     private String descripcion;
     
     @Temporal(TemporalType.DATE)
@@ -114,4 +119,10 @@ public class Actividad {
     public void setCentrosAcopio(Set<CentroAcopio> centrosAcopio) {
         this.centrosAcopio = centrosAcopio;
     }
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public Integer getCupoMaximo() { return cupoMaximo; }
+    public void setCupoMaximo(Integer cupoMaximo) { this.cupoMaximo = cupoMaximo; }
 }
