@@ -1,4 +1,4 @@
-package medibuddy;
+package medibuddy.legacy;
 
 public class Usuario {
     public int idUsuario;

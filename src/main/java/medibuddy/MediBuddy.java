@@ -1,5 +1,11 @@
 package medibuddy;
 
+import medibuddy.legacy.Actividad;
+import medibuddy.legacy.AdultoMayor;
+import medibuddy.legacy.CentroDeAcopio;
+import medibuddy.legacy.Familiar;
+import medibuddy.legacy.Fundacion;
+import medibuddy.legacy.Medicamento;
 
 public class MediBuddy {
     public static void main(String[] args) {
