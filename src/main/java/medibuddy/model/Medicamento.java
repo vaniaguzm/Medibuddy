@@ -23,8 +23,8 @@ public class Medicamento {
     // Constructores
     public Medicamento() {}
 
-    public Medicamento(int idMedicamento, String nomMedicamento, String dosis, String horaRecordatorio) {
-        this.idMedicamento = idMedicamento;
+    public Medicamento(String nomMedicamento, String dosis, String horaRecordatorio) {
+        this.idMedicamento = 0;
         this.nomMedicamento = nomMedicamento;
         this.dosis = dosis;
         this.horaRecordatorio = horaRecordatorio;

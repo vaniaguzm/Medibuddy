@@ -1,5 +1,6 @@
 package medibuddy.repository;
 
+import medibuddy.model.Actividad;
 import medibuddy.model.AdultoMayor;
 import medibuddy.util.HibernateUtil;
 import org.hibernate.Session;
@@ -8,9 +9,11 @@ import java.util.List;
 
 public class AdultoMayorRepository {
 
-    public void save(AdultoMayor adultoMayor) {
+  public void save(AdultoMayor adultoMayor) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.persist(adultoMayor);
             transaction.commit();
@@ -19,9 +22,12 @@ public class AdultoMayorRepository {
                 transaction.rollback();
             }
             e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
-
     public List<AdultoMayor> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM AdultoMayor", AdultoMayor.class).list();

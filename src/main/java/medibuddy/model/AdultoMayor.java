@@ -16,15 +16,16 @@ public class AdultoMayor extends Usuario {
     @JoinColumn(name = "adulto_mayor_id")
     private List<Medicamento> medicamentos;
 
-    public AdultoMayor() {
+   public AdultoMayor() {
         this.medicamentos = new ArrayList<>();
     }
 
-    public AdultoMayor(int idUsuario, String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia) {
-        super(idUsuario, nomUsuario, tipoUsuario, telefono);
+    public AdultoMayor(String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia) {
+        super(0, nomUsuario, tipoUsuario, telefono); 
         this.contactoEmergencia = contactoEmergencia;
         this.medicamentos = new ArrayList<>();
     }
+
 
     // Getters y Setters
     public String getContactoEmergencia() {
@@ -65,7 +66,7 @@ public class AdultoMayor extends Usuario {
                 "idUsuario=" + getIdUsuario() +
                 ", nomUsuario='" + getNomUsuario() + '\'' +
                 ", contactoEmergencia='" + contactoEmergencia + '\'' +
-                ", medicamentos=" + medicamentos +
                 '}';
     }
+
 }

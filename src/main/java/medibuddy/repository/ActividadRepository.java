@@ -8,19 +8,19 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 public class ActividadRepository {
-public void save(Actividad actividad) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.persist(actividad);
-            transaction.commit(); // Asegúrate de hacer commit antes de cerrar la sesión
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback(); // Rollback en caso de error
+    public void save(Actividad actividad) {
+            Transaction transaction = null;
+            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+                transaction = session.beginTransaction();
+                session.persist(actividad);
+                transaction.commit(); // Asegúrate de hacer commit antes de cerrar la sesión
+            } catch (Exception e) {
+                if (transaction != null) {
+                    transaction.rollback(); // Rollback en caso de error
+                }
+                e.printStackTrace();
             }
-            e.printStackTrace();
         }
-    }
 
     public List<Actividad> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
