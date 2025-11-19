@@ -22,5 +22,6 @@
         <property name="hibernate.connection.release_mode">auto</property>
         
         <mapping class="medibuddy.model.Actividad"/>
+        <mapping class="medibuddy.model.AdultoMayor"/>
     </session-factory>
 </hibernate-configuration>
