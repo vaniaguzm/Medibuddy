@@ -5,6 +5,7 @@ import medibuddy.entity.Usuario;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
+import java.util.Objects;
 
 public class UsuarioRepository {
 
@@ -15,8 +16,11 @@ public class UsuarioRepository {
             session.persist(usuario);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (Objects.nonNull(transaction) && transaction.isActive()) {
+                transaction.rollback();
+            }
             e.printStackTrace();
+            throw new RuntimeException("Error al guardar el Usuario.", e);
         }
     }
 
@@ -45,8 +49,11 @@ public class UsuarioRepository {
             session.merge(usuario);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (Objects.nonNull(transaction) && transaction.isActive()) {
+                transaction.rollback();
+            }
             e.printStackTrace();
+            throw new RuntimeException("Error al actualizar el Usuario.", e);
         }
     }
 
@@ -54,11 +61,18 @@ public class UsuarioRepository {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.remove(usuario);
-            transaction.commit();
+            // Para eliminar, a veces es necesario que el objeto esté adjunto a la sesión (merged)
+            Usuario attachedUsuario = session.find(Usuario.class, usuario.getId());
+            if (attachedUsuario != null) {
+                 session.remove(attachedUsuario);
+                 transaction.commit();
+            }
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (Objects.nonNull(transaction) && transaction.isActive()) {
+                transaction.rollback();
+            }
             e.printStackTrace();
+            throw new RuntimeException("Error al eliminar el Usuario.", e);
         }
     }
 }

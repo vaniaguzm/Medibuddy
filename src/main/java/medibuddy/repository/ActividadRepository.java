@@ -8,15 +8,28 @@ import java.util.List;
 
 public class ActividadRepository {
 
-    public void save(Actividad actividad) {
+public void save(Actividad actividad) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(actividad);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
+            
+            // 🚨 CAMBIO CLAVE: Imprime la excepción real primero.
+            e.printStackTrace(); 
+            
+            if (transaction != null) {
+                try {
+                    transaction.rollback();
+                } catch (Exception rollbackEx) {
+                    // Ignoramos la excepción del rollback (el error de conexión cerrada).
+                    // El error importante ya fue impreso arriba (e.printStackTrace()).
+                }
+            }
+            
+            // Opcional: relanzar una excepción con más contexto si lo deseas
+            throw new RuntimeException("Error al guardar la Actividad.", e); 
         }
     }
 

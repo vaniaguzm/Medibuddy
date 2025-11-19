@@ -10,7 +10,7 @@ public class Medicamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String info;
+    private String nombre;
     private String dosis;
     
     private Boolean tomado = false;
@@ -32,13 +32,6 @@ public class Medicamento {
         this.id = id;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
 
     public String getDosis() {
         return dosis;
@@ -66,4 +59,12 @@ public class Medicamento {
 
     public Boolean getTomado() { return tomado; }
     public void setTomado(Boolean tomado) { this.tomado = tomado; }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
 }

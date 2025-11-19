@@ -24,11 +24,10 @@ public class CentroAcopio {
     @ManyToMany(mappedBy = "centrosAcopio")
     private Set<Actividad> actividades = new HashSet<>();
 
-    @ElementCollection
+    @ElementCollection(targetClass = String.class) // <-- Esto hace el mapeo más robusto
     @CollectionTable(name = "centro_entregas", joinColumns = @JoinColumn(name = "centro_id"))
     @Column(name = "detalle_entrega")
     private List<String> historialEntregas = new ArrayList<>();
-
     // Getters y Setters
     public Long getId() {
         return id;
