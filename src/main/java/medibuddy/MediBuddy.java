@@ -1,307 +1,362 @@
 package medibuddy;
 
-import medibuddy.model.AdultoMayor;
-import medibuddy.model.Medicamento;
-import medibuddy.service.AdultoMayorService;
-import medibuddy.service.MedicamentoService;
+import medibuddy.model.*;
+import medibuddy.service.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
 public class MediBuddy {
+
+    // ==========================================
+    // 1. CONFIGURACIÓN E INSTANCIAS GLOBALES
+    // ==========================================
     private static final Scanner scanner = new Scanner(System.in);
-    private static final AdultoMayorService adultoMayorService = new AdultoMayorService();
-    private static final MedicamentoService medicamentoService = new MedicamentoService();
+    
+    // Servicios para conectar con la Base de Datos
+    private static final AdultoMayorService adultoService = new AdultoMayorService();
+    private static final FamiliarService familiarService = new FamiliarService();
+    private static final FundacionService fundacionService = new FundacionService();
+    private static final CentroDeAcopioService centroService = new CentroDeAcopioService();
+    // Nota: MedicamentoService se usa implícitamente dentro de la lógica de AdultoMayor
 
     public static void main(String[] args) {
         boolean salir = false;
+
+        System.out.println("==========================================");
+        System.out.println("   BIENVENIDO A MEDIBUDDY (SISTEMA DB)    ");
+        System.out.println("==========================================");
+
         while (!salir) {
-            System.out.println("\n--- Menú Principal ---");
-            System.out.println("1. Gestionar Adultos Mayores");
-            System.out.println("2. Gestionar Medicamentos");
-            System.out.println("3. Salir");
+            System.out.println("\n--- MENÚ PRINCIPAL ---");
+            System.out.println("1. Gestión Adultos Mayores y Medicamentos");
+            System.out.println("2. Gestión de Familiares");
+            System.out.println("3. Gestión de Fundaciones y Actividades");
+            System.out.println("4. Gestión de Centros de Acopio y Entregas");
+            System.out.println("5. Salir");
             System.out.print("Seleccione una opción: ");
-            int opcion = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
+
+            int opcion = leerEntero();
 
             switch (opcion) {
                 case 1:
-                    menuAdultosMayores();
+                    bloqueAdultosMayores();
                     break;
                 case 2:
-                    menuMedicamentos();
+                    bloqueFamiliares();
                     break;
                 case 3:
+                    bloqueFundaciones();
+                    break;
+                case 4:
+                    bloqueCentrosAcopio();
+                    break;
+                case 5:
                     salir = true;
-                    System.out.println("Saliendo del sistema...");
+                    System.out.println("Cerrando sistema...");
                     break;
                 default:
                     System.out.println("Opción no válida.");
             }
         }
+        scanner.close();
     }
 
-    private static void menuAdultosMayores() {
+    // ===================================================================================
+    // BLOQUE: ADULTO MAYOR Y MEDICAMENTOS
+    // ===================================================================================
+    private static void bloqueAdultosMayores() {
         boolean volver = false;
         while (!volver) {
-            System.out.println("\n--- Menú Adultos Mayores ---");
-            System.out.println("1. Crear Adulto Mayor");
-            System.out.println("2. Listar Adultos Mayores");
-            System.out.println("3. Buscar Adulto Mayor por ID");
-            System.out.println("4. Actualizar Adulto Mayor");
-            System.out.println("5. Eliminar Adulto Mayor");
-            System.out.println("6. Agregar Medicamento a Adulto Mayor");
-            System.out.println("7. Volver al Menú Principal");
-            System.out.print("Seleccione una opción: ");
-            int opcion = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
+            System.out.println("\n--- MENÚ ADULTOS MAYORES ---");
+            System.out.println("1. Registrar nuevo Adulto Mayor");
+            System.out.println("2. Agregar Medicamento a un Adulto Mayor");
+            System.out.println("3. Listar Adultos Mayores y sus Medicinas");
+            System.out.println("4. Eliminar Adulto Mayor");
+            System.out.println("5. Volver al Menú Principal");
+            System.out.print("Opción: ");
 
-            switch (opcion) {
-                case 1:
-                    crearAdultoMayor();
+            int opt = leerEntero();
+            switch (opt) {
+                case 1: // CREAR
+                    System.out.print("Nombre: ");
+                    String nombre = scanner.nextLine();
+                    System.out.print("Teléfono: ");
+                    String tel = scanner.nextLine();
+                    System.out.print("Contacto de Emergencia: ");
+                    String contacto = scanner.nextLine();
+
+                    AdultoMayor nuevoAm = new AdultoMayor(nombre, "Adulto Mayor", tel, contacto);
+                    adultoService.crearAdultoMayor(nuevoAm);
+                    System.out.println(">> Adulto Mayor registrado con éxito.");
                     break;
-                case 2:
-                    listarAdultosMayores();
+
+                case 2: // AGREGAR MEDICAMENTO (Relación)
+                    System.out.print("Ingresa el ID del Adulto Mayor: ");
+                    int idAm = leerEntero();
+                    
+                    AdultoMayor amEncontrado = adultoService.buscarAdultoMayorPorId(idAm);
+                    if (amEncontrado != null) {
+                        System.out.print("Nombre Medicamento: ");
+                        String nomMed = scanner.nextLine();
+                        System.out.print("Dosis: ");
+                        String dosis = scanner.nextLine();
+                        System.out.print("Hora Recordatorio (ej. 08:00 AM): ");
+                        String hora = scanner.nextLine();
+
+                        Medicamento med = new Medicamento(nomMed, dosis, hora);
+                        // Usamos el servicio para guardar el medicamento vinculado al adulto
+                        adultoService.agregarMedicamentoAAdultoMayor(idAm, med);
+                        System.out.println(">> Medicamento agregado a " + amEncontrado.getNomUsuario());
+                    } else {
+                        System.out.println("Error: No existe Adulto Mayor con ese ID.");
+                    }
                     break;
-                case 3:
-                    buscarAdultoMayorPorId();
+
+                case 3: // LISTAR
+                    List<AdultoMayor> lista = adultoService.listarAdultosMayores();
+                    System.out.println("\n--- LISTADO ---");
+                    for (AdultoMayor am : lista) {
+                        System.out.println("ID: " + am.getIdUsuario() + " | " + am.getNomUsuario() + " (Tel: " + am.getTelefono() + ")");
+                        if (am.getMedicamentos() != null && !am.getMedicamentos().isEmpty()) {
+                            for (Medicamento m : am.getMedicamentos()) {
+                                System.out.println("   -> Med: " + m.getNomMedicamento() + " - " + m.getDosis());
+                            }
+                        } else {
+                            System.out.println("   (Sin medicamentos)");
+                        }
+                    }
                     break;
-                case 4:
-                    actualizarAdultoMayor();
+                
+                case 4: // ELIMINAR
+                    System.out.print("ID del Adulto a eliminar: ");
+                    int idDel = leerEntero();
+                    AdultoMayor amDel = adultoService.buscarAdultoMayorPorId(idDel);
+                    if(amDel != null) {
+                        adultoService.eliminarAdultoMayor(amDel);
+                        System.out.println(">> Adulto mayor eliminado.");
+                    } else {
+                        System.out.println("ID no encontrado.");
+                    }
                     break;
+
                 case 5:
-                    eliminarAdultoMayor();
-                    break;
-                case 6:
-                    agregarMedicamentoAAdultoMayor();
-                    break;
-                case 7:
                     volver = true;
                     break;
                 default:
-                    System.out.println("Opción no válida.");
+                    System.out.println("Opción inválida.");
             }
         }
     }
 
-    private static void menuMedicamentos() {
+    // ===================================================================================
+    // BLOQUE: FAMILIARES (Vinculados a Adultos Mayores)
+    // ===================================================================================
+    private static void bloqueFamiliares() {
         boolean volver = false;
-        while (!volver) {
-            System.out.println("\n--- Menú Medicamentos ---");
-            System.out.println("1. Crear Medicamento");
-            System.out.println("2. Listar Medicamentos");
-            System.out.println("3. Buscar Medicamento por ID");
-            System.out.println("4. Actualizar Medicamento");
-            System.out.println("5. Eliminar Medicamento");
-            System.out.println("6. Volver al Menú Principal");
-            System.out.print("Seleccione una opción: ");
-            int opcion = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
+        while(!volver) {
+            System.out.println("\n--- MENÚ FAMILIARES ---");
+            System.out.println("1. Registrar Familiar (y asociar)");
+            System.out.println("2. Listar Familiares");
+            System.out.println("3. Volver al Menú Principal");
+            System.out.print("Opción: ");
 
-            switch (opcion) {
-                case 1:
-                    crearMedicamento();
+            int opt = leerEntero();
+            switch (opt) {
+                case 1: // CREAR
+                    System.out.print("Nombre del Familiar: ");
+                    String nom = scanner.nextLine();
+                    System.out.print("Teléfono: ");
+                    String tel = scanner.nextLine();
+                    System.out.print("Relación (Hijo, Nieto, etc): ");
+                    String rel = scanner.nextLine();
+                    
+                    System.out.print("ID del Adulto Mayor a cuidar: ");
+                    int idAm = leerEntero();
+                    
+                    AdultoMayor am = adultoService.buscarAdultoMayorPorId(idAm);
+                    if (am != null) {
+                        Familiar familiar = new Familiar(nom, "Familiar", tel, rel, am);
+                        familiarService.crearFamiliar(familiar);
+                        System.out.println(">> Familiar registrado y asociado a " + am.getNomUsuario());
+                    } else {
+                        System.out.println("Error: ID de Adulto Mayor no encontrado.");
+                    }
                     break;
-                case 2:
-                    listarMedicamentos();
+
+                case 2: // LISTAR
+                    List<Familiar> fams = familiarService.listarFamiliares();
+                    System.out.println("\n--- LISTADO ---");
+                    for (Familiar f : fams) {
+                        String cuidaA = (f.getAdultoMayorAsociado() != null) 
+                                ? f.getAdultoMayorAsociado().getNomUsuario() 
+                                : "Nadie";
+                        System.out.println("ID: " + f.getIdUsuario() + " | " + f.getNomUsuario() + 
+                                           " (" + f.getRelacion() + ") cuida a -> " + cuidaA);
+                    }
                     break;
+
                 case 3:
-                    buscarMedicamentoPorId();
-                    break;
-                case 4:
-                    actualizarMedicamento();
-                    break;
-                case 5:
-                    eliminarMedicamento();
-                    break;
-                case 6:
                     volver = true;
                     break;
-                default:
-                    System.out.println("Opción no válida.");
             }
         }
     }
 
-    private static void crearAdultoMayor() {
-        System.out.println("\n--- Crear Adulto Mayor ---");
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Tipo de Usuario: ");
-        String tipoUsuario = scanner.nextLine();
-        System.out.print("Teléfono: ");
-        String telefono = scanner.nextLine();
-        System.out.print("Contacto de Emergencia: ");
-        String contactoEmergencia = scanner.nextLine();
+    // ===================================================================================
+    // BLOQUE: FUNDACIONES Y ACTIVIDADES
+    // ===================================================================================
+    private static void bloqueFundaciones() {
+        boolean volver = false;
+        while(!volver) {
+            System.out.println("\n--- MENÚ FUNDACIONES ---");
+            System.out.println("1. Registrar Fundación");
+            System.out.println("2. Crear Actividad para una Fundación");
+            System.out.println("3. Listar Fundaciones y Actividades");
+            System.out.println("4. Volver al Menú Principal");
+            System.out.print("Opción: ");
 
-        AdultoMayor adultoMayor = new AdultoMayor(nombre, tipoUsuario, telefono, contactoEmergencia);
-        adultoMayorService.crearAdultoMayor(adultoMayor);
-        System.out.println("Adulto Mayor creado con éxito.");
-    }
-    private static void listarAdultosMayores() {
-        System.out.println("\n--- Listar Adultos Mayores ---");
-        List<AdultoMayor> adultosMayores = adultoMayorService.listarAdultosMayores();
-        if (adultosMayores.isEmpty()) {
-            System.out.println("No hay adultos mayores registrados.");
-        } else {
-            adultosMayores.forEach(System.out::println);
+            int opt = leerEntero();
+            switch (opt) {
+                case 1: // CREAR FUNDACIÓN
+                    System.out.print("Nombre Fundación: ");
+                    String nom = scanner.nextLine();
+                    System.out.print("Dirección: ");
+                    String dir = scanner.nextLine();
+                    fundacionService.crearFundacion(new Fundacion(nom, dir));
+                    System.out.println(">> Fundación creada.");
+                    break;
+
+                case 2: // CREAR ACTIVIDAD (Relación)
+                    System.out.print("ID de la Fundación: ");
+                    int idFun = leerEntero();
+                    Fundacion fun = fundacionService.buscarFundacionPorId(idFun);
+                    
+                    if (fun != null) {
+                        System.out.print("Nombre Actividad: ");
+                        String nomAct = scanner.nextLine();
+                        System.out.print("Descripción: ");
+                        String desc = scanner.nextLine();
+                        System.out.print("Ubicación: ");
+                        String ubi = scanner.nextLine();
+                        System.out.print("Fecha (YYYY-MM-DD): ");
+                        String fechaStr = scanner.nextLine();
+                        System.out.print("Cupo máximo: ");
+                        int cupo = leerEntero();
+
+                        try {
+                            Actividad act = new Actividad(nomAct, desc, fechaStr, ubi, cupo);
+                            fundacionService.agregarActividadAFundacion(idFun, act);
+                            System.out.println(">> Actividad agregada a la fundación.");
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Error: Formato de fecha inválido.");
+                        }
+                    } else {
+                        System.out.println("Fundación no encontrada.");
+                    }
+                    break;
+                
+                case 3: // LISTAR
+                    List<Fundacion> fundaciones = fundacionService.listarFundaciones();
+                    System.out.println("\n--- LISTADO ---");
+                    for(Fundacion f : fundaciones) {
+                        System.out.println("ID: " + f.getId() + " | " + f.getNombre());
+                        for(Actividad a : f.getActividades()) {
+                            System.out.println("   -> Actividad: " + a.getNomActividad() + " (" + a.getFecha() + ")");
+                        }
+                    }
+                    break;
+
+                case 4:
+                    volver = true;
+                    break;
+            }
         }
     }
 
-    private static void buscarAdultoMayorPorId() {
-        System.out.println("\n--- Buscar Adulto Mayor por ID ---");
-        System.out.print("ID del Adulto Mayor: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+    // ===================================================================================
+    // BLOQUE: CENTROS DE ACOPIO Y ENTREGAS
+    // ===================================================================================
+    private static void bloqueCentrosAcopio() {
+        boolean volver = false;
+        while(!volver) {
+            System.out.println("\n--- MENÚ CENTROS DE ACOPIO ---");
+            System.out.println("1. Registrar Centro");
+            System.out.println("2. Registrar Entrega de Material");
+            System.out.println("3. Listar Centros y Entregas");
+            System.out.println("4. Volver al Menú Principal");
+            System.out.print("Opción: ");
 
-        AdultoMayor adultoMayor = adultoMayorService.buscarAdultoMayorPorId(id);
-        if (adultoMayor != null) {
-            System.out.println(adultoMayor);
-        } else {
-            System.out.println("Adulto Mayor no encontrado.");
+            int opt = leerEntero();
+            switch(opt) {
+                case 1: // CREAR CENTRO
+                    System.out.print("Nombre Centro: ");
+                    String nom = scanner.nextLine();
+                    System.out.print("Dirección: ");
+                    String dir = scanner.nextLine();
+                    System.out.print("Material Principal: ");
+                    String mat = scanner.nextLine();
+                    centroService.crearCentro(new CentroDeAcopio(nom, dir, mat));
+                    System.out.println(">> Centro registrado.");
+                    break;
+                
+                case 2: // REGISTRAR ENTREGA
+                    System.out.print("ID del Centro de Acopio: ");
+                    int idCen = leerEntero();
+                    CentroDeAcopio centro = centroService.buscarCentroPorId(idCen);
+                    
+                    if(centro != null) {
+                        System.out.print("Material entregado: ");
+                        String material = scanner.nextLine();
+                        System.out.print("Cantidad (kg/unidades): ");
+                        try {
+                            float cant = Float.parseFloat(scanner.nextLine());
+                            Entrega entrega = new Entrega(material, cant, LocalDate.now());
+                            centroService.registrarEntregaEnCentro(idCen, entrega);
+                            System.out.println(">> Entrega registrada.");
+                        } catch (NumberFormatException e) {
+                            System.out.println("Error: Cantidad inválida.");
+                        }
+                    } else {
+                        System.out.println("Centro no encontrado.");
+                    }
+                    break;
+
+                case 3: // LISTAR
+                    List<CentroDeAcopio> centros = centroService.listarCentros();
+                    System.out.println("\n--- LISTADO ---");
+                    for(CentroDeAcopio c : centros) {
+                        System.out.println("ID: " + c.getId() + " | " + c.getNombre() + " [" + c.getTipoMaterialPrincipal() + "]");
+                        for(Entrega e : c.getEntregas()) {
+                            System.out.println("   -> Entrega: " + e.getCantidad() + " de " + e.getMaterial() + " (" + e.getFechaEntrega() + ")");
+                        }
+                    }
+                    break;
+
+                case 4:
+                    volver = true;
+                    break;
+            }
         }
     }
 
-    private static void actualizarAdultoMayor() {
-        System.out.println("\n--- Actualizar Adulto Mayor ---");
-        System.out.print("ID del Adulto Mayor a actualizar: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        AdultoMayor adultoMayor = adultoMayorService.buscarAdultoMayorPorId(id);
-        if (adultoMayor != null) {
-            System.out.print("Nuevo Nombre: ");
-            String nombre = scanner.nextLine();
-            System.out.print("Nuevo Teléfono: ");
-            String telefono = scanner.nextLine();
-            System.out.print("Nuevo Contacto de Emergencia: ");
-            String contactoEmergencia = scanner.nextLine();
-
-            adultoMayor.setNomUsuario(nombre);
-            adultoMayor.setTelefono(telefono);
-            adultoMayor.setContactoEmergencia(contactoEmergencia);
-
-            adultoMayorService.actualizarAdultoMayor(adultoMayor);
-            System.out.println("Adulto Mayor actualizado con éxito.");
-        } else {
-            System.out.println("Adulto Mayor no encontrado.");
-        }
-    }
-
-    private static void eliminarAdultoMayor() {
-        System.out.println("\n--- Eliminar Adulto Mayor ---");
-        System.out.print("ID del Adulto Mayor a eliminar: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        AdultoMayor adultoMayor = adultoMayorService.buscarAdultoMayorPorId(id);
-        if (adultoMayor != null) {
-            adultoMayorService.eliminarAdultoMayor(adultoMayor);
-            System.out.println("Adulto Mayor eliminado con éxito.");
-        } else {
-            System.out.println("Adulto Mayor no encontrado.");
-        }
-    }
-
-    private static void agregarMedicamentoAAdultoMayor() {
-        System.out.println("\n--- Agregar Medicamento a Adulto Mayor ---");
-        System.out.print("ID del Adulto Mayor: ");
-        int idAdultoMayor = scanner.nextInt();
-        scanner.nextLine();
-        System.out.print("ID del Medicamento: ");
-        int idMedicamento = scanner.nextInt();
-        scanner.nextLine();
-
-        AdultoMayor adultoMayor = adultoMayorService.buscarAdultoMayorPorId(idAdultoMayor);
-        Medicamento medicamento = medicamentoService.buscarMedicamentoPorId(idMedicamento);
-
-        if (adultoMayor != null && medicamento != null) {
-            adultoMayor.agregarMedicamento(medicamento);
-            adultoMayorService.actualizarAdultoMayor(adultoMayor);
-            System.out.println("Medicamento agregado con éxito al Adulto Mayor.");
-        } else {
-            System.out.println("Adulto Mayor o Medicamento no encontrado.");
-        }
-    }
-
-    // Métodos para Medicamentos
-    private static void crearMedicamento() {
-        System.out.println("\n--- Crear Medicamento ---");
-
-        System.out.print("Nombre del Medicamento: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Dosis: ");
-        String dosis = scanner.nextLine();
-        System.out.print("Hora de Recordatorio: ");
-        String horaRecordatorio = scanner.nextLine();
-
-        Medicamento medicamento = new Medicamento(nombre, dosis, horaRecordatorio);
-        medicamentoService.crearMedicamento(medicamento);
-        System.out.println("Medicamento creado con éxito.");
-    }
-
-    private static void listarMedicamentos() {
-        System.out.println("\n--- Listar Medicamentos ---");
-        List<Medicamento> medicamentos = medicamentoService.listarMedicamentos();
-        if (medicamentos.isEmpty()) {
-            System.out.println("No hay medicamentos registrados.");
-        } else {
-            medicamentos.forEach(System.out::println);
-        }
-    }
-
-    private static void buscarMedicamentoPorId() {
-        System.out.println("\n--- Buscar Medicamento por ID ---");
-        System.out.print("ID del Medicamento: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        Medicamento medicamento = medicamentoService.buscarMedicamentoPorId(id);
-        if (medicamento != null) {
-            System.out.println(medicamento);
-        } else {
-            System.out.println("Medicamento no encontrado.");
-        }
-    }
-
-    private static void actualizarMedicamento() {
-        System.out.println("\n--- Actualizar Medicamento ---");
-        System.out.print("ID del Medicamento a actualizar: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        Medicamento medicamento = medicamentoService.buscarMedicamentoPorId(id);
-        if (medicamento != null) {
-            System.out.print("Nuevo Nombre: ");
-            String nombre = scanner.nextLine();
-            System.out.print("Nueva Dosis: ");
-            String dosis = scanner.nextLine();
-            System.out.print("Nueva Hora de Recordatorio: ");
-            String horaRecordatorio = scanner.nextLine();
-
-            medicamento.setNomMedicamento(nombre);
-            medicamento.setDosis(dosis);
-            medicamento.setHoraRecordatorio(horaRecordatorio);
-
-            medicamentoService.actualizarMedicamento(medicamento);
-            System.out.println("Medicamento actualizado con éxito.");
-        } else {
-            System.out.println("Medicamento no encontrado.");
-        }
-    }
-
-    private static void eliminarMedicamento() {
-        System.out.println("\n--- Eliminar Medicamento ---");
-        System.out.print("ID del Medicamento a eliminar: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        Medicamento medicamento = medicamentoService.buscarMedicamentoPorId(id);
-        if (medicamento != null) {
-            medicamentoService.eliminarMedicamento(medicamento);
-            System.out.println("Medicamento eliminado con éxito.");
-        } else {
-            System.out.println("Medicamento no encontrado.");
+    // ===================================================================================
+    // UTILIDADES
+    // ===================================================================================
+    
+    /**
+     * Método auxiliar para leer enteros de forma segura.
+     * Evita el problema de que scanner.nextInt() deje el salto de línea
+     * en el buffer, afectando a los siguientes scanner.nextLine().
+     */
+    private static int leerEntero() {
+        try {
+            String input = scanner.nextLine();
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            return -1; // Retorna -1 si no es un número válido
         }
     }
 }

@@ -1,68 +1,57 @@
 package medibuddy.repository;
 
-import medibuddy.model.AdultoMayor;
+import medibuddy.model.Familiar;
 import medibuddy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
-public class AdultoMayorRepository {
+public class FamiliarRepository {
 
-  public void save(AdultoMayor adultoMayor) {
-        Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.persist(adultoMayor);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-    public List<AdultoMayor> findAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM AdultoMayor", AdultoMayor.class).list();
-        }
-    }
-
-    public AdultoMayor findById(int id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(AdultoMayor.class, id);
-        }
-    }
-
-    public void update(AdultoMayor adultoMayor) {
+    public void save(Familiar familiar) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.merge(adultoMayor);
+            session.persist(familiar);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) transaction.rollback();
             e.printStackTrace();
         }
     }
 
-    public void delete(AdultoMayor adultoMayor) {
+    public List<Familiar> findAll() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Familiar", Familiar.class).list();
+        }
+    }
+
+    public Familiar findById(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Familiar.class, id);
+        }
+    }
+
+    public void update(Familiar familiar) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.remove(adultoMayor);
+            session.merge(familiar);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(Familiar familiar) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.remove(familiar);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
             e.printStackTrace();
         }
     }

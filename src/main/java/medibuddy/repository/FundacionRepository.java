@@ -1,49 +1,18 @@
 package medibuddy.repository;
 
-import medibuddy.model.AdultoMayor;
+import medibuddy.model.Fundacion;
 import medibuddy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
-public class AdultoMayorRepository {
+public class FundacionRepository {
 
-  public void save(AdultoMayor adultoMayor) {
-        Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.persist(adultoMayor);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-    public List<AdultoMayor> findAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM AdultoMayor", AdultoMayor.class).list();
-        }
-    }
-
-    public AdultoMayor findById(int id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(AdultoMayor.class, id);
-        }
-    }
-
-    public void update(AdultoMayor adultoMayor) {
+    public void save(Fundacion fundacion) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.merge(adultoMayor);
+            session.persist(fundacion);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -53,11 +22,39 @@ public class AdultoMayorRepository {
         }
     }
 
-    public void delete(AdultoMayor adultoMayor) {
+    public List<Fundacion> findAll() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Fundacion", Fundacion.class).list();
+        }
+    }
+
+    public Fundacion findById(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Hibernate traerá las actividades asociadas cuando se accedan (Lazy Loading)
+            // o inmediatamente si configuraste EAGER.
+            return session.get(Fundacion.class, id);
+        }
+    }
+
+    public void update(Fundacion fundacion) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.remove(adultoMayor);
+            session.merge(fundacion);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(Fundacion fundacion) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.remove(fundacion);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
