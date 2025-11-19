@@ -1,4 +1,4 @@
-package medibuddy;
+package medibuddy.legacy;
 
 public class Familiar extends Usuario {
     public String relacion;

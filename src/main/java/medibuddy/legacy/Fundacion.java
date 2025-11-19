@@ -1,4 +1,4 @@
-package medibuddy;
+package medibuddy.legacy;
 
 import java.util.ArrayList;
 
