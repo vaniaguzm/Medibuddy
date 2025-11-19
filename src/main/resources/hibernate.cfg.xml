@@ -23,5 +23,8 @@
         
         <mapping class="medibuddy.model.Actividad"/>
         <mapping class="medibuddy.model.AdultoMayor"/>
+        <mapping class="medibuddy.model.Usuario"/>
+        <mapping class="medibuddy.model.Medicamento"/>
+
     </session-factory>
 </hibernate-configuration>
