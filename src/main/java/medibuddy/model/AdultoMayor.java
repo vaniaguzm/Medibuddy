@@ -12,7 +12,7 @@ public class AdultoMayor extends Usuario {
     @Column(name = "contacto_emergencia")
     private String contactoEmergencia;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "adulto_mayor_id")
     private List<Medicamento> medicamentos;
 
@@ -62,9 +62,12 @@ public class AdultoMayor extends Usuario {
 
     @Override
     public String toString() {
+        listarMedicamentos();
         return "AdultoMayor{" +
                 "idUsuario=" + getIdUsuario() +
                 ", nomUsuario='" + getNomUsuario() + '\'' +
+                ", medicamentos='" + getNomUsuario() + '\'' +
+
                 ", contactoEmergencia='" + contactoEmergencia + '\'' +
                 '}';
     }
