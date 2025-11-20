@@ -61,4 +61,14 @@ public class CentroDeAcopioRepository {
             e.printStackTrace();
         }
     }
+
+    public CentroDeAcopio buscarPorIdConEntregas(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // "JOIN FETCH" obliga a Hibernate a traer la lista en la misma consulta
+            String hql = "SELECT c FROM CentroDeAcopio c LEFT JOIN FETCH c.entregas WHERE c.id = :id";
+            return session.createQuery(hql, CentroDeAcopio.class)
+                        .setParameter("id", id)
+                        .uniqueResult();
+        }
+    }
 }

@@ -31,14 +31,15 @@ public class FundacionService {
 
     // Método especial para manejar la relación OneToMany
     public void agregarActividadAFundacion(int idFundacion, Actividad actividad) {
-        Fundacion fundacion = buscarFundacionPorId(idFundacion);
+        // CAMBIO AQUÍ: Usamos el método específico que trae la colección inicializada
+        Fundacion fundacion = repository.buscarPorIdConActividades(idFundacion);
+        
         if (fundacion != null) {
-            // Agregamos la actividad a la lista de la fundación (en memoria)
+            // Ahora la lista está viva y podemos agregarle cosas sin error
             fundacion.agregarActividad(actividad);
             
-            // Al actualizar la fundación, Hibernate detecta la nueva actividad 
-            // y la inserta automáticamente en la base de datos.
             actualizarFundacion(fundacion); 
+            System.out.println("Actividad agregada exitosamente a: " + fundacion.getNombre());
         } else {
             System.out.println("No se encontró la fundación con ID: " + idFundacion);
         }

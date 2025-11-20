@@ -35,14 +35,13 @@ public class CentroDeAcopioService {
      * bidireccional antes de guardar.
      */
     public void registrarEntregaEnCentro(int idCentro, Entrega entrega) {
-        CentroDeAcopio centro = buscarCentroPorId(idCentro);
+        // CAMBIO AQUÍ: Usamos el método que trae las entregas listas
+        CentroDeAcopio centro = repository.buscarPorIdConEntregas(idCentro);
+        
         if (centro != null) {
-            // Lógica de negocio: Asignar y vincular
-            // Nota: Asegúrate de que tu entidad CentroDeAcopio tenga el método 'registrarEntrega'
-            // que hace: entrega.setCentroDeAcopio(this); y this.entregas.add(entrega);
+            // Ahora esto NO fallará porque la lista 'entregas' ya vino cargada de la BD
             centro.registrarEntrega(entrega);
             
-            // Al actualizar el centro, Hibernate detecta la nueva entrega y la guarda
             actualizarCentro(centro);
             System.out.println("Entrega registrada exitosamente en " + centro.getNombre());
         } else {

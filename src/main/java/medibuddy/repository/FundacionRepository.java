@@ -63,4 +63,14 @@ public class FundacionRepository {
             e.printStackTrace();
         }
     }
+
+    public Fundacion buscarPorIdConActividades(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // LEFT JOIN FETCH carga la lista 'actividades' en la misma consulta
+            String hql = "SELECT f FROM Fundacion f LEFT JOIN FETCH f.actividades WHERE f.id = :id";
+            return session.createQuery(hql, Fundacion.class)
+                        .setParameter("id", id)
+                        .uniqueResult();
+        }
+    }
 }
