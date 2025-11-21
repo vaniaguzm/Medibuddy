@@ -1,48 +1,30 @@
 package medibuddy.service;
 
-import medibuddy.entity.AdultoMayorEntity;
-import medibuddy.entity.MedicamentoEntity;
+import medibuddy.model.Medicamento;
 import medibuddy.repository.MedicamentoRepository;
-import medibuddy.repository.UsuarioRepository;
-
 import java.util.List;
 
 public class MedicamentoService {
 
-    private final MedicamentoRepository medicamentoRepository;
-    private final UsuarioRepository usuarioRepository; // Para asociar
+    private final MedicamentoRepository repository = new MedicamentoRepository();
 
-    public MedicamentoService() {
-        this.medicamentoRepository = new MedicamentoRepository();
-        this.usuarioRepository = new UsuarioRepository();
+    public void crearMedicamento(Medicamento medicamento) {
+        repository.save(medicamento);
     }
 
-    public void saveMedicamento(MedicamentoEntity medicamento, Long adultoMayorId) {
-        var usuario = usuarioRepository.findById(adultoMayorId);
-        if (usuario instanceof AdultoMayorEntity) {
-            medicamento.setAdultoMayor((AdultoMayorEntity) usuario);
-            medicamentoRepository.save(medicamento);
-        } else {
-            System.err.println("No se encontró AdultoMayor con id: " + adultoMayorId);
-        }
+    public List<Medicamento> listarMedicamentos() {
+        return repository.findAll();
     }
 
-    public MedicamentoEntity getMedicamento(Long id) {
-        return medicamentoRepository.findById(id);
+    public Medicamento buscarMedicamentoPorId(int id) {
+        return repository.findById(id);
     }
 
-    public List<MedicamentoEntity> getAllMedicamentos() {
-        return medicamentoRepository.findAll();
+    public void actualizarMedicamento(Medicamento medicamento) {
+        repository.update(medicamento);
     }
 
-    public void updateMedicamento(MedicamentoEntity medicamento) {
-        medicamentoRepository.update(medicamento);
-    }
-
-    public void deleteMedicamento(Long id) {
-        MedicamentoEntity med = getMedicamento(id);
-        if (med != null) {
-            medicamentoRepository.delete(med);
-        }
+    public void eliminarMedicamento(Medicamento medicamento) {
+        repository.delete(medicamento);
     }
 }

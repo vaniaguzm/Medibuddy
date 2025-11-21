@@ -1,31 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
         <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">org.h2.Driver</property>
-        <property name="hibernate.connection.url">jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1</property>
-        <property name="hibernate.connection.username">sa</property>
-        <property name="hibernate.connection.password"></property>
-
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:mem:medibuddy;DB_CLOSE_DELAY=-1</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password"/>
+        <!-- JDBC connection pool settings -->
+        <property name="connection.pool_size">1</property>
         <!-- SQL dialect -->
-        <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
-
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
         <!-- Echo all executed SQL to stdout -->
-        <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.format_sql">true</property>
-
+        <property name="show_sql">false</property>
+        <property name="format_sql">false</property>
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">update</property>
+        <!-- Configuración para evitar cerrar la conexión prematuramente -->
+        <property name="hibernate.connection.release_mode">auto</property>
+        
+        <mapping class="medibuddy.model.Actividad"/>
+        <mapping class="medibuddy.model.AdultoMayor"/>
+        <mapping class="medibuddy.model.Usuario"/>
+        <mapping class="medibuddy.model.Medicamento"/>
+        <mapping class="medibuddy.model.CentroDeAcopio"/>
+        <mapping class="medibuddy.model.Entrega"/>
+        <mapping class="medibuddy.model.Familiar"/>
+        <mapping class="medibuddy.model.Fundacion"/>
 
-        <!-- Mapea todas las entidades del proyecto -->
-        <mapping class="medibuddy.entity.Usuario"/>
-        <mapping class="medibuddy.entity.AdultoMayor"/>
-        <mapping class="medibuddy.entity.Familiar"/>
-        <mapping class="medibuddy.entity.Medicamento"/>
-        <mapping class="medibuddy.entity.Actividad"/>
-        <mapping class="medibuddy.entity.Fundacion"/>
-        <mapping class="medibuddy.entity.CentroAcopio"/>
     </session-factory>
 </hibernate-configuration>

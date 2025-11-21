@@ -1,63 +1,63 @@
 package medibuddy.repository;
 
-import medibuddy.config.HibernateUtil;
-import medibuddy.entity.MedicamentoEntity;
+import medibuddy.model.Medicamento;
+import medibuddy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
 public class MedicamentoRepository {
 
-    public void save(MedicamentoEntity medicamento) {
+    public void save(Medicamento medicamento) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(medicamento);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }
 
-    public MedicamentoEntity findById(Long id) {
+    public List<Medicamento> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.find(MedicamentoEntity.class, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return session.createQuery("FROM Medicamento", Medicamento.class).list();
         }
     }
 
-    public List<MedicamentoEntity> findAll() {
+    public Medicamento findById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Medicamento", MedicamentoEntity.class).list();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return session.get(Medicamento.class, id);
         }
     }
 
-    public void update(MedicamentoEntity medicamento) {
+    public void update(Medicamento medicamento) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.merge(medicamento);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }
 
-    public void delete(MedicamentoEntity medicamento) {
+    public void delete(Medicamento medicamento) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.remove(medicamento);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }

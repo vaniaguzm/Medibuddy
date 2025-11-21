@@ -1,37 +1,25 @@
 package medibuddy.service;
 
-import medibuddy.entity.ActividadEntity;
+import medibuddy.model.Actividad;
 import medibuddy.repository.ActividadRepository;
 import java.util.List;
 
 public class ActividadService {
+    private final ActividadRepository repository = new ActividadRepository();
 
-    private final ActividadRepository actividadRepository;
-
-    public ActividadService() {
-        this.actividadRepository = new ActividadRepository();
+    public void crearActividad(Actividad actividad) {
+        repository.save(actividad);
     }
 
-    public void saveActividad(ActividadEntity actividad) {
-        actividadRepository.save(actividad);
+    public List<Actividad> listarActividades() {
+        return repository.findAll();
     }
 
-    public ActividadEntity getActividad(Long id) {
-        return actividadRepository.findById(id);
+    public Actividad buscarActividadPorId(int id) {
+        return repository.findById(id);
     }
 
-    public List<ActividadEntity> getAllActividades() {
-        return actividadRepository.findAll();
-    }
-
-    public void updateActividad(ActividadEntity actividad) {
-        actividadRepository.update(actividad);
-    }
-
-    public void deleteActividad(Long id) {
-        ActividadEntity act = getActividad(id);
-        if (act != null) {
-            actividadRepository.delete(act);
-        }
+    public void eliminarActividad(Actividad actividad) {
+        repository.delete(actividad);
     }
 }

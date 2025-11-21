@@ -1,63 +1,63 @@
 package medibuddy.repository;
 
-import medibuddy.config.HibernateUtil;
-import medibuddy.entity.UsuarioEntity;
+import medibuddy.model.Usuario;
+import medibuddy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
 public class UsuarioRepository {
 
-    public void save(UsuarioEntity usuario) {
+    public void save(Usuario usuario) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(usuario);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }
 
-    public UsuarioEntity findById(Long id) {
+    public List<Usuario> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.find(UsuarioEntity.class, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return session.createQuery("FROM Usuario", Usuario.class).list();
         }
     }
 
-    public List<UsuarioEntity> findAll() {
+    public Usuario findById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Usuario", UsuarioEntity.class).list();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return session.get(Usuario.class, id);
         }
     }
 
-    public void update(UsuarioEntity usuario) {
+    public void update(Usuario usuario) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.merge(usuario);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }
 
-    public void delete(UsuarioEntity usuario) {
+    public void delete(Usuario usuario) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.remove(usuario);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
     }
