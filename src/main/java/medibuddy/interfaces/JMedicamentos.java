@@ -78,7 +78,15 @@ public class JMedicamentos extends javax.swing.JFrame {
             new String [] {
                 "ID", "Nombre Medicamento", "Dosis del Medicamento", "Modo de administracion"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N

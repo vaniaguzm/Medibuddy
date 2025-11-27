@@ -20,7 +20,6 @@ public class JMenuPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         JTitulo = new javax.swing.JLabel();
-        btnActividades = new javax.swing.JButton();
         btnAdultosMayores = new javax.swing.JButton();
         btnCentros = new javax.swing.JButton();
         btnFamiliares = new javax.swing.JButton();
@@ -31,13 +30,6 @@ public class JMenuPrincipal extends javax.swing.JFrame {
 
         JTitulo.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         JTitulo.setText("MediBuddy");
-
-        btnActividades.setText("Actividades");
-        btnActividades.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActividadesActionPerformed(evt);
-            }
-        });
 
         btnAdultosMayores.setText("Adultos Mayores");
         btnAdultosMayores.addActionListener(new java.awt.event.ActionListener() {
@@ -85,7 +77,6 @@ public class JMenuPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFamiliares, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFundaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -108,9 +99,7 @@ public class JMenuPrincipal extends javax.swing.JFrame {
                 .addComponent(btnFamiliares, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnMedicamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+                .addGap(47, 47, 47))
         );
 
         pack();
@@ -140,12 +129,6 @@ public class JMenuPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnFundacionesActionPerformed
 
-    private void btnActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActividadesActionPerformed
-        JActividades ventana = new JActividades();
-        ventana.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnActividadesActionPerformed
-
     private void btnMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMedicamentosActionPerformed
         JMedicamentos ventana = new JMedicamentos();
         ventana.setVisible(true);
@@ -164,7 +147,6 @@ public class JMenuPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JTitulo;
-    private javax.swing.JButton btnActividades;
     private javax.swing.JButton btnAdultosMayores;
     private javax.swing.JButton btnCentros;
     private javax.swing.JButton btnFamiliares;

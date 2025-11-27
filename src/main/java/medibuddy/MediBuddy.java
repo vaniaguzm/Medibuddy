@@ -358,7 +358,8 @@ public class MediBuddy {
     private static void registrarFundacion() {
         System.out.print("Nombre Fundación: "); String nom = scanner.nextLine();
         System.out.print("Sede: "); String sede = scanner.nextLine();
-        Fundacion f = new Fundacion(nom, sede);
+        System.out.print("Actividad: "); String acti = scanner.nextLine();
+        Fundacion f = new Fundacion(nom, sede,acti);
         fundacionService.crearFundacion(f);
         System.out.println("✅ Fundación creada con ID: " + f.getId());
     }

@@ -86,7 +86,15 @@ public class JFamiliares extends javax.swing.JFrame {
             new String [] {
                 "ID", "Nombre", "Telefono", "Familiar Asignado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel2.setText("Nombre:");
