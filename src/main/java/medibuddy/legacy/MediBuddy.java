@@ -5,8 +5,8 @@ public class MediBuddy {
     public static void main(String[] args) {
     
         // Medicamentos
-        Medicamento m1 = new Medicamento(10, "Paracetamol", "500mg", "08:00 AM");
-        Medicamento m2 = new Medicamento(20, "Omeprazol", "20mg", "7:30 PM");
+        Medicamento m1 = new Medicamento(10, "Paracetamol", "500mg", "08:00 AM","dos pastillas cada 6 horas");
+        Medicamento m2 = new Medicamento(20, "Omeprazol", "20mg", "7:30 PM", "Dos pastillas cada 4 horas");
         
         // Adultos Mayores
         AdultoMayor am1 = new AdultoMayor(201, "Roberto Casillas", "Adulto Mayor", "3393641712", "3312345678");

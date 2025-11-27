@@ -217,8 +217,9 @@ public class MediBuddy {
             System.out.print("Medicamento: "); String nom = scanner.nextLine();
             System.out.print("Dosis: "); String dos = scanner.nextLine();
             System.out.print("Hora (e.g. 08:00): "); String hora = scanner.nextLine();
+            System.out.print("Modo de Administracion: "); String modA = scanner.nextLine();
             
-            Medicamento med = new Medicamento(nom, dos, hora);
+            Medicamento med = new Medicamento(nom, dos, hora,modA);
             adultoService.agregarMedicamentoAAdultoMayor(id, med);
             System.out.println("✅ Medicamento agregado al expediente.");
         } else {
