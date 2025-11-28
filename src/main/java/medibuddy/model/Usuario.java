@@ -15,6 +15,12 @@ public class Usuario {
     @Column(name = "nom_usuario")
     private String nomUsuario;
 
+    @Column(name = "apellidoPaterno")
+    private String apellidoPaterno;
+
+    @Column(name = "apellidoMaterno")
+    private String apellidoMaterno;
+
     @Column(name = "tipo_usuario")
     private String tipoUsuario;
 

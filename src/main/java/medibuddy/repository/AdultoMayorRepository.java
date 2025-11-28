@@ -8,25 +8,18 @@ import java.util.List;
 
 public class AdultoMayorRepository {
 
-  public void save(AdultoMayor adultoMayor) {
+    public void save(AdultoMayor adultoMayor) {
         Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(adultoMayor);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) transaction.rollback();
             e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
+
     public List<AdultoMayor> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM AdultoMayor", AdultoMayor.class).list();
@@ -46,9 +39,7 @@ public class AdultoMayorRepository {
             session.merge(adultoMayor);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) transaction.rollback();
             e.printStackTrace();
         }
     }
@@ -56,18 +47,25 @@ public class AdultoMayorRepository {
     public void delete(AdultoMayor adultoMayor) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String sql = "DELETE FROM inscripciones_fundacion WHERE adulto_id = :id";
+            transaction = session.beginTransaction();
+
             
-            session.createNativeQuery(sql, Integer.class) // Usamos nativeQuery porque es una tabla oculta
+            // 1. Borrar inscripciones a actividades
+            session.createNativeQuery("DELETE FROM inscripciones WHERE adulto_id = :id", Integer.class)
                    .setParameter("id", adultoMayor.getIdUsuario())
                    .executeUpdate();
-            transaction = session.beginTransaction();
+
+            // 2. Borrar relación con medicamentos
+            session.createNativeQuery("DELETE FROM adulto_medicamento WHERE adulto_id = :id", Integer.class)
+                   .setParameter("id", adultoMayor.getIdUsuario())
+                   .executeUpdate();
+
+            // 3. Finalmente borrar al objeto
             session.remove(adultoMayor);
+            
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) transaction.rollback();
             e.printStackTrace();
         }
     }

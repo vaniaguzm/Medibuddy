@@ -1,6 +1,8 @@
 package medibuddy.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "actividad")
@@ -8,13 +10,22 @@ public class Actividad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idActividad;
+    
     private String nomActividad;
     private String descripcion;
     private String fecha;
     private String ubicacion;
     private int cupoMaximo;
 
-    // Constructores, getters y setters
+    // Relación ManyToOne con el Organizador (Padre)
+    @ManyToOne
+    @JoinColumn(name = "organizador_id", nullable = false)
+    private Organizador organizador;
+
+    // Relación ManyToMany con AdultoMayor
+    @ManyToMany(mappedBy = "actividadesInscritas")
+    private List<AdultoMayor> participantes = new ArrayList<>();
+
     public Actividad() {}
 
     public Actividad(String nomActividad, String descripcion, String fecha, String ubicacion, int cupoMaximo) {
@@ -25,7 +36,7 @@ public class Actividad {
         this.cupoMaximo = cupoMaximo;
     }
 
-    // Getters y setters
+    // Getters y Setters
     public int getIdActividad() { return idActividad; }
     public void setIdActividad(int idActividad) { this.idActividad = idActividad; }
     public String getNomActividad() { return nomActividad; }
@@ -38,17 +49,13 @@ public class Actividad {
     public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
     public int getCupoMaximo() { return cupoMaximo; }
     public void setCupoMaximo(int cupoMaximo) { this.cupoMaximo = cupoMaximo; }
-
+    public Organizador getOrganizador() { return organizador; }
+    public void setOrganizador(Organizador organizador) { this.organizador = organizador; }
+    public List<AdultoMayor> getParticipantes() { return participantes; }
+    public void setParticipantes(List<AdultoMayor> participantes) { this.participantes = participantes; }
+    
     @Override
     public String toString() {
-        return "Actividad{" +
-                "idActividad=" + idActividad +
-                ", nomActividad='" + nomActividad + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", fecha='" + fecha + '\'' +
-                ", ubicacion='" + ubicacion + '\'' +
-                ", cupoMaximo=" + cupoMaximo +
-                '}';
+        return "Actividad{" + "idActividad=" + idActividad + ", nomActividad='" + nomActividad + '\'' + '}';
     }
-
 }

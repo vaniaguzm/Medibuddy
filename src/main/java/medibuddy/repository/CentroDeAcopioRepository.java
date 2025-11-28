@@ -15,9 +15,7 @@ public class CentroDeAcopioRepository {
             session.persist(centro);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) { transaction.rollback(); }
             e.printStackTrace();
         }
     }
@@ -41,9 +39,7 @@ public class CentroDeAcopioRepository {
             session.merge(centro);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) { transaction.rollback(); }
             e.printStackTrace();
         }
     }
@@ -55,17 +51,14 @@ public class CentroDeAcopioRepository {
             session.remove(centro);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) { transaction.rollback(); }
             e.printStackTrace();
         }
     }
 
-    public CentroDeAcopio buscarPorIdConEntregas(int id) {
+    public CentroDeAcopio buscarPorIdConActividades(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // "JOIN FETCH" obliga a Hibernate a traer la lista en la misma consulta
-            String hql = "SELECT c FROM CentroDeAcopio c LEFT JOIN FETCH c.entregas WHERE c.id = :id";
+            String hql = "SELECT c FROM CentroDeAcopio c LEFT JOIN FETCH c.actividadesPropias WHERE c.id = :id";
             return session.createQuery(hql, CentroDeAcopio.class)
                         .setParameter("id", id)
                         .uniqueResult();
