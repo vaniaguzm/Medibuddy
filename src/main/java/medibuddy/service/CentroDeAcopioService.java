@@ -16,7 +16,27 @@ public class CentroDeAcopioService {
     public List<CentroDeAcopio> listarCentros() {
         return repository.findAll();
     }
+    
+    public void crearEnvio(CentroDeAcopio centro) {
+        repository.save(centro);
+    }
+    
+    public CentroDeAcopio buscarEnvioPorId(int id) {
+        return repository.findById(id);
+    }
 
+    public void actualizarEnvio(CentroDeAcopio centro) {
+        repository.update(centro);
+    }
+
+    public void eliminarEnvio(CentroDeAcopio centro) {
+        repository.delete(centro);
+    }
+
+    public List<CentroDeAcopio> listarEnvios() {
+        return repository.findAll();
+    }
+    
     public CentroDeAcopio buscarCentroPorId(int id) {
         return repository.findById(id);
     }

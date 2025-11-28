@@ -217,8 +217,9 @@ public class MediBuddy {
             System.out.print("Medicamento: "); String nom = scanner.nextLine();
             System.out.print("Dosis: "); String dos = scanner.nextLine();
             System.out.print("Hora (e.g. 08:00): "); String hora = scanner.nextLine();
+            System.out.print("Modo de Administracion: "); String modA = scanner.nextLine();
             
-            Medicamento med = new Medicamento(nom, dos, hora);
+            Medicamento med = new Medicamento(nom, dos, hora,modA);
             adultoService.agregarMedicamentoAAdultoMayor(id, med);
             System.out.println("✅ Medicamento agregado al expediente.");
         } else {
@@ -357,7 +358,8 @@ public class MediBuddy {
     private static void registrarFundacion() {
         System.out.print("Nombre Fundación: "); String nom = scanner.nextLine();
         System.out.print("Sede: "); String sede = scanner.nextLine();
-        Fundacion f = new Fundacion(nom, sede);
+        System.out.print("Actividad: "); String acti = scanner.nextLine();
+        Fundacion f = new Fundacion(nom, sede,acti);
         fundacionService.crearFundacion(f);
         System.out.println("✅ Fundación creada con ID: " + f.getId());
     }

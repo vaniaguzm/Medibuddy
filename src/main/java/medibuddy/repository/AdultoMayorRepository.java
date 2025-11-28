@@ -56,6 +56,11 @@ public class AdultoMayorRepository {
     public void delete(AdultoMayor adultoMayor) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String sql = "DELETE FROM inscripciones_fundacion WHERE adulto_id = :id";
+            
+            session.createNativeQuery(sql, Integer.class) // Usamos nativeQuery porque es una tabla oculta
+                   .setParameter("id", adultoMayor.getIdUsuario())
+                   .executeUpdate();
             transaction = session.beginTransaction();
             session.remove(adultoMayor);
             transaction.commit();

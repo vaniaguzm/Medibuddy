@@ -8,6 +8,8 @@ import java.util.List;
 
 public class FundacionRepository {
 
+    
+    // 1. Guardar una nueva fundación
     public void save(Fundacion fundacion) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -21,7 +23,8 @@ public class FundacionRepository {
             e.printStackTrace();
         }
     }
-
+    
+    // 2. Listar todas las fundaciones
     public List<Fundacion> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM Fundacion", Fundacion.class).list();
@@ -64,6 +67,7 @@ public class FundacionRepository {
         }
     }
 
+    
     public Fundacion buscarPorIdConActividades(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // LEFT JOIN FETCH carga la lista 'actividades' en la misma consulta
