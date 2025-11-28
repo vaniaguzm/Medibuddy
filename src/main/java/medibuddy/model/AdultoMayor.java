@@ -6,47 +6,54 @@ import java.util.List;
 
 @Entity
 @Table(name = "adulto_mayor")
-@PrimaryKeyJoinColumn(name = "id_usuario") // Hereda de Usuario
+@PrimaryKeyJoinColumn(name = "id_usuario")
 public class AdultoMayor extends Usuario {
 
     @Column(name = "contacto_emergencia")
     private String contactoEmergencia;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "adulto_mayor_id")
-    private List<Medicamento> medicamentos;
+    // Relación 1:1 Inversa con Familiar
+    @OneToOne(mappedBy = "adultoMayorAsociado", cascade = CascadeType.ALL)
+    private Familiar familiarResponsable;
 
-   public AdultoMayor() {
-        this.medicamentos = new ArrayList<>();
-    }
+    // Relación N:M con Medicamentos
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "adulto_medicamento",
+        joinColumns = @JoinColumn(name = "adulto_id"),
+        inverseJoinColumns = @JoinColumn(name = "medicamento_id")
+    )
+    private List<Medicamento> medicamentos = new ArrayList<>();
+
+    // Relación N:M con Actividades (Solo el adulto participa)
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+        name = "inscripciones",
+        joinColumns = @JoinColumn(name = "adulto_id"),
+        inverseJoinColumns = @JoinColumn(name = "actividad_id")
+    )
+    private List<Actividad> actividadesInscritas = new ArrayList<>();
+
+    public AdultoMayor() {}
 
     public AdultoMayor(String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia) {
         super(0, nomUsuario, tipoUsuario, telefono); 
         this.contactoEmergencia = contactoEmergencia;
-        this.medicamentos = new ArrayList<>();
-    }
-
-
-    // Getters y Setters
-    public String getContactoEmergencia() {
-        return contactoEmergencia;
-    }
-
-    public void setContactoEmergencia(String contactoEmergencia) {
-        this.contactoEmergencia = contactoEmergencia;
-    }
-
-    public List<Medicamento> getMedicamentos() {
-        return medicamentos;
-    }
-
-    public void setMedicamentos(List<Medicamento> medicamentos) {
-        this.medicamentos = medicamentos;
     }
 
     // Métodos de negocio
     public void agregarMedicamento(Medicamento nuevoMedicamento) {
-        medicamentos.add(nuevoMedicamento);
+        if (!medicamentos.contains(nuevoMedicamento)) {
+            medicamentos.add(nuevoMedicamento);
+            nuevoMedicamento.getPacientes().add(this); 
+        }
+    }
+
+    public void inscribirse(Actividad actividad) {
+        if (!actividadesInscritas.contains(actividad)) {
+            actividadesInscritas.add(actividad);
+            actividad.getParticipantes().add(this);
+        }
     }
 
     public void aceptarRecordatorio(Medicamento medicamento) {
@@ -60,30 +67,13 @@ public class AdultoMayor extends Usuario {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AdultoMayor that = (AdultoMayor) o;
-        return getIdUsuario() == that.getIdUsuario(); 
-    }
-
-    @Override
-    public int hashCode() {
-        // IMPORTANTE: Lo mismo aquí, debe ser el nombre real de tu variable ID
-        return Integer.hashCode(getIdUsuario());
-    }
-    
-    @Override
-    public String toString() {
-        listarMedicamentos();
-        return "AdultoMayor{" +
-                "idUsuario=" + getIdUsuario() +
-                ", nomUsuario='" + getNomUsuario() + '\'' +
-                ", medicamentos='" + getNomUsuario() + '\'' +
-
-                ", contactoEmergencia='" + contactoEmergencia + '\'' +
-                '}';
-    }
-
+    // Getters y Setters
+    public String getContactoEmergencia() { return contactoEmergencia; }
+    public void setContactoEmergencia(String contactoEmergencia) { this.contactoEmergencia = contactoEmergencia; }
+    public Familiar getFamiliarResponsable() { return familiarResponsable; }
+    public void setFamiliarResponsable(Familiar familiarResponsable) { this.familiarResponsable = familiarResponsable; }
+    public List<Medicamento> getMedicamentos() { return medicamentos; }
+    public void setMedicamentos(List<Medicamento> medicamentos) { this.medicamentos = medicamentos; }
+    public List<Actividad> getActividadesInscritas() { return actividadesInscritas; }
+    public void setActividadesInscritas(List<Actividad> actividadesInscritas) { this.actividadesInscritas = actividadesInscritas; }
 }

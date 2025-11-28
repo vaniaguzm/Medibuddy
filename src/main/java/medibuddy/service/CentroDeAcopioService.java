@@ -1,39 +1,23 @@
 package medibuddy.service;
 
+import medibuddy.model.Actividad; // Importar Actividad
 import medibuddy.model.CentroDeAcopio;
-import medibuddy.model.Entrega;
 import medibuddy.repository.CentroDeAcopioRepository;
+import medibuddy.repository.ActividadRepository; // Necesario para guardar la actividad
+
 import java.util.List;
 
 public class CentroDeAcopioService {
 
     private final CentroDeAcopioRepository repository = new CentroDeAcopioRepository();
+    // Agregamos repositorio de actividades para poder guardarlas
+    private final ActividadRepository actividadRepository = new ActividadRepository();
 
     public void crearCentro(CentroDeAcopio centro) {
         repository.save(centro);
     }
 
     public List<CentroDeAcopio> listarCentros() {
-        return repository.findAll();
-    }
-    
-    public void crearEnvio(CentroDeAcopio centro) {
-        repository.save(centro);
-    }
-    
-    public CentroDeAcopio buscarEnvioPorId(int id) {
-        return repository.findById(id);
-    }
-
-    public void actualizarEnvio(CentroDeAcopio centro) {
-        repository.update(centro);
-    }
-
-    public void eliminarEnvio(CentroDeAcopio centro) {
-        repository.delete(centro);
-    }
-
-    public List<CentroDeAcopio> listarEnvios() {
         return repository.findAll();
     }
     
@@ -49,23 +33,15 @@ public class CentroDeAcopioService {
         repository.delete(centro);
     }
 
-    /**
-     * Registra una nueva entrega en un centro de acopio específico.
-     * Utiliza el método de utilidad de la entidad para mantener la consistencia 
-     * bidireccional antes de guardar.
-     */
-    public void registrarEntregaEnCentro(int idCentro, Entrega entrega) {
-        // CAMBIO AQUÍ: Usamos el método que trae las entregas listas
-        CentroDeAcopio centro = repository.buscarPorIdConEntregas(idCentro);
-        
+    // --- NUEVO: Capacidad de crear actividades (Heredado de Organizador) ---
+    public void crearActividadParaCentro(int idCentro, Actividad actividad) {
+        CentroDeAcopio centro = buscarCentroPorId(idCentro);
         if (centro != null) {
-            // Ahora esto NO fallará porque la lista 'entregas' ya vino cargada de la BD
-            centro.registrarEntrega(entrega);
-            
-            actualizarCentro(centro);
-            System.out.println("Entrega registrada exitosamente en " + centro.getNombre());
-        } else {
-            System.out.println("Error: No se encontró el centro de acopio con ID " + idCentro);
+            // Usamos el método de la entidad que conecta ambos objetos
+            centro.crearActividad(actividad);
+            // Guardamos la actividad (el centro se actualiza por cascada si está configurado, 
+            // pero es mas seguro guardar la actividad directamente)
+            actividadRepository.save(actividad);
         }
     }
 }

@@ -26,7 +26,6 @@
         <mapping class="medibuddy.model.Usuario"/>
         <mapping class="medibuddy.model.Medicamento"/>
         <mapping class="medibuddy.model.CentroDeAcopio"/>
-        <mapping class="medibuddy.model.Entrega"/>
         <mapping class="medibuddy.model.Familiar"/>
         <mapping class="medibuddy.model.Fundacion"/>
 
