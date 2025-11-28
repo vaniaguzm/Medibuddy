@@ -5,12 +5,14 @@ public class Medicamento {
     public String nomMedicamento;
     public String dosis;
     public String horaRecordatorio;
+    public String modoAdministracion;
 
-    public Medicamento(int idMedicamento, String nomMedicamento, String dosis, String horaRecordatorio) {
+    public Medicamento(int idMedicamento, String nomMedicamento, String dosis, String horaRecordatorio,String modoAdministracion) {
         this.idMedicamento = idMedicamento;
         this.nomMedicamento = nomMedicamento;
         this.dosis = dosis;
         this.horaRecordatorio = horaRecordatorio;
+        this.modoAdministracion = modoAdministracion;
     }
 
     public void programar_recordatorio() {

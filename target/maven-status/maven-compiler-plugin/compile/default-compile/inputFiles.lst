@@ -1,8 +1,40 @@
-C:\Users\NITRO\Documents\NetBeansProjects\MediBuddy\src\main\java\medibuddy\Actividad.java
-C:\Users\NITRO\Documents\NetBeansProjects\MediBuddy\src\main\java\medibuddy\AdultoMayor.java
-C:\Users\NITRO\Documents\NetBeansProjects\MediBuddy\src\main\java\medibuddy\CentroDeAcopio.java
-C:\Users\NITRO\Documents\NetBeansProjects\MediBuddy\src\main\java\medibuddy\Familiar.java
-C:\Users\NITRO\Documents\NetBeansProjects\MediBuddy\src\main\java\medibuddy\Fundacion.java
-C:\Users\NITRO\Documents\NetBeansProjects\MediBuddy\src\main\java\medibuddy\MediBuddy.java
-C:\Users\NITRO\Documents\NetBeansProjects\MediBuddy\src\main\java\medibuddy\Medicamento.java
-C:\Users\NITRO\Documents\NetBeansProjects\MediBuddy\src\main\java\medibuddy\Usuario.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\interfaces\JAdultosMayores.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\interfaces\JCentrosAcopio.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\interfaces\JFamiliares.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\interfaces\JFundaciones.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\interfaces\JMedicamentos.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\interfaces\JMenuPrincipal.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\legacy\Actividad.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\legacy\AdultoMayor.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\legacy\CentroDeAcopio.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\legacy\Familiar.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\legacy\Fundacion.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\legacy\MediBuddy.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\legacy\Medicamento.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\legacy\Usuario.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\MediBuddy.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\model\Actividad.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\model\AdultoMayor.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\model\CentroDeAcopio.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\model\Entrega.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\model\Familiar.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\model\Fundacion.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\model\Medicamento.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\model\Usuario.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\repository\ActividadRepository.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\repository\AdultoMayorRepository.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\repository\CentroDeAcopioRepository.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\repository\EntregaRepository.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\repository\FamiliarRepository.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\repository\FundacionRepository.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\repository\MedicamentoRepository.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\repository\UsuarioRepository.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\service\ActividadService.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\service\AdultoMayorService.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\service\CentroDeAcopioService.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\service\EntregaService.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\service\FamiliarService.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\service\FundacionService.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\service\MedicamentoService.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\service\UsuarioService.java
+C:\Users\mchav\OneDrive\Desktop\Universidad 4to\Medibuddy\src\main\java\medibuddy\util\HibernateUtil.java

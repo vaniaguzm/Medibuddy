@@ -19,18 +19,31 @@ public class Medicamento {
 
     @Column(name = "hora_recordatorio")
     private String horaRecordatorio;
+    
+    //Crear un modo de administracion para que sea la actividad
+    @Column(name = "modo_administracion")
+    private String modoAdministracion;
 
     // Constructores
     public Medicamento() {}
 
-    public Medicamento(String nomMedicamento, String dosis, String horaRecordatorio) {
+    public Medicamento(String nomMedicamento, String dosis, String horaRecordatorio,String modoAdministracion) {
         this.idMedicamento = 0;
         this.nomMedicamento = nomMedicamento;
         this.dosis = dosis;
         this.horaRecordatorio = horaRecordatorio;
+        this.modoAdministracion = modoAdministracion;
     }
 
     // Getters y Setters
+    
+    public String getModoAministracion(){
+        return modoAdministracion;
+    }
+    
+    public void setModoAdministracion(String modoAdministracion){
+        this.modoAdministracion = modoAdministracion;
+    }
     public int getIdMedicamento() {
         return idMedicamento;
     }

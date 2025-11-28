@@ -61,6 +61,20 @@ public class AdultoMayor extends Usuario {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdultoMayor that = (AdultoMayor) o;
+        return getIdUsuario() == that.getIdUsuario(); 
+    }
+
+    @Override
+    public int hashCode() {
+        // IMPORTANTE: Lo mismo aquí, debe ser el nombre real de tu variable ID
+        return Integer.hashCode(getIdUsuario());
+    }
+    
+    @Override
     public String toString() {
         listarMedicamentos();
         return "AdultoMayor{" +
