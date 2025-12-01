@@ -55,7 +55,11 @@ public class JAdultosMayores extends javax.swing.JFrame {
 
         jLabel2.setText("Nombre:");
 
+<<<<<<< Updated upstream
         jLabel3.setText("Telefono:");
+=======
+        jLabel3.setText("Telefono del Adulto:");
+>>>>>>> Stashed changes
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,6 +157,35 @@ public class JAdultosMayores extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+<<<<<<< Updated upstream
+=======
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTelefono))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(23, 23, 23))
+                            .addComponent(cnbMedicamento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(btnAgregar)
+                        .addGap(64, 64, 64)
+                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+>>>>>>> Stashed changes
                         .addGap(4, 4, 4)
                         .addComponent(btnRegresar)
                         .addGap(77, 77, 77)
@@ -194,6 +227,7 @@ public class JAdultosMayores extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(btnRegresar))
                 .addGap(18, 18, 18)
+<<<<<<< Updated upstream
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -216,6 +250,32 @@ public class JAdultosMayores extends javax.swing.JFrame {
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+=======
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cnbMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMas))))
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 6, Short.MAX_VALUE)
+                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+>>>>>>> Stashed changes
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -236,15 +296,27 @@ public class JAdultosMayores extends javax.swing.JFrame {
         String apePa = txtApellidoPa.getText().trim();
         String apeMa = txtApellidoMa.getText().trim();
         String telefono = txtTelefono.getText().trim();
+<<<<<<< Updated upstream
 
         if (nombre.isEmpty() || apePa.isEmpty() || telefono.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nombre, Apellido Paterno y Teléfono son obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
+=======
+        int indexMed = cnbMedicamento.getSelectedIndex();
+
+        if (nombre.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos de texto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+>>>>>>> Stashed changes
             return;
         }
 
         try {
+<<<<<<< Updated upstream
             // 1. Crear Objeto con los datos separados
             AdultoMayor nuevoAdulto = new AdultoMayor(nombre, apePa, apeMa, telefono);
+=======
+            //Crear el Adulto Mayor
+            AdultoMayor nuevoAdulto = new AdultoMayor(nombre, "Adulto Mayor", telefono);
+>>>>>>> Stashed changes
             
             // 2. Guardar en BD (Sin medicamentos, esos se asignan en otro lado o se eliminó la función aquí)
             adultoService.crearAdultoMayor(nuevoAdulto);
@@ -264,6 +336,37 @@ public class JAdultosMayores extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Seleccione un registro para actualizar.");
             return;
         }
+<<<<<<< Updated upstream
+=======
+        
+        if(txtNombre.getText().trim().isEmpty() || txtTelefono.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this,"Llena primero los campos antes de actualizar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }else{
+            try {
+            int id = (int) jTable1.getValueAt(filaSeleccionada, 0);
+            AdultoMayor adulto = adultoService.buscarAdultoMayorPorId(id);
+            
+            if (adulto != null) {
+                adulto.setNomUsuario(txtNombre.getText().trim());
+                adulto.setTelefono(txtTelefono.getText().trim());
+
+                
+                // Actualizar Medicamento si cambió en el combo
+                int indexMed = cnbMedicamento.getSelectedIndex();
+                if (indexMed > 0) {
+                    // Borramos anteriores (simplificación para este ejercicio)
+                    adulto.getMedicamentos().clear();
+                    
+                    Medicamento medCatalogo = listaMedicamentosCatalogo.get(indexMed - 1);
+                    Medicamento nuevoMed = new Medicamento(
+                        medCatalogo.getNomMedicamento(), 
+                        medCatalogo.getDosis(), 
+                        medCatalogo.getHoraRecordatorio(),
+                        medCatalogo.getModoAministracion()
+                    );
+                    adulto.agregarMedicamento(nuevoMed);
+                }
+>>>>>>> Stashed changes
 
         try {
             int id = (int) jTable1.getValueAt(fila, 0);
@@ -317,6 +420,10 @@ public class JAdultosMayores extends javax.swing.JFrame {
         txtApellidoPa.setText("");
         txtApellidoMa.setText("");
         txtTelefono.setText("");
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -336,6 +443,7 @@ public class JAdultosMayores extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtApellidoPaActionPerformed
 
+<<<<<<< Updated upstream
    
     
     
@@ -385,10 +493,81 @@ public class JAdultosMayores extends javax.swing.JFrame {
                     telEmergencia,         // Dato del Familiar
                     sbMed.toString(),      // Medicamentos
                 });
+=======
+    private void cargarMedicamentosCombo() {
+        // 1. Usamos DefaultComboBoxModel, NO DefaultTableModel
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        
+        try {
+            // 2. Traemos la lista de MEDICAMENTOS, no de adultos
+            listaMedicamentosCatalogo = medicamentoService.listarMedicamentos();
+            
+            // 3. Opción por defecto
+            model.addElement("--- Seleccione Medicamento ---");
+            
+            // 4. Llenamos el modelo con los datos del medicamento
+            for (Medicamento m : listaMedicamentosCatalogo) {
+                // Mostramos Nombre y Dosis
+                model.addElement(m.getNomMedicamento() + " - " + m.getDosis());
+>>>>>>> Stashed changes
             }
+            
+            // 5. Asignamos el modelo al ComboBox
+            cnbMedicamento.setModel(model);
+            
         } catch (Exception e) {
+<<<<<<< Updated upstream
             JOptionPane.showMessageDialog(this, "Error al cargar la tabla.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace(); // Imprime el error en consola para depurar
+=======
+            logger.log(Level.SEVERE, "Error al cargar medicamentos en el combo", e);
+            JOptionPane.showMessageDialog(this, "No se pudieron cargar los medicamentos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void cargarTabla(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        try {
+            List<AdultoMayor> adultos = adultoService.listarAdultosMayores();
+            
+            // Para encontrar la actividad, necesitamos todas las fundaciones
+            List<Fundacion> todasFundaciones = fundacionService.listarFundaciones();
+
+            for (AdultoMayor am : adultos) {
+                
+                //Lógica para mostrar Medicamento
+                String infoMedicamento = "Ninguno";
+                if (!am.getMedicamentos().isEmpty()) {
+                    // Tomamos el último agregado o el primero
+                    Medicamento m = am.getMedicamentos().get(0);
+                    // Formato pedido: Nombre y Dosis, Modo
+                    infoMedicamento = m.getNomMedicamento() + " - " + m.getDosis() + ", " + m.getModoAministracion();
+                }
+
+                //Lógica para mostrar Actividad (Buscando en fundaciones)
+                String infoActividad = "No inscrito";
+                for (Fundacion f : todasFundaciones) {
+                    if (f.getAsistentes().contains(am)) {
+                        infoActividad = f.getActividad(); // Muestra la actividad de esa fundación
+                        break; // dejamos de buscar
+                    }
+                }
+
+                model.addRow(new Object[]{
+                    am.getIdUsuario(),
+                    am.getNomUsuario(),
+                    am.getTelefono(),
+                    am.getContactoEmergencia(),
+                    infoMedicamento, 
+                    infoActividad    
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Fallo al cargar tabla", e);
+>>>>>>> Stashed changes
         }
     }
     public static void main(String args[]) {
@@ -421,8 +600,12 @@ public class JAdultosMayores extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+<<<<<<< Updated upstream
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+=======
+    private javax.swing.JLabel jLabel5;
+>>>>>>> Stashed changes
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtApellidoMa;

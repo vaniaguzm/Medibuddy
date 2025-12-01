@@ -22,6 +22,7 @@ public class AdultoMayor extends Usuario {
     @OneToOne(mappedBy = "adultoMayorAsociado", cascade = CascadeType.ALL)
     private Familiar familiarResponsable;
 
+<<<<<<< Updated upstream
     // Relación N:M con Medicamentos
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
@@ -43,6 +44,14 @@ public class AdultoMayor extends Usuario {
     public AdultoMayor() {}
 
     public AdultoMayor(String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia,String apePa, String apeMa) {
+=======
+   public AdultoMayor(String nomUsuario, String tipoUsuario, String telefono) {
+        super(0, nomUsuario, tipoUsuario, telefono);
+        this.medicamentos = new ArrayList<>();
+    }
+   
+    public AdultoMayor(String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia) {
+>>>>>>> Stashed changes
         super(0, nomUsuario, tipoUsuario, telefono); 
         this.contactoEmergencia = contactoEmergencia;
         this.apellidoPaterno = apePa;
