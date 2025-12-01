@@ -36,13 +36,20 @@ public class ActividadRepository {
     
     public List<Actividad> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Actividad", Actividad.class).list();
+            // Usamos LEFT JOIN FETCH para traer la lista de participantes en la misma consulta
+            // DISTINCT evita duplicados si hay muchos participantes
+            String hql = "SELECT DISTINCT a FROM Actividad a LEFT JOIN FETCH a.participantes";
+            return session.createQuery(hql, Actividad.class).list();
         }
     }
 
     public Actividad findById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Actividad.class, id);
+            // También aquí es útil traer los participantes si vas a mostrar el cupo individualmente
+            String hql = "SELECT a FROM Actividad a LEFT JOIN FETCH a.participantes WHERE a.idActividad = :id";
+            return session.createQuery(hql, Actividad.class)
+                          .setParameter("id", id)
+                          .uniqueResult();
         }
     }
 

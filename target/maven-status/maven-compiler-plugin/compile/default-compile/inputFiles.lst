@@ -29,6 +29,7 @@
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/repository/FamiliarRepository.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/repository/FundacionRepository.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/repository/MedicamentoRepository.java
+/home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/repository/OrganizadorRepository.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/repository/UsuarioRepository.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/service/ActividadService.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/service/AdultoMayorService.java
@@ -36,5 +37,6 @@
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/service/FamiliarService.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/service/FundacionService.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/service/MedicamentoService.java
+/home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/service/OrganizadorService.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/service/UsuarioService.java
 /home/csarchvz/gitThings/poo/Medibuddy/src/main/java/medibuddy/util/HibernateUtil.java
