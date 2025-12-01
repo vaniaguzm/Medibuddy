@@ -20,10 +20,7 @@ public class JMedicamentos extends javax.swing.JFrame {
      */
     public JMedicamentos() {
         initComponents();
-<<<<<<< Updated upstream
         configurarCombosIniciales();
-=======
->>>>>>> Stashed changes
         cargarTabla();
     }
 
