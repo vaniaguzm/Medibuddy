@@ -2,32 +2,28 @@
 package medibuddy.interfaces;
 
 // Importaciones necesarias las de la base de datos y para los mensajes y manejo de la tabla en la interfaz
-import medibuddy.model.AdultoMayor; 
-import medibuddy.service.AdultoMayorService;
-import java.util.List;
-import medibuddy.model.Medicamento;
+import medibuddy.model.AdultoMayor;
 import medibuddy.model.Fundacion;
-import javax.swing.DefaultComboBoxModel;
+import medibuddy.model.Medicamento;
+import medibuddy.service.AdultoMayorService;
+import medibuddy.service.FundacionService;
+
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.logging.Level;
-import medibuddy.service.MedicamentoService; 
-import medibuddy.service.FundacionService;
+
     
 public class JAdultosMayores extends javax.swing.JFrame {
     //se crea la instancia del adulto
-    private final AdultoMayorService adultoService = new AdultoMayorService();
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JAdultosMayores.class.getName());
-    private final MedicamentoService medicamentoService = new MedicamentoService();
+   private final AdultoMayorService adultoService = new AdultoMayorService();
     private final FundacionService fundacionService = new FundacionService();
-    private final java.util.ArrayList<Medicamento> medicamentosTemporales = new java.util.ArrayList<>();
     
     private List<Medicamento> listaMedicamentosCatalogo;
 
     public JAdultosMayores() {
         initComponents();
         cargarTabla();
-        cargarMedicamentosCombo();
     }
 
 
@@ -38,10 +34,8 @@ public class JAdultosMayores extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
-        txtTelEmergencia = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -49,9 +43,10 @@ public class JAdultosMayores extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnRegresar = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        cnbMedicamento = new javax.swing.JComboBox<>();
-        btnMas = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtApellidoPa = new javax.swing.JTextField();
+        txtApellidoMa = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,8 +57,6 @@ public class JAdultosMayores extends javax.swing.JFrame {
 
         jLabel3.setText("Telefono:");
 
-        jLabel4.setText("Telefono Emergencia:");
-
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
@@ -73,12 +66,6 @@ public class JAdultosMayores extends javax.swing.JFrame {
         txtTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTelefonoActionPerformed(evt);
-            }
-        });
-
-        txtTelEmergencia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTelEmergenciaActionPerformed(evt);
             }
         });
 
@@ -146,18 +133,13 @@ public class JAdultosMayores extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Medicamento a Suministrar:");
+        jLabel6.setText("Apellido Paterno:");
 
-        cnbMedicamento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cnbMedicamentoActionPerformed(evt);
-            }
-        });
+        jLabel7.setText("Apellido Materno:");
 
-        btnMas.setText("+");
-        btnMas.addActionListener(new java.awt.event.ActionListener() {
+        txtApellidoPa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMasActionPerformed(evt);
+                txtApellidoPaActionPerformed(evt);
             }
         });
 
@@ -166,48 +148,44 @@ public class JAdultosMayores extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTelefono))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTelEmergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(23, 23, 23))
-                            .addComponent(cnbMedicamento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(btnAgregar)
-                        .addGap(64, 64, 64)
-                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addComponent(btnRegresar)
-                        .addGap(141, 141, 141)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(1, 1, 1)
-                .addComponent(btnMas))
+                        .addGap(77, 77, 77)
+                        .addComponent(jLabel1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAgregar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtApellidoPa))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtApellidoMa))))))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,36 +194,30 @@ public class JAdultosMayores extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(btnRegresar))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtTelEmergencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cnbMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnMas))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtApellidoPa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtApellidoMa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -259,149 +231,92 @@ public class JAdultosMayores extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
-    private void txtTelEmergenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelEmergenciaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelEmergenciaActionPerformed
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String nombre = txtNombre.getText().trim();
+        String apePa = txtApellidoPa.getText().trim();
+        String apeMa = txtApellidoMa.getText().trim();
         String telefono = txtTelefono.getText().trim();
-        String telEmergencia = txtTelEmergencia.getText().trim();
-        int indexMed = cnbMedicamento.getSelectedIndex();
 
-        if (nombre.isEmpty() || telefono.isEmpty() || telEmergencia.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos de texto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (nombre.isEmpty() || apePa.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre, Apellido Paterno y Teléfono son obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            //Crear el Adulto Mayor
-            AdultoMayor nuevoAdulto = new AdultoMayor(nombre, "Adulto Mayor", telefono, telEmergencia);
+            // 1. Crear Objeto con los datos separados
+            AdultoMayor nuevoAdulto = new AdultoMayor(nombre, apePa, apeMa, telefono);
             
-            //  Revisamos si hay medicamentos en la lista temporal (del botón +)
-            if (!medicamentosTemporales.isEmpty()) {
-                for (Medicamento m : medicamentosTemporales) {
-                    nuevoAdulto.agregarMedicamento(m);
-                }
-            } 
-            // O si el usuario no usó el botón "+" pero seleccionó uno en el combo
-            else if (cnbMedicamento.getSelectedIndex() > 0) {
-                 int index = cnbMedicamento.getSelectedIndex();
-                 Medicamento medCatalogo = listaMedicamentosCatalogo.get(index - 1);
-                 Medicamento medParaAdulto = new Medicamento(
-                    medCatalogo.getNomMedicamento(), medCatalogo.getDosis(), 
-                    medCatalogo.getHoraRecordatorio(), medCatalogo.getModoAministracion());
-                 nuevoAdulto.agregarMedicamento(medParaAdulto);
-            }
-
-            //Guardar en DB
+            // 2. Guardar en BD (Sin medicamentos, esos se asignan en otro lado o se eliminó la función aquí)
             adultoService.crearAdultoMayor(nuevoAdulto);
             
-            // Limpiar la lista temporal para el siguiente registro
-            medicamentosTemporales.clear();
-            JOptionPane.showMessageDialog(this, "Adulto Mayor registrado con éxito.");
-            cargarTabla();
+            JOptionPane.showMessageDialog(this, "Adulto Mayor registrado exitosamente.");
             btnLimpiarActionPerformed(null);
-            
+            cargarTabla();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al registrar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al agregar", e);
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un registro para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        int fila = jTable1.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un registro para actualizar.");
             return;
         }
-        
-        if(txtNombre.getText().trim().isEmpty() || txtTelefono.getText().trim().isEmpty() || txtTelEmergencia.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(this,"Llena primero los campos antes de actualizar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }else{
-            try {
-            int id = (int) jTable1.getValueAt(filaSeleccionada, 0);
-            AdultoMayor adulto = adultoService.buscarAdultoMayorPorId(id);
-            
-            if (adulto != null) {
-                adulto.setNomUsuario(txtNombre.getText().trim());
-                adulto.setTelefono(txtTelefono.getText().trim());
-                adulto.setContactoEmergencia(txtTelEmergencia.getText().trim());
-                
-                // Actualizar Medicamento si cambió en el combo
-                int indexMed = cnbMedicamento.getSelectedIndex();
-                if (indexMed > 0) {
-                    // Borramos anteriores (simplificación para este ejercicio)
-                    adulto.getMedicamentos().clear();
-                    
-                    Medicamento medCatalogo = listaMedicamentosCatalogo.get(indexMed - 1);
-                    Medicamento nuevoMed = new Medicamento(
-                        medCatalogo.getNomMedicamento(), 
-                        medCatalogo.getDosis(), 
-                        medCatalogo.getHoraRecordatorio(),
-                        medCatalogo.getModoAministracion()
-                    );
-                    adulto.agregarMedicamento(nuevoMed);
-                }
 
+        try {
+            int id = (int) jTable1.getValueAt(fila, 0);
+            AdultoMayor adulto = adultoService.buscarAdultoMayorPorId(id);
+
+            if (adulto != null) {
+                // Actualizar datos personales
+                adulto.setNomUsuario(txtNombre.getText().trim());
+                adulto.setApellidoPaterno(txtApellidoPa.getText().trim());
+                adulto.setApellidoMaterno(txtApellidoMa.getText().trim());
+                adulto.setTelefono(txtTelefono.getText().trim());
+                
                 adultoService.actualizarAdultoMayor(adulto);
-                JOptionPane.showMessageDialog(this, "Actualizado correctamente.");
+                
+                JOptionPane.showMessageDialog(this, "Registro actualizado.");
+                btnLimpiarActionPerformed(null);
                 cargarTabla();
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al actualizar.");
         }
-        }
-
-        
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // 1. Verificar si hay una fila seleccionada
-        int filaSeleccionada = jTable1.getSelectedRow();
-        
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un registro de la tabla para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        int fila = jTable1.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un registro.");
             return;
         }
-        
-        // 2. Obtener el ID de la fila seleccionada (Columna 0)
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        int id = (int) model.getValueAt(filaSeleccionada, 0);
 
-        // 3. Confirmar la acción con el usuario
-        int confirmacion = JOptionPane.showConfirmDialog(this, 
-                "¿Está seguro que desea eliminar al Adulto Mayor con ID: " + id + "?\nEsta acción no se puede deshacer.", 
-                "Confirmar Eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        int id = (int) jTable1.getValueAt(fila, 0);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Eliminar al Adulto ID: " + id + "?", "Confirmar", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
+        if (confirm == JOptionPane.YES_OPTION) {
             try {
-                // 4. Buscar la entidad en la base de datos
-                AdultoMayor adulto = adultoService.buscarAdultoMayorPorId(id);
-                
-                if (adulto != null) {
-                    // 5. Llamar al Service para eliminar
-                    adultoService.eliminarAdultoMayor(adulto);
-                    
-                    // 6. Mensaje de éxito y actualización de interfaz
-                    JOptionPane.showMessageDialog(this, "Registro eliminado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    cargarTabla(); // Recargar datos en la tabla
-                    btnLimpiarActionPerformed(null); // Limpiar los campos de texto
-                } else {
-                    JOptionPane.showMessageDialog(this, "El registro ya no existe en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                AdultoMayor am = adultoService.buscarAdultoMayorPorId(id);
+                if (am != null) {
+                    adultoService.eliminarAdultoMayor(am);
+                    JOptionPane.showMessageDialog(this, "Eliminado correctamente.");
+                    cargarTabla();
+                    btnLimpiarActionPerformed(null);
                 }
             } catch (Exception e) {
-                // 7. Manejo de errores (Ej: Restricción de llave foránea si tiene familiares asignados)
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar el registro.\nEs posible que tenga Familiares o Datos asociados.", "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
-                logger.log(Level.SEVERE, "Fallo al eliminar Adulto", e);
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar (puede tener datos asociados).");
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         txtNombre.setText("");
+        txtApellidoPa.setText("");
+        txtApellidoMa.setText("");
         txtTelefono.setText("");
-        txtTelEmergencia.setText("");
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -414,131 +329,66 @@ public class JAdultosMayores extends javax.swing.JFrame {
         menu.setVisible(true);
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "No se pudo cargar el Menú Principal.", "Error de Navegación", JOptionPane.ERROR_MESSAGE);
-        logger.log(Level.SEVERE, "Fallo al abrir el Menú Principal", e);
     }
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    private void cnbMedicamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cnbMedicamentoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cnbMedicamentoActionPerformed
+    private void txtApellidoPaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoPaActionPerformed
 
-    private void btnMasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasActionPerformed
-        int index = cnbMedicamento.getSelectedIndex();
-        if (index > 0) { // Si seleccionó algo válido
-            Medicamento medCatalogo = listaMedicamentosCatalogo.get(index - 1);
-            
-            // Crear copia para el adulto
-            Medicamento medParaAdulto = new Medicamento(
-                    medCatalogo.getNomMedicamento(), 
-                    medCatalogo.getDosis(), 
-                    medCatalogo.getHoraRecordatorio(),
-                    medCatalogo.getModoAministracion()
-            );
-            
-            medicamentosTemporales.add(medParaAdulto);
-            JOptionPane.showMessageDialog(this, "Medicamento añadido a la lista temporal: " + medParaAdulto.getNomMedicamento());
-        }
-    }//GEN-LAST:event_btnMasActionPerformed
+    }//GEN-LAST:event_txtApellidoPaActionPerformed
 
-    private void cargarMedicamentosCombo() {
+   
+    
+    
+    private void cargarTabla(){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
-        
+        model.setRowCount(0); // Limpiar tabla
+
         try {
+            // 1. Obtener lista de adultos
             List<AdultoMayor> adultos = adultoService.listarAdultosMayores();
-            List<Fundacion> todasFundaciones = fundacionService.listarFundaciones();
+            
+            // OMISIÓN TEMPORAL: No cargamos fundaciones por ahora
+            // List<Fundacion> todasFundaciones = fundacionService.listarFundaciones(); 
 
             for (AdultoMayor am : adultos) {
                 
-                // --- 1. MÚLTIPLES MEDICAMENTOS ---
+                // A. CONCATENAR NOMBRE COMPLETO
+                String nombreCompleto = am.getNomUsuario() + " " + 
+                                        (am.getApellidoPaterno() != null ? am.getApellidoPaterno() : "") + " " + 
+                                        (am.getApellidoMaterno() != null ? am.getApellidoMaterno() : "");
+
+                // B. OBTENER TELÉFONO DE EMERGENCIA (DEL FAMILIAR)
+                String telEmergencia = "Sin Familiar";
+                if (am.getFamiliarResponsable() != null) {
+                    telEmergencia = am.getFamiliarResponsable().getTelefono() + 
+                                    " (" + am.getFamiliarResponsable().getRelacion() + ")";
+                }
+
+                // C. LISTA DE MEDICAMENTOS (Solo visualización)
                 StringBuilder sbMed = new StringBuilder();
                 if (am.getMedicamentos().isEmpty()) {
                     sbMed.append("Ninguno");
                 } else {
                     for (Medicamento m : am.getMedicamentos()) {
-                        // Agrega nombre y dosis, separado por coma
-                        sbMed.append(m.getNomMedicamento()).append(" (").append(m.getDosis()).append("), ");
+                        sbMed.append(m.getNomMedicamento()).append(" (");
                     }
-                    // Quitar la última coma y espacio extra
+                    // Quitar última coma
                     if (sbMed.length() > 2) sbMed.setLength(sbMed.length() - 2);
                 }
 
-                // --- 2. MÚLTIPLES ACTIVIDADES ---
-                StringBuilder sbAct = new StringBuilder();
-                boolean tieneActividad = false;
-                
-                for (Fundacion f : todasFundaciones) {
-                    // Si el adulto está en la lista de asistentes de esta fundación
-                    if (f.getAsistentes().contains(am)) {
-                        sbAct.append(f.getActividad()).append(", ");
-                        tieneActividad = true;
-                    }
-                }
-                
-                if (!tieneActividad) {
-                    sbAct.append("No inscrito");
-                } else {
-                    // Quitar la última coma
-                    if (sbAct.length() > 2) sbAct.setLength(sbAct.length() - 2);
-                }
 
+                // AGREGAR FILA
                 model.addRow(new Object[]{
                     am.getIdUsuario(),
-                    am.getNomUsuario(),
+                    nombreCompleto.trim(), // Nombre + Apellidos
                     am.getTelefono(),
-                    am.getContactoEmergencia(),
-                    sbMed.toString(), // Muestra la lista concatenada
-                    sbAct.toString()  // Muestra la lista concatenada
+                    telEmergencia,         // Dato del Familiar
+                    sbMed.toString(),      // Medicamentos
                 });
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar datos.", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-    
-    private void cargarTabla(){
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
-        
-        try {
-            List<AdultoMayor> adultos = adultoService.listarAdultosMayores();
-            
-            // Para encontrar la actividad, necesitamos todas las fundaciones
-            List<Fundacion> todasFundaciones = fundacionService.listarFundaciones();
-
-            for (AdultoMayor am : adultos) {
-                
-                //Lógica para mostrar Medicamento
-                String infoMedicamento = "Ninguno";
-                if (!am.getMedicamentos().isEmpty()) {
-                    // Tomamos el último agregado o el primero
-                    Medicamento m = am.getMedicamentos().get(0);
-                    // Formato pedido: Nombre y Dosis, Modo
-                    infoMedicamento = m.getNomMedicamento() + " - " + m.getDosis() + ", " + m.getModoAministracion();
-                }
-
-                //Lógica para mostrar Actividad (Buscando en fundaciones)
-                String infoActividad = "No inscrito";
-                for (Fundacion f : todasFundaciones) {
-                    if (f.getAsistentes().contains(am)) {
-                        infoActividad = f.getActividad(); // Muestra la actividad de esa fundación
-                        break; // dejamos de buscar
-                    }
-                }
-
-                model.addRow(new Object[]{
-                    am.getIdUsuario(),
-                    am.getNomUsuario(),
-                    am.getTelefono(),
-                    am.getContactoEmergencia(),
-                    infoMedicamento, 
-                    infoActividad    
-                });
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar datos.", "Error", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al cargar tabla", e);
+            JOptionPane.showMessageDialog(this, "Error al cargar la tabla.", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // Imprime el error en consola para depurar
         }
     }
     public static void main(String args[]) {
@@ -555,7 +405,6 @@ public class JAdultosMayores extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -568,18 +417,17 @@ public class JAdultosMayores extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnMas;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JComboBox<String> cnbMedicamento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtApellidoMa;
+    private javax.swing.JTextField txtApellidoPa;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtTelEmergencia;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

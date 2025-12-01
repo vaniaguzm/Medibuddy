@@ -1,32 +1,37 @@
-
 package medibuddy.interfaces;
 
 
-import medibuddy.model.Familiar; 
+import medibuddy.model.Familiar;
+import medibuddy.model.AdultoMayor;
+import medibuddy.model.Medicamento;
 import medibuddy.service.FamiliarService;
+import medibuddy.service.AdultoMayorService;
+import medibuddy.service.MedicamentoService;
+
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.logging.Level;
-import javax.swing.DefaultComboBoxModel;
-import medibuddy.model.AdultoMayor; //Importar AdultoMayor
-import medibuddy.service.AdultoMayorService; //
+import java.util.logging.Logger;
 
 public class JFamiliares extends javax.swing.JFrame {
     
     //Creamos al familiar y al adulto
     private final FamiliarService familiarService = new FamiliarService();
     private final AdultoMayorService adultoService = new AdultoMayorService();
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFamiliares.class.getName());
-
+    private final MedicamentoService medicamentoService = new MedicamentoService();
     
-    // Variable para guardar la lista de adulto de la DB 
+    private static final Logger logger = Logger.getLogger(JFamiliares.class.getName());
+    
+    // Listas auxiliares para los combos
     private List<AdultoMayor> listaAdultos;
+    private List<Medicamento> listaMedicamentos;
     
     public JFamiliares() {
         initComponents();
-        cargarAdultosEnCombo();
-        
+        cargarCombos(); // Carga Adultos, Parentesco y Medicamentos
+        cargarTabla();
     }
 
     /**
@@ -52,6 +57,17 @@ public class JFamiliares extends javax.swing.JFrame {
         btnActualizar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         cnbAdulto = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtApellidoPa = new javax.swing.JTextField();
+        txtApellidoMa = new javax.swing.JTextField();
+        cnbParentesco = new javax.swing.JComboBox<>();
+        jlabel = new javax.swing.JLabel();
+        txtDireccion = new javax.swing.JTextField();
+        cnbMedicamento = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,17 +94,17 @@ public class JFamiliares extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Telefono", "Familiar Asignado"
+                "ID", "Nombre", "Telefono", "Familiar Asignado", "Parentesco", "Direccion"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -140,43 +156,84 @@ public class JFamiliares extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Apellido Paterno:");
+
+        jLabel6.setText("Apellido Materno:");
+
+        jLabel7.setText("Parentesco:");
+
+        jlabel.setText("Direccion:");
+
+        jLabel8.setText("Medicamento del Adulto:");
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel9.setText("Relacionar Adulto Mayor");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtTelefono))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtNombre))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cnbAdulto, 0, 260, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAgregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(btnRegresar)
-                        .addGap(62, 62, 62)
-                        .addComponent(jLabel1)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                        .addGap(227, 227, 227)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTelefono))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtApellidoPa, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                                    .addComponent(txtApellidoMa)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDireccion))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNombre)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(cnbMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel7)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel8)
+                                                .addComponent(cnbParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnAgregar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cnbAdulto, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(77, 77, 77)
+                                .addComponent(jLabel9)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,25 +242,54 @@ public class JFamiliares extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(btnRegresar))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(cnbAdulto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtApellidoPa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel9)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtApellidoMa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(cnbAdulto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(cnbParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlabel)
+                            .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(3, 3, 3))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addComponent(cnbMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -211,43 +297,27 @@ public class JFamiliares extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Familiar para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        //Obtener el ID del Familiar seleccionado
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        int idFamiliar = (int) model.getValueAt(filaSeleccionada, 0);
+        int fila = jTable1.getSelectedRow();
+        if (fila < 0) return;
 
-        int confirmacion = JOptionPane.showConfirmDialog(this, 
-                "¿Está seguro que desea eliminar al Familiar con ID: " + idFamiliar + "?", 
-                "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        int id = (int) jTable1.getValueAt(fila, 0);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Eliminar familiar?", "Confirmar", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
+        if (confirm == JOptionPane.YES_OPTION) {
             try {
-                //Buscar la entidad para pasarla al método delete de Hibernate
-                Familiar familiarAEliminar = familiarService.buscarFamiliarPorId(idFamiliar);
-                
-                if (familiarAEliminar != null) {
-                    //Llama al Service para eliminar de la DB
-                    familiarService.eliminarFamiliar(familiarAEliminar);
-                    
-                    JOptionPane.showMessageDialog(this, "Familiar eliminado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    cargarTabla(); // Recargar datos
-                    btnLimpiarActionPerformed(null);
-                }
+                Familiar fam = familiarService.buscarFamiliarPorId(id);
+                familiarService.eliminarFamiliar(fam);
+                cargarTabla();
+                limpiarCampos();
+                JOptionPane.showMessageDialog(this, "Eliminado.");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al eliminar el Familiar.", "Error de DB", JOptionPane.ERROR_MESSAGE);
-                logger.log(Level.SEVERE, "Fallo al eliminar Familiar", e);
+                JOptionPane.showMessageDialog(this, "Error al eliminar.");
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        txtNombre.setText("");
-        txtTelefono.setText("");
+        limpiarCampos();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -259,89 +329,99 @@ public class JFamiliares extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // 1. Recolección de datos
         String nombre = txtNombre.getText().trim();
-        String telefono = txtTelefono.getText().trim();
-        int indiceSeleccionado = cnbAdulto.getSelectedIndex();
-        
-        if (nombre.isEmpty() || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe llenar Nombre y Teléfono.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (indiceSeleccionado <= 0) { // Índice 0 es "--- Seleccione un Adulto ---"
-            JOptionPane.showMessageDialog(this, "Debe seleccionar el Adulto Mayor a asignar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        String apPa = txtApellidoPa.getText().trim();
+        String apMa = txtApellidoMa.getText().trim();
+        String tel = txtTelefono.getText().trim();
+        String dir = txtDireccion.getText().trim();
+        int idxAdulto = cnbAdulto.getSelectedIndex();
+        String parentesco = (String) cnbParentesco.getSelectedItem();
+        int idxMed = cnbMedicamento.getSelectedIndex();
+
+        // 2. Validaciones
+        if (nombre.isEmpty() || apPa.isEmpty() || tel.isEmpty() || idxAdulto <= 0 || cnbParentesco.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(this, "Llene los campos obligatorios y seleccione Adulto/Parentesco.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            // Obtener el Adulto Mayor seleccionado
-            // El índice del ComboBox corresponde al índice de listaAdultos - 1 (por el elemento inicial)
-            AdultoMayor adultoAsignado = listaAdultos.get(indiceSeleccionado - 1); // 👈 CUIDADO CON EL ÍNDICE
+            // 3. Obtener Adulto Mayor
+            AdultoMayor adulto = listaAdultos.get(idxAdulto - 1);
+
+            // 4. Crear Familiar
+            Familiar nuevoFamiliar = new Familiar(nombre, apPa, apMa, tel, parentesco, dir, adulto);
             
-            // Crear el objeto Familiar
-            // Asegúrate que tu constructor de Familiar reciba el AdultoMayor
-            Familiar nuevoFamiliar = new Familiar(nombre, "Familiar", telefono, "Parentesco NO Capturado en GUI", adultoAsignado);
-            
-            // Guardar en la DB
+            // 5. Asignar Medicamento al Adulto (Si se seleccionó)
+            if (idxMed > 0) {
+                Medicamento medCatalogo = listaMedicamentos.get(idxMed - 1);
+                // Clonamos para el adulto
+                Medicamento nuevoMed = new Medicamento(
+                    medCatalogo.getNomMedicamento(), medCatalogo.getDosis(), 
+                    medCatalogo.getHoraRecordatorio(), medCatalogo.getModoAdministracion()
+                );
+                adulto.agregarMedicamento(nuevoMed);
+                adultoService.actualizarAdultoMayor(adulto); // Guardamos el medicamento en el adulto
+            }
+
+            // 6. Guardar Familiar
             familiarService.crearFamiliar(nuevoFamiliar);
             
-            JOptionPane.showMessageDialog(this, "Familiar registrado y asignado a " + adultoAsignado.getNomUsuario() + ".", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            cargarTabla(); 
-            btnLimpiarActionPerformed(null);
-            
-        } catch (IndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(this, "Error de selección en el Combo Box.", "Error", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Error de índice al obtener Adulto Mayor", e);
+            JOptionPane.showMessageDialog(this, "Familiar registrado correctamente.");
+            limpiarCampos();
+            cargarTabla();
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar Familiar.", "Error de DB", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al agregar Familiar", e);
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        int indiceCombo = cnbAdulto.getSelectedIndex();
-        
-        if(txtNombre.getText().trim().isEmpty() || txtTelefono.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(this,"Llena primero los campos antes de actualizar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-        
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Familiar de la tabla para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        if (indiceCombo <= 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar el Adulto Mayor a asignar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        int fila = jTable1.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un registro.");
             return;
         }
 
         try {
-            //Obtener el ID del Familiar seleccionado en la tabla
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            int idFamiliar = (int) model.getValueAt(filaSeleccionada, 0); 
-            
-            //Buscar la entidad Familiar en la DB
-            Familiar familiarExistente = familiarService.buscarFamiliarPorId(idFamiliar);
-            
-            //Obtener el Adulto Mayor seleccionado del ComboBox
-            AdultoMayor nuevoAdulto = listaAdultos.get(indiceCombo - 1); // El índice 0 es el mensaje de selección
-            
-            if (familiarExistente != null) {
-                // 4. Actualizar los datos del objeto
-                familiarExistente.setNomUsuario(txtNombre.getText().trim());
-                familiarExistente.setTelefono(txtTelefono.getText().trim());
-                familiarExistente.setAdultoMayorAsociado(nuevoAdulto); // 👈 Reasignar el Adulto Mayor
+            int id = (int) jTable1.getValueAt(fila, 0);
+            Familiar fam = familiarService.buscarFamiliarPorId(id);
 
-                //Guardar los cambios en la DB (Hibernate hace un merge)
-                familiarService.actualizarFamiliar(familiarExistente);
+            if (fam != null) {
+                // Actualizar datos básicos
+                fam.setNomUsuario(txtNombre.getText().trim());
+                fam.setApellidoPaterno(txtApellidoPa.getText().trim());
+                fam.setApellidoMaterno(txtApellidoMa.getText().trim());
+                fam.setTelefono(txtTelefono.getText().trim());
+                fam.setDireccion(txtDireccion.getText().trim());
                 
-                JOptionPane.showMessageDialog(this, "Familiar y asignación actualizados con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarTabla(); // Recargar datos
-                btnLimpiarActionPerformed(null);
+                // Actualizar Relación y Adulto
+                if (cnbParentesco.getSelectedIndex() > 0) 
+                    fam.setRelacion((String) cnbParentesco.getSelectedItem());
+                
+                if (cnbAdulto.getSelectedIndex() > 0) {
+                    AdultoMayor nuevoAdulto = listaAdultos.get(cnbAdulto.getSelectedIndex() - 1);
+                    fam.setAdultoMayorAsociado(nuevoAdulto);
+                    
+                    // Si además seleccionó medicamento, se lo agregamos al nuevo adulto
+                    if (cnbMedicamento.getSelectedIndex() > 0) {
+                        Medicamento medCatalogo = listaMedicamentos.get(cnbMedicamento.getSelectedIndex() - 1);
+                        Medicamento nuevoMed = new Medicamento(
+                            medCatalogo.getNomMedicamento(), medCatalogo.getDosis(), 
+                            medCatalogo.getHoraRecordatorio(), medCatalogo.getModoAdministracion()
+                        );
+                        nuevoAdulto.agregarMedicamento(nuevoMed);
+                        adultoService.actualizarAdultoMayor(nuevoAdulto);
+                    }
+                }
+
+                familiarService.actualizarFamiliar(fam);
+                JOptionPane.showMessageDialog(this, "Actualizado correctamente.");
+                cargarTabla();
+                limpiarCampos();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al actualizar. Verifique que los campos estén llenos.", "Error de DB", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al actualizar Familiar", e);
+            JOptionPane.showMessageDialog(this, "Error al actualizar.");
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -349,66 +429,114 @@ public class JFamiliares extends javax.swing.JFrame {
         //Ocultar la ventana actual (JAdultosMayores)
     this.dispose(); // O this.setVisible(false);
 
-    //Crear y mostrar la ventana del Menú Principal
-    try {
-        // Reemplaza JMenuPrincipal() con el nombre real de tu clase de Menú Principal
-        medibuddy.interfaces.JMenuPrincipal menu = new medibuddy.interfaces.JMenuPrincipal();
-        menu.setVisible(true);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "No se pudo cargar el Menú Principal.", "Error de Navegación", JOptionPane.ERROR_MESSAGE);
-        logger.log(Level.SEVERE, "Fallo al abrir el Menú Principal", e);
-    }
+        //Crear y mostrar la ventana del Menú Principal
+        try {
+            // Reemplaza JMenuPrincipal() con el nombre real de tu clase de Menú Principal
+            medibuddy.interfaces.JMenuPrincipal menu = new medibuddy.interfaces.JMenuPrincipal();
+            menu.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar el Menú Principal.", "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Fallo al abrir el Menú Principal", e);
+        }
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    private void cargarAdultosEnCombo() {
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        
-        try {
-            //Obtener la lista de Adultos Mayores de la DB
-            listaAdultos = adultoService.listarAdultosMayores();
-            
-            if (listaAdultos.isEmpty()) {
-                model.addElement("No hay Adultos Mayores registrados");
-                cnbAdulto.setEnabled(false);
-            } else {
-                //Llenar el modelo del ComboBox con el Nombre (y opcionalmente el ID)
-                model.addElement("--- Seleccione un Adulto ---"); // Opción por defecto
-                for (AdultoMayor am : listaAdultos) {
-                    model.addElement(am.getNomUsuario() + " (ID: " + am.getIdUsuario() + ")");
+    
+    private void llenarCamposDesdeTabla() {
+        int fila = jTable1.getSelectedRow();
+        if (fila >= 0) {
+            try {
+                int id = (int) jTable1.getValueAt(fila, 0);
+                Familiar f = familiarService.buscarFamiliarPorId(id);
+                
+                txtNombre.setText(f.getNomUsuario());
+                txtApellidoPa.setText(f.getApellidoPaterno());
+                txtApellidoMa.setText(f.getApellidoMaterno());
+                txtTelefono.setText(f.getTelefono());
+                txtDireccion.setText(f.getDireccion());
+                
+                cnbParentesco.setSelectedItem(f.getRelacion());
+                
+                // Seleccionar adulto en combo (Búsqueda manual)
+                if (f.getAdultoMayorAsociado() != null) {
+                    String nombreAdulto = f.getAdultoMayorAsociado().getNomUsuario() + " " + f.getAdultoMayorAsociado().getApellidoPaterno();
+                    for (int i = 0; i < cnbAdulto.getItemCount(); i++) {
+                        if (cnbAdulto.getItemAt(i).equals(nombreAdulto)) {
+                            cnbAdulto.setSelectedIndex(i);
+                            break;
+                        }
+                    }
                 }
-                cnbAdulto.setEnabled(true);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+    
+    private void limpiarCampos() {
+        txtNombre.setText("");
+        txtApellidoPa.setText("");
+        txtApellidoMa.setText("");
+        txtTelefono.setText("");
+        txtDireccion.setText("");
+        cnbAdulto.setSelectedIndex(0);
+        cnbParentesco.setSelectedIndex(0);
+        cnbMedicamento.setSelectedIndex(0);
+    }
+    
+    private void cargarCombos() {
+        try {
+            // A. Combo Adultos
+            listaAdultos = adultoService.listarAdultosMayores();
+            DefaultComboBoxModel<String> modelAdultos = new DefaultComboBoxModel<>();
+            modelAdultos.addElement("--- Seleccione Adulto ---");
+            for (AdultoMayor am : listaAdultos) {
+                modelAdultos.addElement(am.getNomUsuario() + " " + am.getApellidoPaterno());
             }
-            
-            //Asignar el modelo al JComboBox
-            cnbAdulto.setModel(model);
-            
+            cnbAdulto.setModel(modelAdultos);
+
+            // B. Combo Parentesco (Valores Fijos)
+            DefaultComboBoxModel<String> modelParentesco = new DefaultComboBoxModel<>();
+            modelParentesco.addElement("--- Seleccione ---");
+            modelParentesco.addElement("Espos@");
+            modelParentesco.addElement("Hij@");
+            modelParentesco.addElement("Niet@");
+            cnbParentesco.setModel(modelParentesco);
+
+            // C. Combo Medicamentos (Del Catálogo)
+            listaMedicamentos = medicamentoService.listarMedicamentos();
+            DefaultComboBoxModel<String> modelMed = new DefaultComboBoxModel<>();
+            modelMed.addElement("--- Asignar al Adulto (Opcional) ---");
+            for (Medicamento m : listaMedicamentos) {
+                modelMed.addElement(m.getNomMedicamento() + " - " + m.getDosis());
+            }
+            cnbMedicamento.setModel(modelMed);
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar la lista de Adultos.", "Error de DB", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al cargar adultos para el combo", e);
+            logger.log(Level.SEVERE, "Error cargando combos", e);
         }
     }
     
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Limpiar filas
+        model.setRowCount(0);
 
         try {
             List<Familiar> familiares = familiarService.listarFamiliares();
-            
             for (Familiar f : familiares) {
-                // Obtener el nombre del Adulto Mayor asignado.
-                String nombreAdulto = (f.getAdultoMayorAsociado() != null) ? f.getAdultoMayorAsociado().getNomUsuario() : "NO ASIGNADO";
-                                      
+                String nombreCompleto = f.getNomUsuario() + " " + f.getApellidoPaterno() + " " + f.getApellidoMaterno();
+                String nombreAdulto = (f.getAdultoMayorAsociado() != null) 
+                        ? f.getAdultoMayorAsociado().getNomUsuario() + " " + f.getAdultoMayorAsociado().getApellidoPaterno()
+                        : "Sin Asignar";
+
                 model.addRow(new Object[]{
-                    f.getIdUsuario(), 
-                    f.getNomUsuario(),
+                    f.getIdUsuario(),
+                    nombreCompleto,
                     f.getTelefono(),
-                    nombreAdulto // 👈 Mostrar el nombre del Adulto Mayor
+                    nombreAdulto,
+                    f.getRelacion(),
+                    f.getDireccion()
                 });
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar datos de Familiares.", "Error de DB", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al cargar tabla de Familiares", e);
+            logger.log(Level.SEVERE, "Error cargando tabla", e);
         }
     }
     
@@ -441,12 +569,23 @@ public class JFamiliares extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cnbAdulto;
+    private javax.swing.JComboBox<String> cnbMedicamento;
+    private javax.swing.JComboBox<String> cnbParentesco;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel jlabel;
+    private javax.swing.JTextField txtApellidoMa;
+    private javax.swing.JTextField txtApellidoPa;
+    private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables

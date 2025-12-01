@@ -12,6 +12,12 @@ public class AdultoMayor extends Usuario {
     @Column(name = "contacto_emergencia")
     private String contactoEmergencia;
 
+    @Column(name = "apellido_paterno")
+    private String apellidoPaterno;
+
+    @Column(name = "apellido_materno")
+    private String apellidoMaterno;
+    
     // Relación 1:1 Inversa con Familiar
     @OneToOne(mappedBy = "adultoMayorAsociado", cascade = CascadeType.ALL)
     private Familiar familiarResponsable;
@@ -36,10 +42,19 @@ public class AdultoMayor extends Usuario {
 
     public AdultoMayor() {}
 
-    public AdultoMayor(String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia) {
+    public AdultoMayor(String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia,String apePa, String apeMa) {
         super(0, nomUsuario, tipoUsuario, telefono); 
         this.contactoEmergencia = contactoEmergencia;
+        this.apellidoPaterno = apePa;
+        this.apellidoMaterno = apeMa;
     }
+    
+    public AdultoMayor(String nombre, String apePa, String apeMa, String telefono) {
+        super(0, nombre, "Adulto Mayor", telefono); 
+        this.apellidoPaterno = apePa;
+        this.apellidoMaterno = apeMa;
+    }
+    
 
     // Métodos de negocio
     public void agregarMedicamento(Medicamento nuevoMedicamento) {
@@ -68,6 +83,10 @@ public class AdultoMayor extends Usuario {
     }
 
     // Getters y Setters
+    public String getApellidoPaterno() { return apellidoPaterno; }
+    public void setApellidoPaterno(String apellidoPaterno) { this.apellidoPaterno = apellidoPaterno; }
+    public String getApellidoMaterno() { return apellidoMaterno; }
+    public void setApellidoMaterno(String apellidoMaterno) { this.apellidoMaterno = apellidoMaterno; }
     public String getContactoEmergencia() { return contactoEmergencia; }
     public void setContactoEmergencia(String contactoEmergencia) { this.contactoEmergencia = contactoEmergencia; }
     public Familiar getFamiliarResponsable() { return familiarResponsable; }

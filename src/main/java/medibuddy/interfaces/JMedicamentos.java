@@ -2,12 +2,13 @@
 package medibuddy.interfaces;
 
 
+import medibuddy.model.Medicamento;
+import medibuddy.service.MedicamentoService;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.util.logging.Level;
-import medibuddy.service.MedicamentoService;
-import medibuddy.model.Medicamento;
+import java.awt.event.ItemEvent; // Importante para detectar cambios en el combo
 
 public class JMedicamentos extends javax.swing.JFrame {
     // Instancia del servicio de Medicamentos
@@ -19,6 +20,8 @@ public class JMedicamentos extends javax.swing.JFrame {
      */
     public JMedicamentos() {
         initComponents();
+        configurarCombosIniciales();
+        cargarTabla();
     }
 
 
@@ -35,11 +38,14 @@ public class JMedicamentos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtNombreMed = new javax.swing.JTextField();
-        txtDosisMed = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        txtModoAdmin = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        cnbTipo = new javax.swing.JComboBox<>();
+        cnbDosis = new javax.swing.JComboBox<>();
+        cnbModoAdmin = new javax.swing.JComboBox<>();
+        txtOtro = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,17 +76,17 @@ public class JMedicamentos extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre Medicamento", "Dosis del Medicamento", "Modo de administracion"
+                "ID", "Nombre Medicamento", "Tipo de Medicamento", "Dosis del Medicamento", "Modo de administracion"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -99,12 +105,6 @@ public class JMedicamentos extends javax.swing.JFrame {
         txtNombreMed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreMedActionPerformed(evt);
-            }
-        });
-
-        txtDosisMed.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDosisMedActionPerformed(evt);
             }
         });
 
@@ -128,48 +128,59 @@ public class JMedicamentos extends javax.swing.JFrame {
 
         jLabel5.setText("Modo de Administracion:");
 
+        jLabel4.setText("Tipo de medicamento:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(btnRegresar)
-                        .addGap(141, 141, 141)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel5)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(cnbModoAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel3)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(cnbDosis, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(12, 253, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel4)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(cnbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtOtro))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtNombreMed, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(0, 0, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(47, 47, 47)
                                 .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
+                                .addGap(76, 76, 76)
                                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtModoAdmin))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtNombreMed))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtDosisMed, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(21, 21, 21))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(btnRegresar)
+                        .addGap(141, 141, 141)
+                        .addComponent(jLabel1)
+                        .addGap(0, 286, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,15 +192,20 @@ public class JMedicamentos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNombreMed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cnbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtOtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtDosisMed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cnbDosis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtModoAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(cnbModoAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,36 +220,20 @@ public class JMedicamentos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Medicamento para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        int fila = jTable1.getSelectedRow();
+        if (fila < 0) return;
         
-        // 1. Obtener el ID del Medicamento seleccionado
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        int idMed = (int) model.getValueAt(filaSeleccionada, 0);
-
-        int confirmacion = JOptionPane.showConfirmDialog(this, 
-                "¿Está seguro que desea eliminar el Medicamento con ID: " + idMed + "?", 
-                "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
+        int id = (int) jTable1.getValueAt(fila, 0);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Eliminar medicamento?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
             try {
-                // 2. Buscar la entidad para eliminar
-                Medicamento medicamentoAEliminar = medicamentoService.buscarMedicamentoPorId(idMed);
-                
-                if (medicamentoAEliminar != null) {
-                    // 3. Llama al Service para eliminar de la DB
-                    medicamentoService.eliminarMedicamento(medicamentoAEliminar);
-                    
-                    JOptionPane.showMessageDialog(this, "Medicamento eliminado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    cargarTabla(); 
-                    btnLimpiarActionPerformed(null);
-                }
+                Medicamento med = medicamentoService.buscarMedicamentoPorId(id);
+                medicamentoService.eliminarMedicamento(med);
+                cargarTabla();
+                limpiarCampos();
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al eliminar el Medicamento.", "Error de DB", JOptionPane.ERROR_MESSAGE);
-                logger.log(Level.SEVERE, "Fallo al eliminar Medicamento", e);
+                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -248,126 +248,212 @@ public class JMedicamentos extends javax.swing.JFrame {
             menu.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "No se pudo cargar el Menú Principal.", "Error de Navegación", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al abrir el Menú Principal", e);
         }
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         txtNombreMed.setText("");
-        txtDosisMed.setText("");
-        txtModoAdmin.setText("");
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void txtNombreMedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreMedActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreMedActionPerformed
 
-    private void txtDosisMedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDosisMedActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDosisMedActionPerformed
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       String nombreMed = txtNombreMed.getText().trim();
-        String dosisMed = txtDosisMed.getText().trim();
-        String modoAdmin = txtModoAdmin.getText().trim();
-        // hora de recordatorio
-        String horaMed = JOptionPane.showInputDialog(this, "Ingrese la hora del recordatorio (ej. 08:00):"); 
-        
-        // Validar campos
-        if (nombreMed.isEmpty() || dosisMed.isEmpty() || modoAdmin.isEmpty() || horaMed == null || horaMed.isEmpty() || modoAdmin.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos y la hora de recordatorio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+       // 1. Recolección de datos
+        String nombre = txtNombreMed.getText().trim();
+        String tipo = (String) cnbTipo.getSelectedItem();
+        String dosis = (String) cnbDosis.getSelectedItem();
+        String modo = (String) cnbModoAdmin.getSelectedItem();
+        String hora = JOptionPane.showInputDialog(this, "Ingrese hora recordatorio (ej. 08:00):", "08:00");
+
+        // Lógica especial para "Otro"
+        if ("Otro".equals(tipo)) {
+            tipo = txtOtro.getText().trim(); // Guardamos lo que escribió el usuario
+            if (tipo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Especifique el tipo de medicamento en el campo 'Otro'.");
+                return;
+            }
+            dosis = "N/A"; // O podrías pedir dosis manual con otro input
+        }
+
+        // 2. Validaciones
+        if (nombre.isEmpty() || cnbTipo.getSelectedIndex() <= 0 || cnbModoAdmin.getSelectedIndex() <= 0 || hora == null) {
+            JOptionPane.showMessageDialog(this, "Llene todos los campos.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            //  Crear el objeto Medicamento
-            Medicamento nuevoMedicamento = new Medicamento(nombreMed, dosisMed, horaMed, modoAdmin);
-            nuevoMedicamento.setModoAdministracion(modoAdmin); // Asumiendo este método existe
+            Medicamento nuevo = new Medicamento(nombre, tipo, dosis, hora, modo);
+            medicamentoService.crearMedicamento(nuevo);
             
-            // 3. Guardar en la DB
-            medicamentoService.crearMedicamento(nuevoMedicamento); // Asumiendo este método existe en MedicamentoService
-            
-            JOptionPane.showMessageDialog(this, "Medicamento registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            cargarTabla(); 
-            btnLimpiarActionPerformed(null);
-            
+            JOptionPane.showMessageDialog(this, "Medicamento agregado.");
+            limpiarCampos();
+            cargarTabla();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar Medicamento.", "Error", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al agregar Medicamento", e);
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        
-        // Validar selección de fila
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un registro para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String nombreMed = txtNombreMed.getText().trim();
-        String dosisMed = txtDosisMed.getText().trim();
-        String modoAdmin = txtModoAdmin.getText().trim();
-        
-        // Validar campos llenos
-        if (nombreMed.isEmpty() || dosisMed.isEmpty() || modoAdmin.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+       int fila = jTable1.getSelectedRow();
+        if (fila < 0) return;
 
         try {
-            // Obtener el ID del medicamento de la tabla
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            int idMed = (int) model.getValueAt(filaSeleccionada, 0); 
-            
-            // Buscar la entidad en la DB
-            Medicamento medicamentoExistente = medicamentoService.buscarMedicamentoPorId(idMed);
-            
-            if (medicamentoExistente != null) {
-                //Actualizar los datos del objeto
-                medicamentoExistente.setNomMedicamento(nombreMed);
-                medicamentoExistente.setDosis(dosisMed);
-                medicamentoExistente.setModoAdministracion(modoAdmin); 
+            int id = (int) jTable1.getValueAt(fila, 0);
+            Medicamento med = medicamentoService.buscarMedicamentoPorId(id);
 
-
-                // Guardar los cambios en la DB
-                medicamentoService.actualizarMedicamento(medicamentoExistente);
+            if (med != null) {
+                String tipo = (String) cnbTipo.getSelectedItem();
+                String dosis = (String) cnbDosis.getSelectedItem();
                 
-                JOptionPane.showMessageDialog(this, "Medicamento actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarTabla(); 
-                btnLimpiarActionPerformed(null);
+                if ("Otro".equals(tipo)) {
+                    tipo = txtOtro.getText().trim();
+                }
+
+                med.setNomMedicamento(txtNombreMed.getText().trim());
+                med.setPresentacionMedicamento(tipo);
+                med.setDosis(dosis);
+                med.setModoAdministracion((String) cnbModoAdmin.getSelectedItem());
+                
+                medicamentoService.actualizarMedicamento(med);
+                JOptionPane.showMessageDialog(this, "Actualizado.");
+                cargarTabla();
+                limpiarCampos();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al actualizar.", "Error de DB", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al actualizar Medicamento", e);
+            JOptionPane.showMessageDialog(this, "Error al actualizar.");
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
+    private void configurarCombosIniciales() {
+        // A. Llenar Tipos de Medicamento
+        cnbTipo.setModel(new DefaultComboBoxModel<>(new String[] {
+            "--- Seleccione Tipo ---",
+            "Tableta/Comprimido",
+            "Cápsula",
+            "Jarabe",
+            "Suspensión",
+            "Gotas",
+            "Crema/Pomada",
+            "Inyectable",
+            "Otro"
+        }));
+
+        // B. Llenar Modos de Administración (Fijos)
+        cnbModoAdmin.setModel(new DefaultComboBoxModel<>(new String[] {
+            "--- Seleccione Modo ---",
+            "Oral",
+            "Sublingual",
+            "Tópica (Piel)",
+            "Oftálmica (Ojos)",
+            "Intramuscular",
+            "Intravenosa"
+        }));
+
+        // C. Configurar estado inicial
+        txtOtro.setEnabled(false);
+        cnbDosis.setEnabled(false);
+
+        // D. Agregar Listener al Combo Tipo para cambiar Dosis dinámicamente
+        cnbTipo.addItemListener(evt -> {
+            if (evt.getStateChange() == ItemEvent.SELECTED) {
+                actualizarComboDosisAndOtro((String) evt.getItem());
+            }
+        });
+    }
+    
+    private void actualizarComboDosisAndOtro(String tipoSeleccionado) {
+        DefaultComboBoxModel<String> modeloDosis = new DefaultComboBoxModel<>();
+        txtOtro.setEnabled(false);
+        txtOtro.setText("");
+        cnbDosis.setEnabled(true);
+
+        switch (tipoSeleccionado) {
+            case "Tableta/Comprimido":
+            case "Cápsula":
+                modeloDosis.addElement("10 mg");
+                modeloDosis.addElement("20 mg");
+                modeloDosis.addElement("50 mg");
+                modeloDosis.addElement("100 mg");
+                modeloDosis.addElement("250 mg");
+                modeloDosis.addElement("500 mg");
+                modeloDosis.addElement("800 mg");
+                modeloDosis.addElement("1 g");
+                break;
+            case "Jarabe":
+            case "Suspensión":
+                modeloDosis.addElement("5 ml (1 cucharadita)");
+                modeloDosis.addElement("10 ml (1 cucharada)");
+                modeloDosis.addElement("15 ml");
+                modeloDosis.addElement("2.5 ml");
+                break;
+            case "Gotas":
+                modeloDosis.addElement("2 gotas");
+                modeloDosis.addElement("5 gotas");
+                modeloDosis.addElement("10 gotas");
+                modeloDosis.addElement("20 gotas (1 ml)");
+                break;
+            case "Crema/Pomada":
+                modeloDosis.addElement("Aplicar capa fina");
+                modeloDosis.addElement("Cantidad pequeña");
+                modeloDosis.addElement("Generosamente");
+                break;
+            case "Inyectable":
+                modeloDosis.addElement("1 ml");
+                modeloDosis.addElement("2 ml");
+                modeloDosis.addElement("3 ml");
+                modeloDosis.addElement("5 ml");
+                break;
+            case "Otro":
+                txtOtro.setEnabled(true); // Habilitar campo de texto
+                txtOtro.requestFocus();
+                modeloDosis.addElement("Especificar manual");
+                cnbDosis.setEnabled(false); // Dosis manual se escribiría en otro lado si fuera necesario
+                break;
+            default:
+                cnbDosis.setEnabled(false);
+                break;
+        }
+        cnbDosis.setModel(modeloDosis);
+    }
     
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Limpiar filas
-
+        model.setRowCount(0);
         try {
-            // Asumo que MedicamentoService.listarMedicamentos() existe
-            List<Medicamento> medicamentos = medicamentoService.listarMedicamentos(); 
-            
-            for (Medicamento med : medicamentos) {
-
+            List<Medicamento> lista = medicamentoService.listarMedicamentos();
+            for (Medicamento m : lista) {
                 model.addRow(new Object[]{
-                    med.getIdMedicamento(), 
-                    med.getNomMedicamento(),
-                    med.getDosis(),
-                    med.getModoAministracion()
+                    m.getIdMedicamento(),
+                    m.getNomMedicamento(),
+                    m.getPresentacionMedicamento(),
+                    m.getDosis(),
+                    m.getModoAdministracion()
                 });
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar datos de Medicamentos.", "Error", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.SEVERE, "Fallo al cargar tabla de Medicamentos", e);
+            e.printStackTrace();
         }
     }
 
+    private void llenarCamposDesdeTabla() {
+        int fila = jTable1.getSelectedRow();
+        if (fila >= 0) {
+            txtNombreMed.setText(jTable1.getValueAt(fila, 1).toString());
+            // Nota: Seleccionar el combo exacto es complejo si es "Otro", 
+            // pero para edición básica cargamos el nombre.
+        }
+    }
+
+    private void limpiarCampos() {
+        txtNombreMed.setText("");
+        txtOtro.setText("");
+        cnbTipo.setSelectedIndex(0);
+        cnbModoAdmin.setSelectedIndex(0);
+        // cnbDosis se limpia solo al cambiar tipo
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -396,14 +482,17 @@ public class JMedicamentos extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JComboBox<String> cnbDosis;
+    private javax.swing.JComboBox<String> cnbModoAdmin;
+    private javax.swing.JComboBox<String> cnbTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField txtDosisMed;
-    private javax.swing.JTextField txtModoAdmin;
     private javax.swing.JTextField txtNombreMed;
+    private javax.swing.JTextField txtOtro;
     // End of variables declaration//GEN-END:variables
 }
