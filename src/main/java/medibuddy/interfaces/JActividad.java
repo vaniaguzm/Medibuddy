@@ -3,6 +3,7 @@ package medibuddy.interfaces;
 import medibuddy.model.Actividad;
 import medibuddy.model.Organizador;
 import medibuddy.model.Fundacion;
+import medibuddy.model.AdultoMayor;
 import medibuddy.service.ActividadService;
 import medibuddy.service.OrganizadorService;
 
@@ -21,13 +22,18 @@ public class JActividad extends javax.swing.JFrame {
     private final ActividadService actividadService = new ActividadService();
     private final OrganizadorService organizadorService = new OrganizadorService();
     
-    // Lista auxiliar
+    // Lista auxiliar para el combo
     private List<Organizador> listaOrganizadores;
 
     public JActividad() {
         initComponents();
         cargarCombos();
-        cargarTabla(); // Ahora carga en la tabla correcta
+        cargarTablaActividades(); 
+        
+        // Inicializamos la tabla de participantes vacía
+        DefaultTableModel modelParticipantes = (DefaultTableModel) tblParticipantes.getModel();
+        modelParticipantes.setRowCount(0);
+        
         setLocationRelativeTo(null);
     }
 
@@ -55,8 +61,8 @@ public class JActividad extends javax.swing.JFrame {
         }
     }
     
-    private void cargarTabla() {
-        // CORRECCIÓN: Usamos jTable1, que es la única tabla en la interfaz ahora
+    // Carga la tabla superior (Actividades)
+    private void cargarTablaActividades() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         
@@ -78,16 +84,46 @@ public class JActividad extends javax.swing.JFrame {
                 });
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error cargando tabla", e);
+            logger.log(Level.SEVERE, "Error cargando tabla actividades", e);
         }
     }
     
-    // Método para llenar los campos al hacer clic en la tabla
+    // --- MÉTODO CORREGIDO: Carga la tabla inferior (Participantes) ---
+    private void cargarParticipantes(int idActividad) {
+        DefaultTableModel model = (DefaultTableModel) tblParticipantes.getModel();
+        model.setRowCount(0); // Limpiar tabla
+        
+        try {
+            // Buscamos la actividad completa. El repositorio hace FETCH de participantes, 
+            // así que Hibernate ya trae la lista lista para usar.
+            Actividad actividad = actividadService.buscarActividadPorId(idActividad);
+            
+            if (actividad != null && actividad.getParticipantes() != null) {
+                for (AdultoMayor am : actividad.getParticipantes()) {
+                    // Concatenamos apellidos para mostrarlos juntos
+                    String apellidos = am.getApellidoPaterno() + " " + am.getApellidoMaterno();
+                    
+                    model.addRow(new Object[]{
+                        am.getIdUsuario(),
+                        am.getNomUsuario(), // Corrección basada en tu modelo Usuario
+                        apellidos,          // Corrección basada en tu modelo AdultoMayor
+                        am.getTelefono()
+                    });
+                }
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error cargando participantes", e);
+        }
+    }
+    
+    // Método para llenar los campos al hacer clic en la tabla superior
     private void llenarCampos() {
         int fila = jTable1.getSelectedRow();
         if (fila >= 0) {
             try {
                 int id = (int) jTable1.getValueAt(fila, 0);
+                
+                // 1. Llenar el formulario de arriba
                 Actividad a = actividadService.buscarActividadPorId(id);
                 
                 if (a != null) {
@@ -98,7 +134,6 @@ public class JActividad extends javax.swing.JFrame {
                     
                     if (a.getOrganizador() != null) {
                         String nombreOrg = a.getOrganizador().getNombre();
-                        // Selección aproximada en el combo
                         for (int i = 1; i < cnbOrganizador.getItemCount(); i++) {
                             if (cnbOrganizador.getItemAt(i).contains(nombreOrg)) {
                                 cnbOrganizador.setSelectedIndex(i);
@@ -107,6 +142,9 @@ public class JActividad extends javax.swing.JFrame {
                         }
                     }
                     cnbCupo.setSelectedItem(String.valueOf(a.getCupoMaximo()));
+                    
+                    // 2. --- ACTUALIZAR LA SEGUNDA TABLA ---
+                    cargarParticipantes(id);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -122,7 +160,7 @@ public class JActividad extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
         btnIrInscripciones = new javax.swing.JButton();
         
-        // Campos
+        // Formulario
         jLabel2 = new javax.swing.JLabel();
         cnbOrganizador = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
@@ -136,15 +174,20 @@ public class JActividad extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         cnbCupo = new javax.swing.JComboBox<>();
 
-        // Botones Acciones
+        // Botones
         btnAgregar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
 
-        // Tabla Única
+        // Tabla 1: Actividades
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        
+        // --- Componentes para la segunda tabla ---
+        jLabelParticipantes = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblParticipantes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,6 +208,10 @@ public class JActividad extends javax.swing.JFrame {
         jLabel5.setText("Fecha:");
         jLabel6.setText("Ubicación:");
         jLabel7.setText("Cupo Máximo:");
+        
+        // Etiqueta de la nueva tabla
+        jLabelParticipantes.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        jLabelParticipantes.setText("Adultos Mayores Inscritos en la actividad seleccionada:");
 
         // Configuración Botones
         btnAgregar.setBackground(new java.awt.Color(111, 207, 123));
@@ -187,7 +234,7 @@ public class JActividad extends javax.swing.JFrame {
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(evt -> btnLimpiarActionPerformed(evt));
 
-        // Configuración Tabla
+        // Configuración Tabla 1 (Actividades)
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
@@ -202,11 +249,24 @@ public class JActividad extends javax.swing.JFrame {
         
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                llenarCampos();
+                llenarCampos(); // Esto actualiza ambas tablas
             }
         });
-        
         jScrollPane1.setViewportView(jTable1);
+        
+        // Configuración Tabla 2 (Participantes)
+        tblParticipantes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "ID Usuario", "Nombre", "Apellidos", "Teléfono"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] { false, false, false, false };
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblParticipantes);
 
         // --- Layout ---
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -216,37 +276,41 @@ public class JActividad extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1) // Tabla 1
+                    .addComponent(jScrollPane2) // Tabla 2
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cnbOrganizador, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtActividad)
-                            .addComponent(txtDescripcion)
-                            .addComponent(txtFecha)
-                            .addComponent(txtUbicacion)
-                            .addComponent(cnbCupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRegresar)
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                        .addComponent(btnIrInscripciones))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelParticipantes)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cnbOrganizador, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtActividad)
+                                    .addComponent(txtDescripcion)
+                                    .addComponent(txtFecha)
+                                    .addComponent(txtUbicacion)
+                                    .addComponent(cnbCupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnRegresar)
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                                .addComponent(btnIrInscripciones))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -289,7 +353,11 @@ public class JActividad extends javax.swing.JFrame {
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelParticipantes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -318,7 +386,7 @@ public class JActividad extends javax.swing.JFrame {
             organizadorService.crearActividad(organizadorSeleccionado.getId(), nueva);
             
             JOptionPane.showMessageDialog(this, "Actividad creada exitosamente.");
-            cargarTabla(); // Refresca la tabla visible
+            cargarTablaActividades(); 
             btnLimpiarActionPerformed(null);
             
         } catch (Exception e) {
@@ -329,7 +397,7 @@ public class JActividad extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {
         int fila = jTable1.getSelectedRow();
         if (fila < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione una actividad.");
+            JOptionPane.showMessageDialog(this, "Seleccione una actividad de la tabla superior.");
             return;
         }
         
@@ -351,7 +419,7 @@ public class JActividad extends javax.swing.JFrame {
                 
                 actividadService.actualizarActividad(a);
                 JOptionPane.showMessageDialog(this, "Actividad actualizada.");
-                cargarTabla();
+                cargarTablaActividades();
                 btnLimpiarActionPerformed(null);
             }
         } catch (Exception e) {
@@ -373,7 +441,7 @@ public class JActividad extends javax.swing.JFrame {
             try {
                 Actividad a = actividadService.buscarActividadPorId(id);
                 actividadService.eliminarActividad(a);
-                cargarTabla();
+                cargarTablaActividades();
                 btnLimpiarActionPerformed(null);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -389,6 +457,10 @@ public class JActividad extends javax.swing.JFrame {
         cnbOrganizador.setSelectedIndex(0);
         cnbCupo.setSelectedIndex(0);
         jTable1.clearSelection();
+        
+        // Limpiamos también la tabla de participantes
+        DefaultTableModel model = (DefaultTableModel) tblParticipantes.getModel();
+        model.setRowCount(0);
     }
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {
@@ -427,8 +499,16 @@ public class JActividad extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    // NUEVA ETIQUETA
+    private javax.swing.JLabel jLabelParticipantes; 
+    
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    
+    // NUEVA TABLA Y SCROLL
+    private javax.swing.JScrollPane jScrollPane2; 
+    private javax.swing.JTable tblParticipantes;
+    
     private javax.swing.JTextField txtActividad;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtFecha;
