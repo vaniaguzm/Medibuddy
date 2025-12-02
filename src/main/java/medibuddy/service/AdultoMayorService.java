@@ -45,11 +45,21 @@ public class AdultoMayorService {
 
     public void inscribirEnActividad(int idAdultoMayor, int idActividad) {
         AdultoMayor adulto = repository.findById(idAdultoMayor);
-        Actividad actividad = actividadRepository.findById(idActividad);
+    Actividad actividad = actividadRepository.findById(idActividad);
 
-        if (adulto != null && actividad != null) {
-            adulto.inscribirse(actividad); 
-            repository.update(adulto);  
+    if (adulto != null && actividad != null) {
+        // Revisa si la lista de actividades del adulto YA contiene ESTA actividad específica.
+        if (adulto.getActividadesInscritas().contains(actividad)) {
+            // Si ya la tiene, lanza el error y NO guarda.
+            throw new RuntimeException("El adulto " + adulto.getNomUsuario() + " YA está inscrito en esta actividad.");
+        }
+        
+        // Si no la tiene pasa directo aquí:
+        adulto.inscribirse(actividad); 
+        repository.update(adulto);  
+        
+        } else {
+            throw new RuntimeException("Error: No se encontró el adulto o la actividad.");
         }
     }
 }

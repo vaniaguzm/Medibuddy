@@ -50,8 +50,9 @@ public class Main {
 
         // 1. Crear Adulto Mayor
         AdultoMayor donPedro = new AdultoMayor(
-            "Pedro Infante",
-            "Adulto Mayor",
+            "Pedro",
+            "Infante",
+            "casares",
             "555-1010",
             "911"
         );

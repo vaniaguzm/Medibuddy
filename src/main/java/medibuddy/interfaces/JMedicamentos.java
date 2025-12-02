@@ -22,6 +22,8 @@ public class JMedicamentos extends javax.swing.JFrame {
         initComponents();
         configurarCombosIniciales();
         cargarTabla();
+        inicializarDatosPrueba();
+        setLocationRelativeTo(null);
     }
 
 
@@ -219,6 +221,20 @@ public class JMedicamentos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void inicializarDatosPrueba() {
+        // Solo insertamos si la lista está vacía
+            try {
+                medicamentoService.crearMedicamento(new Medicamento("Paracetamol", "Tableta/Comprimido", "500 mg", "08:00", "Oral"));
+                medicamentoService.crearMedicamento(new Medicamento("Ibuprofeno", "Cápsula", "400 mg", "14:00", "Oral"));
+                medicamentoService.crearMedicamento(new Medicamento("Loratadina", "Jarabe", "10 ml", "20:00", "Oral"));
+                medicamentoService.crearMedicamento(new Medicamento("Diclofenaco", "Inyectable", "2 ml", "12:00", "Intramuscular"));
+                
+                System.out.println("✅ Datos de prueba de Medicamentos creados.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "No se pudo cargar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+    }
+    
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int fila = jTable1.getSelectedRow();
         if (fila < 0) return;

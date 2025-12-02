@@ -21,6 +21,7 @@ public class JFundaciones extends javax.swing.JFrame {
         initComponents();
         inicializarDatosTabla(); // Crea datos dummy si está vacía
         cargarTablaFundaciones();
+        setLocationRelativeTo(null);
     }
 
 
@@ -273,7 +274,6 @@ public class JFundaciones extends javax.swing.JFrame {
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "Error al crear datos de prueba", e);
             }
-        
     }
 
     private void cargarTablaFundaciones() {

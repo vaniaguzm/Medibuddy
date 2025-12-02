@@ -225,36 +225,41 @@ public class JInscripciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscribirActionPerformed
-        // 1. Validar selección de Adulto
+        // 1. Validaciones Visuales
         int idxAdulto = cnbAdultos.getSelectedIndex();
-        if (idxAdulto <= 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un Adulto Mayor.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // 2. Validar selección de Actividad
         int fila = jTableActividades.getSelectedRow();
+
+        if (idxAdulto <= 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un Adulto Mayor de la lista.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if (fila < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione una Actividad de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una Actividad de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        // 2. Bloque TRY-CATCH para la Lógica de Negocio
         try {
-            // 3. Recuperar IDs reales
-            // Restamos 1 porque el índice 0 del combo es "--- Seleccione ---"
+            // A. Obtener el Adulto seleccionado (Restamos 1 por el encabezado del combo)
             AdultoMayor adulto = listaAdultos.get(idxAdulto - 1);
             
-            // Obtenemos ID de la columna 0 de la tabla
+            // B. Obtener el ID de la Actividad seleccionada (Columna 0 de la tabla)
             int idActividad = (int) jTableActividades.getValueAt(fila, 0);
 
-            // 4. Llamar al servicio para inscribir
+            // C. LLAMAR AL SERVICIO (Aquí es donde salta el error si ya está inscrito o lleno)
             adultoService.inscribirEnActividad(adulto.getIdUsuario(), idActividad);
             
-            JOptionPane.showMessageDialog(this, "¡Inscripción exitosa!\n" + adulto.getNomUsuario() + " asistirá.");
-            cargarTablaActividades(); // Refrescar para ver si cambia el cupo visualmente
+            // D. Mensaje de Éxito (solo llega aquí si no hubo error)
+            JOptionPane.showMessageDialog(this, 
+                "✅ ¡Inscripción exitosa!\n" + adulto.getNomUsuario() + " asistirá a la actividad.", 
+                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            
+            // E. Refrescar tabla para ver actualizado el contador de cupo
+            cargarTablaActividades(); 
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al inscribir: " + e.getMessage());
+            // Si el servicio dice "Ya está inscrito", e.getMessage() tendrá ese texto.
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de Inscripción", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnInscribirActionPerformed
 

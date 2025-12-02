@@ -45,6 +45,8 @@ public class Usuario {
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
+    
+    
 
     public String getNomUsuario() {
         return nomUsuario;

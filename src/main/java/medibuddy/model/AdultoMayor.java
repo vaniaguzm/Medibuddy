@@ -42,19 +42,12 @@ public class AdultoMayor extends Usuario {
 
     public AdultoMayor() {}
 
-    public AdultoMayor(String nomUsuario, String tipoUsuario, String telefono, String contactoEmergencia,String apePa, String apeMa) {
-        super(0, nomUsuario, tipoUsuario, telefono); 
-        this.contactoEmergencia = contactoEmergencia;
-        this.apellidoPaterno = apePa;
-        this.apellidoMaterno = apeMa;
-    }
-    
-    public AdultoMayor(String nombre, String apePa, String apeMa, String telefono) {
+    public AdultoMayor(String nombre, String apePa, String apeMa, String telefono, String emergencia) {
+        // 1. Enviamos datos generales al Padre (Usuario)
+        // El ID va en 0 porque es autoincremental
         super(0, nombre, "Adulto Mayor", telefono); 
-        this.apellidoPaterno = apePa;
-        this.apellidoMaterno = apeMa;
+        this.contactoEmergencia = emergencia;
     }
-    
 
     // Métodos de negocio
     public void agregarMedicamento(Medicamento nuevoMedicamento) {

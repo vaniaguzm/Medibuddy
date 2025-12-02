@@ -21,6 +21,7 @@ public class JCentrosAcopio extends javax.swing.JFrame {
     public JCentrosAcopio() {
         initComponents();
         cargarTabla();
+        setLocationRelativeTo(null); // Centrar ventana
     }
 
     /**

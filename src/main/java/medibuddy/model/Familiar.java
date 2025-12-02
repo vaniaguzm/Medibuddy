@@ -34,11 +34,14 @@ public class Familiar extends Usuario {
         this.adultoMayorAsociado = adulto;
     }
     
+    
     public Familiar(String nomUsuario, String tipoUsuario, String telefono, String relacion, AdultoMayor adultoMayor) {
         super(0, nomUsuario, tipoUsuario, telefono);
         this.relacion = relacion;
         this.adultoMayorAsociado = adultoMayor;
     }
+    
+    
 
     public String getRelacion() { return relacion; }
     public void setRelacion(String relacion) { this.relacion = relacion; }

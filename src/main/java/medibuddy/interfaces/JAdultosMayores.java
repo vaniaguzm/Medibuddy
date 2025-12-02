@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+
 public class JAdultosMayores extends javax.swing.JFrame {
 
     // Instancia del servicio
@@ -19,6 +20,7 @@ public class JAdultosMayores extends javax.swing.JFrame {
         initComponents();
         cargarTabla(); // Cargar datos al iniciar
         setLocationRelativeTo(null); // Centrar ventana
+        inicializarDatosPrueba();
     }
 
     /**
@@ -56,6 +58,26 @@ public class JAdultosMayores extends javax.swing.JFrame {
         }
     }
 
+    private void inicializarDatosPrueba() {
+        try {
+            AdultoMayor a1 = new AdultoMayor("Juan Pérez", "López", "García", "33345678753","3311223344");
+            a1.setContactoEmergencia("No tiene"); // Se actualizará cuando se cree el familiar
+
+            AdultoMayor a2 = new AdultoMayor("María González", "Sánchez", "Torres","33456745312" ,"3344556677");
+            a2.setContactoEmergencia("No tiene");
+
+            AdultoMayor a3 = new AdultoMayor("Roberto Díaz", "Ramírez", "Vega", "3346956712","3388990011");
+            a3.setContactoEmergencia("No tiene");
+
+            AdultoMayor a4 = new AdultoMayor("Carmen Ruiz", "Ortiz", "Méndez", "3348576790","3322114455");
+            a4.setContactoEmergencia("No tiene");
+
+            System.out.println("✅ Datos de prueba de Adultos Mayores creados.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
@@ -247,20 +269,20 @@ public class JAdultosMayores extends javax.swing.JFrame {
         String emergencia = txtEmergencia.getText().trim();
 
         // 2. Validaciones
-        if (nombre.isEmpty() || apPaterno.isEmpty() || telefono.isEmpty() || emergencia.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor llene todos los campos obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        if (nombre.isEmpty() || apPaterno.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre, Apellido Paterno y Teléfono son obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            // 3. Crear Objeto (Usando Setters para los campos nuevos)
+            // 3. Crear Objeto 
             AdultoMayor nuevoAdulto = new AdultoMayor();
             nuevoAdulto.setNomUsuario(nombre);
-            nuevoAdulto.setApellidoPaterno(apPaterno);
-            nuevoAdulto.setApellidoMaterno(apMaterno);
+            nuevoAdulto.setApellidoPaterno(apPaterno); // 👈 Verifica que este setter exista en el modelo
+            nuevoAdulto.setApellidoMaterno(apMaterno); // 👈 Verifica que este setter exista en el modelo
             nuevoAdulto.setTelefono(telefono);
             nuevoAdulto.setContactoEmergencia(emergencia);
-            nuevoAdulto.setTipoUsuario("Adulto Mayor"); // Fijo por regla de negocio
+            nuevoAdulto.setTipoUsuario("Adulto Mayor");
 
             // 4. Guardar
             adultoService.crearAdultoMayor(nuevoAdulto);
@@ -271,6 +293,7 @@ public class JAdultosMayores extends javax.swing.JFrame {
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
