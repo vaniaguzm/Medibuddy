@@ -47,6 +47,10 @@ public class AdultoMayor extends Usuario {
         // El ID va en 0 porque es autoincremental
         super(0, nombre, "Adulto Mayor", telefono); 
         this.contactoEmergencia = emergencia;
+        // 2. Inicializamos los atributos propios de AdultoMayor
+        this.apellidoPaterno = apePa; // ¡CORREGIDO! Faltaba inicializar
+        this.apellidoMaterno = apeMa; // ¡CORREGIDO! Faltaba inicializar
+        this.contactoEmergencia = emergencia;
     }
 
     // Métodos de negocio
