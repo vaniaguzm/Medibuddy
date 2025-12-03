@@ -34,12 +34,15 @@ public class Familiar extends Usuario {
         this.adultoMayorAsociado = adulto;
     }
     
-    
-    public Familiar(String nomUsuario, String tipoUsuario, String telefono, String relacion, AdultoMayor adultoMayor) {
-        super(0, nomUsuario, tipoUsuario, telefono);
+    public Familiar(String nombreCompleto, String telefono, String relacion, String direccion, AdultoMayor adultoMayor) {
+        // Pasamos "Familiar" fijo como tipoUsuario para que no se revuelvan los datos
+        super(0, nombreCompleto, "Familiar", telefono); 
         this.relacion = relacion;
+        this.direccion = direccion;
         this.adultoMayorAsociado = adultoMayor;
     }
+    
+
     
     
 

@@ -44,25 +44,22 @@ public class JFamiliares extends javax.swing.JFrame {
             try {
                 List<AdultoMayor> adultos = adultoService.listarAdultosMayores();
                 
-                // Necesitamos al menos 4 adultos creados previamente
                 if (adultos.size() >= 4) {
-                    // Familiar 1 para Adulto 1
-                    Familiar f1 = new Familiar("Carlos Pérez Lopez Mendez", "3336669988", "Hij@", "Av. México 123", adultos.get(0));
+                    // Orden del Constructor: (Nombre, Telefono, Relacion, Direccion, Adulto)
+                    Familiar f1 = new Familiar("Carlos Pérez", "3336669988", "Hij@", "Av. México 123", adultos.get(0));
                     familiarService.crearFamiliar(f1);
 
-                    // Familiar 2 para Adulto 2
-                    Familiar f2 = new Familiar("Ana González Sanchez Ruiz", "3311447788", "Niet@", "Calle Independencia 45", adultos.get(1));
+                    Familiar f2 = new Familiar("Ana González", "3311447788", "Niet@", "Calle Independencia 45", adultos.get(1));
                     familiarService.crearFamiliar(f2);
 
-                    // Familiar 3 para Adulto 3
-                    Familiar f3 = new Familiar("Luis Díaz Ramirez Perez","3322558899", "Espos@", "Av. Vallarta 500", adultos.get(2));
+                    Familiar f3 = new Familiar("Luis Díaz", "3322558899", "Espos@", "Av. Vallarta 500", adultos.get(2));
                     familiarService.crearFamiliar(f3);
 
-                    // Familiar 4 para Adulto 4
-                    Familiar f4 = new Familiar("Sofía Ruiz Ortiz Gomez", "3399887766", "Hij@", "Calle Morelos 89", adultos.get(3));
+                    Familiar f4 = new Familiar("Sofía Ruiz", "3399887766", "Hij@", "Calle Morelos 89", adultos.get(3));
                     familiarService.crearFamiliar(f4);
                     
-                    System.out.println("✅ Datos de prueba de Familiares creados.");
+                    System.out.println("✅ Datos de prueba de Familiares creados y ordenados.");
+                    cargarTabla(); 
                 }
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "Error al crear datos de prueba", e);
@@ -331,44 +328,41 @@ public class JFamiliares extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       // 1. Recolección
-        String textoNombre = txtNombre.getText().trim();
-        String tel = txtTelefono.getText().trim();
-        String dir = txtDireccion.getText().trim();
+       String nombre = txtNombre.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+        String direccion = txtDireccion.getText().trim();
         int idxAdulto = cnbAdulto.getSelectedIndex();
         int idxMed = cnbMedicamento.getSelectedIndex();
 
-        // 2. Validaciones
-        if (textoNombre.isEmpty() || tel.isEmpty() || idxAdulto <= 0 || cnbParentesco.getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(this, "Nombre, Teléfono, Adulto y Parentesco son obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        if (nombre.isEmpty() || telefono.isEmpty() || idxAdulto <= 0 || cnbParentesco.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(this, "Llene todos los campos obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            // 3. Obtener Adulto Mayor y validar relación
+            // Validar relación
             AdultoMayor adulto = listaAdultos.get(idxAdulto - 1);
             if (adulto.getFamiliarResponsable() != null) {
                 JOptionPane.showMessageDialog(this, "Este adulto ya tiene un familiar asignado.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // 5. Crear Familiar
             String parentesco = (String) cnbParentesco.getSelectedItem();
-            Familiar nuevoFamiliar = new Familiar(textoNombre, tel, parentesco, dir, adulto);
             
-            // 6. Lógica de Medicamento para el Adulto (Acumulativo)
+            // Usamos el constructor corregido
+            Familiar nuevoFamiliar = new Familiar(nombre, telefono, parentesco, direccion, adulto);
+            
+            // Lógica Medicamento (Acumulativo)
             if (idxMed > 0) {
                 Medicamento medCatalogo = listaMedicamentos.get(idxMed - 1);
-                
-                // Verificar si ya lo tiene para no duplicar
                 boolean yaTiene = false;
                 for(Medicamento m : adulto.getMedicamentos()) {
                     if(m.getNomMedicamento().equals(medCatalogo.getNomMedicamento())) { 
                         yaTiene = true; break; 
                     }
                 }
-
                 if (!yaTiene) {
+                    // Clonar medicamento para el adulto
                     Medicamento nuevoMed = new Medicamento(
                         medCatalogo.getNomMedicamento(), medCatalogo.getPresentacionMedicamento(), 
                         medCatalogo.getDosis(), medCatalogo.getHoraRecordatorio(), 
@@ -379,9 +373,7 @@ public class JFamiliares extends javax.swing.JFrame {
                 }
             }
 
-            // 7. Guardar Familiar
             familiarService.crearFamiliar(nuevoFamiliar);
-            
             JOptionPane.showMessageDialog(this, "Familiar registrado correctamente.");
             limpiarCampos();
             cargarTabla();
@@ -399,18 +391,18 @@ public class JFamiliares extends javax.swing.JFrame {
             int id = (int) jTable1.getValueAt(fila, 0);
             Familiar fam = familiarService.buscarFamiliarPorId(id);
 
-            if (fam != null) {          
+            if (fam != null) {
+                fam.setNomUsuario(txtNombre.getText().trim()); // Nombre completo directo
                 fam.setTelefono(txtTelefono.getText().trim());
                 fam.setDireccion(txtDireccion.getText().trim());
                 
                 if (cnbParentesco.getSelectedIndex() > 0) 
                     fam.setRelacion((String) cnbParentesco.getSelectedItem());
                 
-                // Lógica de cambio de Adulto
+                // Cambio de Adulto
                 if (cnbAdulto.getSelectedIndex() > 0) {
                     AdultoMayor nuevoAdulto = listaAdultos.get(cnbAdulto.getSelectedIndex() - 1);
                     
-                    // Si cambia de adulto, validamos que el nuevo esté libre
                     if (fam.getAdultoMayorAsociado().getIdUsuario() != nuevoAdulto.getIdUsuario()) {
                          if (nuevoAdulto.getFamiliarResponsable() != null) {
                              JOptionPane.showMessageDialog(this, "El nuevo adulto seleccionado ya tiene familiar.");
@@ -419,13 +411,11 @@ public class JFamiliares extends javax.swing.JFrame {
                          fam.setAdultoMayorAsociado(nuevoAdulto);
                     }
                     
-                    // Lógica de medicamento (Agregar al adulto actual)
+                    // Agregar Medicamento al adulto actual del familiar
                     if (cnbMedicamento.getSelectedIndex() > 0) {
                         Medicamento medCatalogo = listaMedicamentos.get(cnbMedicamento.getSelectedIndex() - 1);
                         AdultoMayor adultoActual = fam.getAdultoMayorAsociado();
                         
-                        // Agregar si no existe
-                        // (Lógica simplificada, idealmente usar el método auxiliar yaTieneMedicamento)
                         Medicamento nuevoMed = new Medicamento(
                             medCatalogo.getNomMedicamento(), medCatalogo.getPresentacionMedicamento(),
                             medCatalogo.getDosis(), medCatalogo.getHoraRecordatorio(),
@@ -548,15 +538,14 @@ public class JFamiliares extends javax.swing.JFrame {
         try {
             List<Familiar> familiares = familiarService.listarFamiliares();
             for (Familiar f : familiares) {
-                // Concatenamos para la tabla también
-                String nombreCompleto = f.getNomUsuario() + " " + f.getApellidoPaterno() + " " + f.getApellidoMaterno();
                 String nombreAdulto = (f.getAdultoMayorAsociado() != null) 
-                        ? f.getAdultoMayorAsociado().getNomUsuario() + " " + f.getAdultoMayorAsociado().getApellidoPaterno()
+                        ? f.getAdultoMayorAsociado().getNomUsuario()
                         : "Sin Asignar";
 
+                // OJO: El orden aquí debe ser IDÉNTICO al encabezado de la tabla en initComponents
                 model.addRow(new Object[]{
                     f.getIdUsuario(),
-                    nombreCompleto.trim(), // Nombre limpio
+                    f.getNomUsuario(), // Nombre completo
                     f.getTelefono(),
                     nombreAdulto,
                     f.getRelacion(),
