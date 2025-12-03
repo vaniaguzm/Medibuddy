@@ -64,14 +64,7 @@ public class Main {
         System.out.println("✅ Adulto Mayor creado: " + donPedro.obtenerDatos());
 
         // 2. Crear Familiar (Vinculado a Don Pedro)
-        Familiar nietaLuisa = new Familiar(
-            "Luisa Lane",
-            "Familiar",
-            "555-2020",
-            "Nieta",
-            donPedro // <--- Aquí pasamos el objeto del abuelo
-        );
-
+        Familiar nietaLuisa = new Familiar();
         familiarService.crearFamiliar(nietaLuisa);
         System.out.println("✅ Familiar creado: " + nietaLuisa.obtenerDatos() + 
                            " cuidando a -> " + nietaLuisa.getAdultoMayorAsociado().getNomUsuario());

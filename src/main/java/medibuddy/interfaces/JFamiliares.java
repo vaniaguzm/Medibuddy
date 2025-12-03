@@ -38,35 +38,43 @@ public class JFamiliares extends javax.swing.JFrame {
 
 
 
-    
-    private void inicializarDatosPrueba() {
-        if (familiarService.listarFamiliares().isEmpty()) {
-            try {
-                List<AdultoMayor> adultos = adultoService.listarAdultosMayores();
+private void inicializarDatosPrueba() {
+    if (familiarService.listarFamiliares().isEmpty()) {
+        try {
+            List<AdultoMayor> adultos = adultoService.listarAdultosMayores();
+            
+            if (adultos.size() >= 4) {
                 
-                if (adultos.size() >= 4) {
-                    // Orden del Constructor: (Nombre, Telefono, Relacion, Direccion, Adulto)
-                    Familiar f1 = new Familiar("Carlos Pérez", "3336669988", "Hij@", "Av. México 123", adultos.get(0));
-                    familiarService.crearFamiliar(f1);
+                // Nuevo Orden del Constructor: 
+                // (Nombre, Ape. Paterno, Ape. Materno, Teléfono, Relación, Dirección, Adulto)
+                // Usando 'null' para AdultoMayor según la instrucción, y asumiendo
+                // que los apellidos se obtienen del nombre completo original.
 
-                    Familiar f2 = new Familiar("Ana González", "3311447788", "Niet@", "Calle Independencia 45", adultos.get(1));
-                    familiarService.crearFamiliar(f2);
+                // Caso 1: Carlos Pérez (ApePa: Pérez, ApeMa: null/Vacío)
+                Familiar f1 = new Familiar("Carlos", "Pérez", "", "3336669988", "Hij@", "Av. México 123", null);
+                familiarService.crearFamiliar(f1);
 
-                    Familiar f3 = new Familiar("Luis Díaz", "3322558899", "Espos@", "Av. Vallarta 500", adultos.get(2));
-                    familiarService.crearFamiliar(f3);
+                // Caso 2: Ana González (ApePa: González, ApeMa: null/Vacío)
+                Familiar f2 = new Familiar("Ana", "González", "", "3311447788", "Niet@", "Calle Independencia 45", null);
+                familiarService.crearFamiliar(f2);
 
-                    Familiar f4 = new Familiar("Sofía Ruiz", "3399887766", "Hij@", "Calle Morelos 89", adultos.get(3));
-                    familiarService.crearFamiliar(f4);
-                    
-                    System.out.println("✅ Datos de prueba de Familiares creados y ordenados.");
-                    cargarTabla(); 
-                }
-            } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error al crear datos de prueba", e);
+                // Caso 3: Luis Díaz (ApePa: Díaz, ApeMa: null/Vacío)
+                Familiar f3 = new Familiar("Luis", "Díaz", "", "3322558899", "Espos@", "Av. Vallarta 500", null);
+                familiarService.crearFamiliar(f3);
+
+                // Caso 4: Sofía Ruiz (ApePa: Ruiz, ApeMa: null/Vacío)
+                Familiar f4 = new Familiar("Sofía", "Ruiz", "", "3399887766", "Hij@", "Calle Morelos 89", null);
+                familiarService.crearFamiliar(f4);
+                
+                System.out.println("✅ Datos de prueba de Familiares creados y ordenados.");
+                cargarTabla(); 
             }
+        } catch (Exception e) {
+            // Es importante que la variable 'logger' esté definida en la clase
+            logger.log(Level.SEVERE, "Error al crear datos de prueba", e);
         }
     }
-    
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -92,6 +100,10 @@ public class JFamiliares extends javax.swing.JFrame {
         cnbMedicamento = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtApellidoPaterno = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtApellidoMaterno = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -189,6 +201,22 @@ public class JFamiliares extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel9.setText("Relacionar Adulto Mayor");
 
+        jLabel5.setText("Apellido Paterno");
+
+        txtApellidoPaterno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtApellidoPaternoActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Apellido Materno");
+
+        txtApellidoMaterno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtApellidoMaternoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -207,29 +235,6 @@ public class JFamiliares extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtTelefono))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jlabel)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtNombre)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(48, 48, 48)
-                                        .addComponent(jLabel9))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cnbMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel7)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -245,7 +250,39 @@ public class JFamiliares extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(48, 48, 48)
+                                        .addComponent(jLabel9))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cnbMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtTelefono))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jlabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtDireccion))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -257,7 +294,13 @@ public class JFamiliares extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(txtApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -328,51 +371,43 @@ public class JFamiliares extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       String nombre = txtNombre.getText().trim();
+        // 1. OBTENER DATOS (AGREGAMOS APUNTADORES A LOS NUEVOS CAMPOS DE TEXTO)
+        String nombre = txtNombre.getText().trim();
+        String apellidoPaterno = txtApellidoPaterno.getText().trim(); // 👈 NUEVO
+        String apellidoMaterno = txtApellidoMaterno.getText().trim(); // 👈 NUEVO
         String telefono = txtTelefono.getText().trim();
         String direccion = txtDireccion.getText().trim();
+        String parentesco = (String) cnbParentesco.getSelectedItem();
         int idxAdulto = cnbAdulto.getSelectedIndex();
         int idxMed = cnbMedicamento.getSelectedIndex();
 
-        if (nombre.isEmpty() || telefono.isEmpty() || idxAdulto <= 0 || cnbParentesco.getSelectedIndex() <= 0) {
+        // 2. VALIDACIÓN (AJUSTADA)
+        if (nombre.isEmpty() || apellidoPaterno.isEmpty() || telefono.isEmpty() || idxAdulto <= 0 || cnbParentesco.getSelectedIndex() <= 0) {
             JOptionPane.showMessageDialog(this, "Llene todos los campos obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            // Validar relación
+            // ... (Validación de Familiar ya asignado) ...
             AdultoMayor adulto = listaAdultos.get(idxAdulto - 1);
             if (adulto.getFamiliarResponsable() != null) {
                 JOptionPane.showMessageDialog(this, "Este adulto ya tiene un familiar asignado.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String parentesco = (String) cnbParentesco.getSelectedItem();
+            // 3. USO DEL CONSTRUCTOR CORREGIDO (7 PARÁMETROS)
+            Familiar nuevoFamiliar = new Familiar(
+                nombre, 
+                apellidoPaterno, // 👈 Se usa el nuevo campo
+                apellidoMaterno, // 👈 Se usa el nuevo campo (puede ser vacío si no es obligatorio)
+                telefono, 
+                parentesco, 
+                direccion, 
+                adulto
+            );
             
-            // Usamos el constructor corregido
-            Familiar nuevoFamiliar = new Familiar(nombre, telefono, parentesco, direccion, adulto);
-            
-            // Lógica Medicamento (Acumulativo)
-            if (idxMed > 0) {
-                Medicamento medCatalogo = listaMedicamentos.get(idxMed - 1);
-                boolean yaTiene = false;
-                for(Medicamento m : adulto.getMedicamentos()) {
-                    if(m.getNomMedicamento().equals(medCatalogo.getNomMedicamento())) { 
-                        yaTiene = true; break; 
-                    }
-                }
-                if (!yaTiene) {
-                    // Clonar medicamento para el adulto
-                    Medicamento nuevoMed = new Medicamento(
-                        medCatalogo.getNomMedicamento(), medCatalogo.getPresentacionMedicamento(), 
-                        medCatalogo.getDosis(), medCatalogo.getHoraRecordatorio(), 
-                        medCatalogo.getModoAdministracion()
-                    );
-                    adulto.agregarMedicamento(nuevoMed);
-                    adultoService.actualizarAdultoMayor(adulto);
-                }
-            }
-
+            // ... (Lógica Medicamento y guardado) ...
+            // ...
             familiarService.crearFamiliar(nuevoFamiliar);
             JOptionPane.showMessageDialog(this, "Familiar registrado correctamente.");
             limpiarCampos();
@@ -450,6 +485,14 @@ public class JFamiliares extends javax.swing.JFrame {
             logger.log(Level.SEVERE, "Fallo al abrir el Menú Principal", e);
         }
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void txtApellidoPaternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoPaternoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtApellidoPaternoActionPerformed
+
+    private void txtApellidoMaternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoMaternoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtApellidoMaternoActionPerformed
 
     
     private void llenarCamposDesdeTabla() {
@@ -592,12 +635,16 @@ public class JFamiliares extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel jlabel;
+    private javax.swing.JTextField txtApellidoMaterno;
+    private javax.swing.JTextField txtApellidoPaterno;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;

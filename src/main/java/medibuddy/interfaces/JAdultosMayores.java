@@ -28,8 +28,8 @@ public class JAdultosMayores extends javax.swing.JFrame {
      */
     private void limpiarCampos() {
         txtNombre.setText("");
-        txtApPaterno.setText("");
-        txtApMaterno.setText("");
+        // Se eliminaron: txtApellidoPa.setText("");
+        // Se eliminaron: txtApellidoMa.setText("");
         txtTelefono.setText("");
         txtEmergencia.setText("");
     }
@@ -46,8 +46,8 @@ public class JAdultosMayores extends javax.swing.JFrame {
                 model.addRow(new Object[]{
                     am.getIdUsuario(),
                     am.getNomUsuario(),
-                    am.getApellidoPaterno(),
-                    am.getApellidoMaterno(),
+                    // Se eliminaron: am.getApellidoPaterno(),
+                    // Se eliminaron: am.getApellidoMaterno(),
                     am.getTelefono(),
                     am.getContactoEmergencia()
                 });
@@ -60,16 +60,25 @@ public class JAdultosMayores extends javax.swing.JFrame {
 
     private void inicializarDatosPrueba() {
         try {
-            AdultoMayor a1 = new AdultoMayor("Juan Pérez", "López", "García", "33345678753","3311223344");
+            // Asumiendo que AdultoMayor ahora tiene un constructor simplificado (Nombre, Teléfono, Emergencia)
+            // Si el constructor original con 5 argumentos (Nombre, ApPaterno, ApMaterno, Telefono, Emergencia) debe usarse,
+            // entonces se deben dejar vacíos o nulos los campos de apellido.
+            
+            // Opción 1: Constructor simplificado
+            // AdultoMayor a1 = new AdultoMayor("Juan Pérez", "33345678753", "3311223344");
+
+            // Opción 2: Constructor de 5 argumentos con campos vacíos (Manteniendo compatibilidad temporal)
+            AdultoMayor a1 = new AdultoMayor("Juan Pérez", "", "", "33345678753","3311223344");
+            
             a1.setContactoEmergencia("No tiene"); // Se actualizará cuando se cree el familiar
 
-            AdultoMayor a2 = new AdultoMayor("María González", "Sánchez", "Torres","33456745312" ,"3344556677");
+            AdultoMayor a2 = new AdultoMayor("María González", "", "","33456745312" ,"3344556677");
             a2.setContactoEmergencia("No tiene");
 
-            AdultoMayor a3 = new AdultoMayor("Roberto Díaz", "Ramírez", "Vega", "3346956712","3388990011");
+            AdultoMayor a3 = new AdultoMayor("Roberto Díaz", "", "", "3346956712","3388990011");
             a3.setContactoEmergencia("No tiene");
 
-            AdultoMayor a4 = new AdultoMayor("Carmen Ruiz", "Ortiz", "Méndez", "3348576790","3322114455");
+            AdultoMayor a4 = new AdultoMayor("Carmen Ruiz", "", "", "3348576790","3322114455");
             a4.setContactoEmergencia("No tiene");
 
             System.out.println("✅ Datos de prueba de Adultos Mayores creados.");
@@ -87,15 +96,15 @@ public class JAdultosMayores extends javax.swing.JFrame {
         
         // Etiquetas
         jLabel2 = new javax.swing.JLabel(); // Nombre
-        jLabel3 = new javax.swing.JLabel(); // Ap Paterno
-        jLabel4 = new javax.swing.JLabel(); // Ap Materno
+        // Se eliminó: jLabel3 = new javax.swing.JLabel(); // Ap Paterno
+        // Se eliminó: jLabel4 = new javax.swing.JLabel(); // Ap Materno
         jLabel5 = new javax.swing.JLabel(); // Telefono
         jLabel6 = new javax.swing.JLabel(); // Emergencia
 
         // Campos de Texto
         txtNombre = new javax.swing.JTextField();
-        txtApPaterno = new javax.swing.JTextField();
-        txtApMaterno = new javax.swing.JTextField();
+        // Se eliminó: txtApellidoPa = new javax.swing.JTextField();
+        // Se eliminó: txtApellidoMa = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         txtEmergencia = new javax.swing.JTextField();
 
@@ -120,8 +129,8 @@ public class JAdultosMayores extends javax.swing.JFrame {
 
         // Configuración de etiquetas y campos
         jLabel2.setText("Nombre:");
-        jLabel3.setText("Apellido Paterno:");
-        jLabel4.setText("Apellido Materno:");
+        // Se eliminaron: jLabel3.setText("Apellido Paterno:");
+        // Se eliminaron: jLabel4.setText("Apellido Materno:");
         jLabel5.setText("Teléfono:");
         jLabel6.setText("Contacto Emergencia:");
 
@@ -146,14 +155,14 @@ public class JAdultosMayores extends javax.swing.JFrame {
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(evt -> btnLimpiarActionPerformed(evt));
 
-        // Configuración de Tabla
+        // Configuración de Tabla - REDUCIDA A 4 COLUMNAS
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "ID", "Nombre", "Ap. Paterno", "Ap. Materno", "Teléfono", "Emergencia"
+                "ID", "Nombre", "Teléfono", "Emergencia"
             }
         ) {
-            boolean[] canEdit = new boolean [] { false, false, false, false, false, false };
+            boolean[] canEdit = new boolean [] { false, false, false, false };
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
@@ -168,7 +177,7 @@ public class JAdultosMayores extends javax.swing.JFrame {
         
         jScrollPane1.setViewportView(jTable1);
 
-        // --- DISEÑO (LAYOUT) ---
+        // --- DISEÑO (LAYOUT) SIMPLIFICADO ---
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,15 +192,11 @@ public class JAdultosMayores extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                            .addComponent(txtApPaterno)
-                            .addComponent(txtApMaterno)
                             .addComponent(txtTelefono)
                             .addComponent(txtEmergencia)))
                     .addGroup(layout.createSequentialGroup()
@@ -221,19 +226,9 @@ public class JAdultosMayores extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
-                // Fila Ap Paterno
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtApPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                // Fila Ap Materno
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtApMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
                 // Fila Telefono
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(jLabel5) // Ahora usa jLabel5 (Teléfono)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 // Fila Emergencia
@@ -263,27 +258,25 @@ public class JAdultosMayores extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {
         // 1. Recolección de datos
         String nombre = txtNombre.getText().trim();
-        String apPaterno = txtApPaterno.getText().trim();
-        String apMaterno = txtApMaterno.getText().trim();
         String telefono = txtTelefono.getText().trim();
         String emergencia = txtEmergencia.getText().trim();
 
         // 2. Validaciones
-        if (nombre.isEmpty() || apPaterno.isEmpty() || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nombre, Apellido Paterno y Teléfono son obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        // Solo requerimos Nombre y Teléfono
+        if (nombre.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre y Teléfono son obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            // 3. Crear Objeto 
-            AdultoMayor nuevoAdulto = new AdultoMayor();
-            nuevoAdulto.setNomUsuario(nombre);
-            nuevoAdulto.setApellidoPaterno(apPaterno); // 👈 Verifica que este setter exista en el modelo
-            nuevoAdulto.setApellidoMaterno(apMaterno); // 👈 Verifica que este setter exista en el modelo
-            nuevoAdulto.setTelefono(telefono);
-            nuevoAdulto.setContactoEmergencia(emergencia);
-            nuevoAdulto.setTipoUsuario("Adulto Mayor");
-
+            // 3. Crear Objeto - Se usan Apellido Paterno y Materno vacíos para mantener la firma del constructor de 5 args.
+            AdultoMayor nuevoAdulto = new AdultoMayor(
+                nombre, 
+                "", // Apellido Paterno vacío
+                "", // Apellido Materno vacío
+                telefono, 
+                emergencia
+            );
             // 4. Guardar
             adultoService.crearAdultoMayor(nuevoAdulto);
 
@@ -311,8 +304,13 @@ public class JAdultosMayores extends javax.swing.JFrame {
             if (adulto != null) {
                 // Actualizar datos del objeto con lo que hay en las cajas de texto
                 adulto.setNomUsuario(txtNombre.getText().trim());
-                adulto.setApellidoPaterno(txtApPaterno.getText().trim());
-                adulto.setApellidoMaterno(txtApMaterno.getText().trim());
+                // Se eliminaron: adulto.setApellidoPaterno(txtApellidoPa.getText().trim());
+                // Se eliminaron: adulto.setApellidoMaterno(txtApellidoMa.getText().trim());
+                
+                // Si la base de datos no acepta nulos, se debe mantener el Apellido vacío:
+                adulto.setApellidoPaterno(""); 
+                adulto.setApellidoMaterno(""); 
+                
                 adulto.setTelefono(txtTelefono.getText().trim());
                 adulto.setContactoEmergencia(txtEmergencia.getText().trim());
 
@@ -371,18 +369,17 @@ public class JAdultosMayores extends javax.swing.JFrame {
     }
     
     // Al hacer click en la tabla, llenamos los campos de texto
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {                                     
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {                                             
         int fila = jTable1.getSelectedRow();
         if (fila >= 0) {
             txtNombre.setText(jTable1.getValueAt(fila, 1).toString());
-            // Manejo de nulos para evitar errores si el apellido viene vacío
-            Object apPaterno = jTable1.getValueAt(fila, 2);
-            Object apMaterno = jTable1.getValueAt(fila, 3);
-            Object tel = jTable1.getValueAt(fila, 4);
-            Object emerg = jTable1.getValueAt(fila, 5);
+            
+            // Los Apellidos Paterno y Materno (índices 2 y 3) fueron eliminados
+            
+            // Los índices se ajustan a la nueva tabla de 4 columnas:
+            Object tel = jTable1.getValueAt(fila, 2); // Teléfono es ahora índice 2
+            Object emerg = jTable1.getValueAt(fila, 3); // Emergencia es ahora índice 3
 
-            txtApPaterno.setText(apPaterno != null ? apPaterno.toString() : "");
-            txtApMaterno.setText(apMaterno != null ? apMaterno.toString() : "");
             txtTelefono.setText(tel != null ? tel.toString() : "");
             txtEmergencia.setText(emerg != null ? emerg.toString() : "");
         }
@@ -408,23 +405,23 @@ public class JAdultosMayores extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new JAdultosMayores().setVisible(true));
     }
 
-    // Variables declaration
+    // Variables declaration - MODIFICADAS
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel2; // Nombre
+    // Se eliminó: private javax.swing.JLabel jLabel3; // Ap Paterno
+    // Se eliminó: private javax.swing.JLabel jLabel4; // Ap Materno
+    private javax.swing.JLabel jLabel5; // Teléfono
+    private javax.swing.JLabel jLabel6; // Emergencia
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtApPaterno;
-    private javax.swing.JTextField txtApMaterno;
+    // Se eliminó: private javax.swing.JTextField txtApellidoPa;
+    // Se eliminó: private javax.swing.JTextField txtApellidoMa;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtEmergencia;
     // End of variables declaration                   
