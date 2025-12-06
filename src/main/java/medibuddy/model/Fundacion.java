@@ -18,6 +18,10 @@ public class Fundacion extends Organizador {
         this.actividad = actividad;
     }
 
+    public Fundacion(String nombre, String direccion) {
+        super(nombre, direccion);
+    }
+    
     // Getters y Setters
     public String getActividad() { return actividad; }
     public void setActividad(String actividad) { this.actividad = actividad; }

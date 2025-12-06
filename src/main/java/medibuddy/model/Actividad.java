@@ -54,6 +54,20 @@ public class Actividad {
     public List<AdultoMayor> getParticipantes() { return participantes; }
     public void setParticipantes(List<AdultoMayor> participantes) { this.participantes = participantes; }
     
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Actividad that = (Actividad) o;
+        return idActividad == that.idActividad;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(idActividad);
+    }
+    
     @Override
     public String toString() {
         return "Actividad{" + "idActividad=" + idActividad + ", nomActividad='" + nomActividad + '\'' + '}';

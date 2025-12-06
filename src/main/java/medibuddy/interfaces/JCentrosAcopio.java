@@ -3,34 +3,25 @@ package medibuddy.interfaces;
 
 
 import medibuddy.model.CentroDeAcopio;
-import medibuddy.model.Fundacion;
 import medibuddy.service.CentroDeAcopioService;
-import medibuddy.service.FundacionService;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.logging.Level;
-import javax.swing.DefaultComboBoxModel;
-import medibuddy.model.AdultoMayor; //Importar AdultoMayor
-import medibuddy.service.AdultoMayorService; 
+import java.util.logging.Logger;
 
 public class JCentrosAcopio extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JCentrosAcopio.class.getName());
-
-    // Instancias de Servicios
+    private static final Logger logger = Logger.getLogger(JCentrosAcopio.class.getName());
     private final CentroDeAcopioService centroService = new CentroDeAcopioService();
-    private final FundacionService fundacionService = new FundacionService();
     
-    
-    // Lista auxiliar para saber qué Fundación corresponde a qué ítem del combo
-    private List<Fundacion> listaFundaciones;
+
     
     
     public JCentrosAcopio() {
         initComponents();
-        cargarComboFundaciones();
         cargarTabla();
+        setLocationRelativeTo(null); // Centrar ventana
     }
 
     /**
@@ -42,34 +33,30 @@ public class JCentrosAcopio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel4 = new javax.swing.JLabel();
         txtPedido = new javax.swing.JTextField();
-        txtCantidad = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        cnbFundacion = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
+        txtTipoMaterial = new javax.swing.JTextField();
+        txtCantidadMeta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel4.setText("Fundacion quie lo pide:");
 
         txtPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPedidoActionPerformed(evt);
-            }
-        });
-
-        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidadActionPerformed(evt);
             }
         });
 
@@ -121,17 +108,17 @@ public class JCentrosAcopio extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Pedido", "Cantidad (Uds)", "Destinatario"
+                "ID", "Nombre", "Direccion", "Tipo de Material", "Pedido", "Cantidad Meta"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -142,7 +129,13 @@ public class JCentrosAcopio extends javax.swing.JFrame {
 
         jLabel2.setText("Pedido:");
 
-        jLabel3.setText("Cantidad (uds):");
+        jLabel5.setText("Nombre del Centro de Acopio:");
+
+        jLabel6.setText("Direccion:");
+
+        jLabel7.setText("Tipo de Material que Manejan:");
+
+        jLabel8.setText("Cantidad Meta:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,36 +144,46 @@ public class JCentrosAcopio extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtCantidad))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtPedido))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cnbFundacion, 0, 260, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAgregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(btnRegresar)
-                        .addGap(62, 62, 62)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnAgregar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtNombre))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtDireccion))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtTipoMaterial))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtCantidadMeta))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(btnRegresar)
+                                .addGap(62, 62, 62)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,27 +191,34 @@ public class JCentrosAcopio extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(btnRegresar))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtTipoMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(cnbFundacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtCantidadMeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -218,32 +228,24 @@ public class JCentrosAcopio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPedidoActionPerformed
 
-    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadActionPerformed
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        String pedido = txtPedido.getText().trim();
-        String cantidad = txtCantidad.getText().trim();
-        int indexFundacion = cnbFundacion.getSelectedIndex();
+        String nom = txtNombre.getText().trim();
+        String dir = txtDireccion.getText().trim();
+        String tipo = txtTipoMaterial.getText().trim();
+        String ped = txtPedido.getText().trim();
+        String cant = txtCantidadMeta.getText().trim();
         
-        if (pedido.isEmpty() || cantidad.isEmpty() || indexFundacion <= 0) {
-            JOptionPane.showMessageDialog(this, "Llene todos los campos y seleccione destinatario.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        if (nom.isEmpty() || ped.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre y Pedido son obligatorios.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            // Obtenemos la fundación real de la lista (index - 1 por el mensaje default)
-            Fundacion destinatario = listaFundaciones.get(indexFundacion - 1);
-            
-            CentroDeAcopio nuevoEnvio = new CentroDeAcopio(pedido, cantidad, destinatario);
-            
-            centroService.crearEnvio(nuevoEnvio);
-            
-            JOptionPane.showMessageDialog(this, "Pedido agregado con éxito.");
+            CentroDeAcopio nuevo = new CentroDeAcopio(nom, dir, tipo, ped, cant);
+            centroService.crearCentro(nuevo);
+            JOptionPane.showMessageDialog(this, "Centro registrado con éxito.");
             cargarTabla();
             btnLimpiarActionPerformed(null);
-            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
         }
@@ -251,49 +253,39 @@ public class JCentrosAcopio extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int fila = jTable1.getSelectedRow();
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un registro para eliminar.");
-            return;
-        }
+        if (fila < 0) return;
         
-        int confirm = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este pedido?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        int id = (int) jTable1.getValueAt(fila, 0);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Eliminar?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                int id = (int) jTable1.getValueAt(fila, 0);
-                CentroDeAcopio envio = centroService.buscarEnvioPorId(id);
-                
-                centroService.eliminarEnvio(envio);
-                
-                JOptionPane.showMessageDialog(this, "Eliminado correctamente.");
+                CentroDeAcopio c = centroService.buscarCentroPorId(id);
+                centroService.eliminarCentro(c);
                 cargarTabla();
                 btnLimpiarActionPerformed(null);
-                
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         int fila = jTable1.getSelectedRow();
-        int indexFundacion = cnbFundacion.getSelectedIndex();
-        
-        if (fila < 0 || indexFundacion <= 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un registro y una fundación válida.");
-            return;
-        }
+        if (fila < 0) return;
         
         try {
             int id = (int) jTable1.getValueAt(fila, 0);
-            CentroDeAcopio envio = centroService.buscarEnvioPorId(id);
+            CentroDeAcopio c = centroService.buscarCentroPorId(id);
             
-            if (envio != null) {
-                envio.setPedido(txtPedido.getText().trim());
-                envio.setCantidad(txtCantidad.getText().trim());
-                envio.setFundacionDestino(listaFundaciones.get(indexFundacion - 1));
+            if (c != null) {
+                c.setNombre(txtNombre.getText().trim());
+                c.setDireccion(txtDireccion.getText().trim());
+                c.setTipoMaterial(txtTipoMaterial.getText().trim());
+                c.setPedido(txtPedido.getText().trim());
+                c.setCantidadMeta(txtCantidadMeta.getText().trim());
                 
-                centroService.actualizarEnvio(envio);
-                
+                centroService.actualizarCentro(c);
                 JOptionPane.showMessageDialog(this, "Actualizado correctamente.");
                 cargarTabla();
                 btnLimpiarActionPerformed(null);
@@ -304,8 +296,11 @@ public class JCentrosAcopio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        txtNombre.setText("");
+        txtDireccion.setText("");
+        txtTipoMaterial.setText("");
         txtPedido.setText("");
-        txtCantidad.setText("");
+        txtCantidadMeta.setText("");
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -323,49 +318,39 @@ public class JCentrosAcopio extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    private void cargarComboFundaciones() {
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        try {
-            listaFundaciones = fundacionService.listarFundaciones();
-            
-            if (listaFundaciones.isEmpty()) {
-                model.addElement("No hay fundaciones registradas");
-            } else {
-                model.addElement("--- Seleccione Destinatario ---");
-                for (Fundacion f : listaFundaciones) {
-                    model.addElement(f.getNombre());
-                }
-            }
-            cnbFundacion.setModel(model);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error al cargar combo", e);
+    
+    private void llenarCampos() {
+        int fila = jTable1.getSelectedRow();
+        if (fila >= 0) {
+            txtNombre.setText(jTable1.getValueAt(fila, 1).toString());
+            txtDireccion.setText(jTable1.getValueAt(fila, 2).toString());
+            txtTipoMaterial.setText(jTable1.getValueAt(fila, 3).toString());
+            txtPedido.setText(jTable1.getValueAt(fila, 4).toString());
+            txtCantidadMeta.setText(jTable1.getValueAt(fila, 5).toString());
         }
     }
-    
     
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         
         try {
-            List<CentroDeAcopio> envios = centroService.listarEnvios();
-            
-            for (CentroDeAcopio c : envios) {
-                String nombreFundacion = (c.getFundacionDestino() != null) 
-                                         ? c.getFundacionDestino().getNombre() 
-                                         : "Sin Asignar";
-                
+            List<CentroDeAcopio> centros = centroService.listarCentros();
+            for (CentroDeAcopio c : centros) {
                 model.addRow(new Object[]{
                     c.getId(),
+                    c.getNombre(),
+                    c.getDireccion(),
+                    c.getTipoMaterial(),
                     c.getPedido(),
-                    c.getCantidad(),
-                    nombreFundacion // Mostramos el nombre de la fundación
+                    c.getCantidadMeta()
                 });
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar tabla.", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Error al cargar tabla", e);
         }
     }
+    
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -395,14 +380,18 @@ public class JCentrosAcopio extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JComboBox<String> cnbFundacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtCantidadMeta;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPedido;
+    private javax.swing.JTextField txtTipoMaterial;
     // End of variables declaration//GEN-END:variables
 }

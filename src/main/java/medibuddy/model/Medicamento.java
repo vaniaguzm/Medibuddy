@@ -34,6 +34,14 @@ public class Medicamento {
 
     public Medicamento() {}
 
+    public Medicamento(String nom, String presentacion, String dosis, String hora, String modo) {
+        this.nomMedicamento = nom;
+        this.presentacionMedicamento = presentacion;
+        this.adminYdosis = dosis;
+        this.horaRecordatorio = hora;
+        this.modoAdministracion = modo;
+    }
+    
     public Medicamento(String nomMedicamento, String dosis, String horaRecordatorio, String modoAdministracion) {
         this.nomMedicamento = nomMedicamento;
         this.adminYdosis = dosis;
@@ -55,15 +63,17 @@ public class Medicamento {
 
     // Getters y Setters
     public int getIdMedicamento() { return idMedicamento; }
-    public void setIdMedicamento(int idMedicamento) { this.idMedicamento = idMedicamento; }
+    public void setIdMedicamento(int id) { this.idMedicamento = id; }
     public String getNomMedicamento() { return nomMedicamento; }
-    public void setNomMedicamento(String nomMedicamento) { this.nomMedicamento = nomMedicamento; }
-    public String getAdminYDosis() { return adminYdosis; }
+    public void setNomMedicamento(String nom) { this.nomMedicamento = nom; }
+    public String getPresentacionMedicamento() { return presentacionMedicamento; }
+    public void setPresentacionMedicamento(String p) { this.presentacionMedicamento = p; }
+    public String getDosis() { return adminYdosis; }
     public void setDosis(String dosis) { this.adminYdosis = dosis; }
     public String getHoraRecordatorio() { return horaRecordatorio; }
-    public void setHoraRecordatorio(String horaRecordatorio) { this.horaRecordatorio = horaRecordatorio; }
+    public void setHoraRecordatorio(String h) { this.horaRecordatorio = h; }
     public String getModoAdministracion() { return modoAdministracion; }
-    public void setModoAdministracion(String modoAdministracion) { this.modoAdministracion = modoAdministracion; }
+    public void setModoAdministracion(String m) { this.modoAdministracion = m; }
     public List<AdultoMayor> getPacientes() { return pacientes; }
     public void setPacientes(List<AdultoMayor> pacientes) { this.pacientes = pacientes; }
 }

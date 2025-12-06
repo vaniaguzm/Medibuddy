@@ -14,6 +14,10 @@ public class ActividadService {
     public List<Actividad> listarActividades() {
         return repository.findAll();
     }
+    
+    public void actualizarActividad(Actividad actividad) {
+        repository.update(actividad);
+    }
 
     public Actividad buscarActividadPorId(int id) {
         return repository.findById(id);
